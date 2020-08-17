@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokeWikia extends AppCompatActivity {
+public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemClickListener {
 
 
     private static String pw = "https://pokeapi.co/api/v2/pokemon";
@@ -33,11 +34,38 @@ public class PokeWikia extends AppCompatActivity {
         new FullPokeList().execute();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-        LinearLayoutManager horizontalLayoutManager
+        final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter.setClickListener(this);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+
+
+                if (dy > 0) {
+                    if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
+                        Log.d("TAG", "End of list");
+                        new FullPokeList().execute();
+                    }
+                }
+            }
+        });
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        try{
+            String link=(adapter.getPok(position)).getLink();
+            Intent intent = new Intent(this, PokeCard.class);
+            intent.putExtra("link", link);
+            startActivity(intent);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     class FullPokeList extends AsyncTask<String, String, String> {
@@ -58,9 +86,6 @@ public class PokeWikia extends AppCompatActivity {
                 {
                     pokemons.add(decodeJSON1(jsonArray.getJSONObject(i)));
                 }
-                String name ="a";
-
-
         }
             catch (JSONException e) {
 

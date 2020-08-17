@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
 
     private List<Pokemon> pokemons;
+    private ItemClickListener mClickListener;
+
 
     PokDataAdapter(Context context, List<Pokemon> pokemons) {
         this.pokemons = pokemons;
@@ -34,11 +36,30 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
         return pokemons.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView nameView;
         ViewHolder(View view){
             super(view);
             nameView = (TextView) view.findViewById(R.id.name);
+
+            view.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
+
+    public Pokemon getPok(int id) {
+        return pokemons.get(id);
+    }
+
+    public void setClickListener(PokDataAdapter.ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
 }
+
