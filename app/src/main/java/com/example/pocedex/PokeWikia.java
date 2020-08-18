@@ -3,8 +3,6 @@ package com.example.pocedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +20,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
 
 
     private static String pw = "https://pokeapi.co/api/v2/pokemon";
+    private static String pwnext = "";
     List<Pokemon> pokemons = new ArrayList<>();
     JSONParser jsonParser = new JSONParser();
     PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
@@ -30,6 +29,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poce_wikia);
+        pwnext=pw;
 
         new FullPokeList().execute();
 
@@ -42,9 +42,6 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
-
-
                 if (dy > 0) {
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
@@ -75,12 +72,14 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         }
 
         protected String doInBackground(String... args) {
-            JSONObject json = jsonParser.makeHttpRequest(pw);
+            JSONObject json = jsonParser.makeHttpRequest(pwnext);
 
             Log.d("Create Response", json.toString());
             String s=json.toString();
             String result = s.substring(s.indexOf('['), s.indexOf(']')+1);
+
             try {
+                pwnext= json.get("next").toString();
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i=0; i<jsonArray.length();i++)
                 {
@@ -88,10 +87,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                 }
         }
             catch (JSONException e) {
-
             Log.e("JSON Parser", "Error parsing data " + e.toString());
-
-
         }
             return null;
         }
