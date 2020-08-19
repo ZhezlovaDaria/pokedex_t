@@ -13,6 +13,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     private static String pw = "https://pokeapi.co/api/v2/pokemon";
     private static String pwnext = "";
     List<Pokemon> pokemons = new ArrayList<>();
+    public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
     JSONParser jsonParser = new JSONParser();
     PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
 
@@ -32,7 +37,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         pwnext=pw;
 
         new FullPokeList().execute();
-
+        CommandfavList();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -53,6 +58,12 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         recyclerView.setAdapter(adapter);
     }
 
+    public void toFav(View view)
+    {
+        Intent intent = new Intent(this, FavList.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onItemClick(View view, int position) {
         try{
@@ -64,6 +75,28 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
             e.printStackTrace();
         }
     }
+
+    private void CommandfavList()
+    {
+        try{
+            FileInputStream fis = openFileInput("commandfav.txt");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                List<CommAndFav> CaFpoke1 = (ArrayList<CommAndFav>) ois.readObject();
+                CaFpoke.clear();
+                for(int i=0; i<CaFpoke1.size();i++)
+                {
+                    CaFpoke.add(CaFpoke1.get(i));
+                }
+                adapter.notifyDataSetChanged();
+            } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     class FullPokeList extends AsyncTask<String, String, String> {
         @Override
