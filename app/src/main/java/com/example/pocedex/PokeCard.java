@@ -60,7 +60,7 @@ public class PokeCard extends AppCompatActivity {
     public void saveComm(View view)
     {
         p.comment=((EditText) findViewById(R.id.UsCom)).getText().toString();
-        showToast("You're comment save");
+        showToast("Your comment save");
         save();
         hideKeyboard(this);
     }
@@ -128,7 +128,6 @@ public class PokeCard extends AppCompatActivity {
             pokemon = gson.fromJson(s, Pokemon.class);
             pokemon.setLink(pok);
             try {
-
                 InputStream is = new URL(pokemon.sprites.other.official_artwork.front_default).openStream();
                 bitmap = BitmapFactory.decodeStream(is);
             }
@@ -143,7 +142,7 @@ public class PokeCard extends AppCompatActivity {
 
         protected void onPostExecute(String file_url) {
             TextView tv1 = (TextView) findViewById(R.id.pokname);
-            TextView tv2 = (TextView) findViewById(R.id.ab);
+            TextView tv2 = (TextView) findViewById(R.id.baex);
             ImageView iv1 =(ImageView) findViewById(R.id.pokeim);
             ib =(ImageView) findViewById(R.id.favBtn);
             EditText et= (EditText)findViewById(R.id.UsCom);
@@ -166,6 +165,70 @@ public class PokeCard extends AppCompatActivity {
             {
                et.setText(p.comment);
             }
+
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.base_experience));
+
+            tv2 = (TextView) findViewById(R.id.order);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.order));
+
+            tv2 = (TextView) findViewById(R.id.height);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.height));
+
+            tv2 = (TextView) findViewById(R.id.weight);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.weight));
+
+            tv2 = (TextView) findViewById(R.id.hp);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.stats[0].base_stat));
+            tv2 = (TextView) findViewById(R.id.attack);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.stats[1].base_stat));
+            tv2 = (TextView) findViewById(R.id.defense);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.stats[2].base_stat));
+            tv2 = (TextView) findViewById(R.id.sa);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.stats[3].base_stat));
+            tv2 = (TextView) findViewById(R.id.sd);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.stats[4].base_stat));
+            tv2 = (TextView) findViewById(R.id.speed);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.stats[5].base_stat));
+
+            tv2 = (TextView) findViewById(R.id.textView6);
+            tv2.setText(tv2.getText()+String.valueOf(pokemon.species.name));
+
+            tv2 = (TextView) findViewById(R.id.typeslist);
+            for (int i=0;i<pokemon.types.length;i++)
+            {
+                tv2.setText(tv2.getText()+pokemon.types[i].type.name+"\n");
+            }
+
+            tv2 = (TextView) findViewById(R.id.forms);
+            for (int i=0;i<pokemon.forms.length;i++)
+            {
+                tv2.setText(tv2.getText()+pokemon.forms[i].name+"\n");
+            }
+
+            tv2 = (TextView) findViewById(R.id.mvs);
+            for (int i=0;i<pokemon.moves.length;i++)
+            {
+                tv2.setText(tv2.getText()+pokemon.moves[i].move.name+", ");
+            }
+
+            tv2 = (TextView) findViewById(R.id.abs);
+            for (int i=0;i<pokemon.abilities.length;i++)
+            {
+                tv2.setText(tv2.getText()+pokemon.abilities[i].ability.name+", ");
+            }
+
+            tv2 = (TextView) findViewById(R.id.his);
+            for (int i=0;i<pokemon.held_items.length;i++)
+            {
+                tv2.setText(tv2.getText()+pokemon.held_items[i].item.name+", ");
+            }
+
+            tv2 = (TextView) findViewById(R.id.gis);
+            for (int i=0;i<pokemon.game_indices.length;i++)
+            {
+                tv2.setText(tv2.getText()+""+pokemon.game_indices[i].game_index+" "+pokemon.game_indices[i].version.name+", ");
+            }
+
         }
 
     }

@@ -1,6 +1,8 @@
 package com.example.pocedex;
 
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Pokemon {
@@ -9,12 +11,15 @@ public class Pokemon {
     public boolean is_default;
     private String name;
     private String link;
+    public Bitmap perview;
+    public int base_experience;
     public ability[] abilities;
     public form[] forms;
     public game_indice[] game_indices;
     public String height;
-    public String[] held_item;
+    public held_item[] held_items;
     public move[] moves;
+    public specie species;
     public sprite sprites;
     public stat[] stats;
     public type[] types;
@@ -56,8 +61,21 @@ public class Pokemon {
     }
     public class move
     {
-        public String name;
-        public String url;
+        public mov move;
+        public class mov
+        {
+            public String name;
+            public String url;
+        }
+    }
+    public class held_item
+    {
+        public item item;
+        public class item
+        {
+            public String name;
+            public String url;
+        }
     }
     public class sprite
     {
@@ -87,6 +105,11 @@ public class Pokemon {
             }
         }
     }
+    public class specie
+    {
+        public String name;
+        public String url;
+    }
     public class stat
     {
         public int base_stat;
@@ -97,8 +120,14 @@ public class Pokemon {
     public class type
     {
         public int slot;
-        public String name;
-        public String url;
+        public typ type;
+
+        public class typ
+        {
+            public String name;
+            public String url;
+
+        }
     }
 }
 

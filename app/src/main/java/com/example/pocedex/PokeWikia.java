@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,9 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +32,14 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
     JSONParser jsonParser = new JSONParser();
     PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
+    int imid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poce_wikia);
         pwnext=pw;
-
+        imid=0;
         new FullPokeList().execute();
         CommandfavList();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
@@ -117,11 +121,18 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                 for (int i=0; i<jsonArray.length();i++)
                 {
                     pokemons.add(decodeJSON1(jsonArray.getJSONObject(i)));
+                    InputStream is = new URL("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(imid+1)+".png").openStream();
+                    pokemons.get(imid).perview = BitmapFactory.decodeStream(is);
+                    imid++;
                 }
-        }
+            }
             catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
-        }
+            }
+            catch (Exception e)
+            {
+                Log.d("Fail Image", "png");
+            }
             return null;
         }
 

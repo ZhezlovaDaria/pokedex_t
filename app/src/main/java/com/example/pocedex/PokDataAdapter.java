@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 
@@ -29,6 +30,7 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
     public void onBindViewHolder(PokDataAdapter.ViewHolder holder, int position) {
         Pokemon pokemon = pokemons.get(position);
         holder.nameView.setText(pokemon.getName());
+        holder.imageView.setImageBitmap(pokemon.perview);
     }
 
     @Override
@@ -38,9 +40,11 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView nameView;
+        final ImageView imageView;
         ViewHolder(View view){
             super(view);
             nameView = (TextView) view.findViewById(R.id.name);
+            imageView = (ImageView) view.findViewById(R.id.imageView);
 
             view.setOnClickListener(this);
         }
