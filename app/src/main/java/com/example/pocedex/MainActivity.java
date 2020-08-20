@@ -1,9 +1,8 @@
 package com.example.pocedex;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.work.OneTimeWorkRequest;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -16,8 +15,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONObject;
-
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "States";
     private static String twp="https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
     JSONParser jsonParser = new JSONParser();
-    PeriodicWorkRequest TweetcheckRequest= new PeriodicWorkRequest.Builder(TweetsCheck.class, 16, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
-            .build();
-    PokeTweet[] pokeTweets;
+    PeriodicWorkRequest TweetcheckRequest;
+    ArrayList<PokeTweet> pokeTweets=new ArrayList<>();
+    TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +34,22 @@ public class MainActivity extends AppCompatActivity {
 
         new TweetLenta().execute();
 
+        TweetcheckRequest= new PeriodicWorkRequest.Builder(TweetsCheck.class, 16, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
+                .build();
         WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
+
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.twwfeed);
+        final LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
-
-
 
     public void onClick(View view) {
         Intent intent = new Intent(this, PokeWikia.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
-        Log.d(TAG, "MainActivity: onStart()");
     }
 
     @Override
@@ -86,13 +84,16 @@ public class MainActivity extends AppCompatActivity {
             String s=ExmpStr();
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
-            pokeTweets = gson.fromJson(s, PokeTweet[].class);
+            PokeTweet[] p = gson.fromJson(s, PokeTweet[].class);
+            for (int i=0; i<p.length;i++)
+            { pokeTweets.add(p[i]);}
+
             Log.d("Create Response", "");
 
             return null;
         }
         protected void onPostExecute(String file_url) {
-
+            adapter.notifyDataSetChanged();
         }
 
         private String ExmpStr()

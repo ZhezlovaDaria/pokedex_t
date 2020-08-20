@@ -1,9 +1,16 @@
 package com.example.pocedex;
 
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class PokeTweet {
 
-    public String created_at;
+    private String created_at;
     public long id;
     public String text;
     public  int retweet_count;
@@ -12,7 +19,29 @@ public class PokeTweet {
 
     public User user;
 
-    private class User
+    public void setCreated_at(String created_at)
+    {
+       this.created_at=created_at;
+    }
+    public String getCreated_at()
+    {
+        //it must be in set, but gson ignor set...
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
+        try {
+            cal.setTime(sdf.parse(created_at));
+            Date date = cal.getTime();
+            sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            return sdf.format(date);
+        }
+        catch (Exception e)
+        {
+            Log.d("Fail Date", "");
+        }
+        return created_at;
+    }
+
+    public class User
     {
         public long id;
         public String name;
