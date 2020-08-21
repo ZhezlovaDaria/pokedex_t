@@ -16,6 +16,7 @@ public class PokeTweet {
     public  int retweet_count;
     public int favorite_count;
     public Media entities;
+    public PokeTweet retweeted_status;
 
     public User user;
 

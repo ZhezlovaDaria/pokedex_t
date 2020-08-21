@@ -32,6 +32,23 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(TweetsAdapter.ViewHolder holder, int position) {
         PokeTweet twe = tweets.get(position);
+        if (twe.retweeted_status!=null)
+        {
+            String s="RT @" + twe.retweeted_status.user.screen_name + ": " + twe.retweeted_status.text;
+            if (s.length()>=139) {
+                s = s.substring(0,139);
+                s+="…";
+            }
+            if (s.equals(twe.text))
+            {
+                twe = twe.retweeted_status;
+            }
+            else
+            {
+                twe.text=twe.text.substring(0, twe.text.indexOf("RT @"));
+            }
+
+        }
         //holder.ava.setImageResource(twe.user.profile_image_url_https);
         Picasso.get().load(twe.user.profile_image_url_https).into(holder.ava);
         try {
