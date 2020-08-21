@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +33,8 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
     public void onBindViewHolder(PokDataAdapter.ViewHolder holder, int position) {
         Pokemon pokemon = pokemons.get(position);
         holder.nameView.setText(pokemon.getName());
-        holder.imageView.setImageBitmap(pokemon.perview);
+        Picasso.get().load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(pokemon.id+1)+".png").into(holder.imageView);
+        //holder.imageView.setImageBitmap(pokemon.perview);
     }
 
     @Override

@@ -28,6 +28,7 @@ public class FavList extends AppCompatActivity implements PokDataAdapter.ItemCli
                 Pokemon p = new Pokemon();
                 p.setName(PokeWikia.CaFpoke.get(i).name);
                 p.setLink(PokeWikia.CaFpoke.get(i).link);
+                p.id=PokeWikia.CaFpoke.get(i).id-1;
                 pokemons.add(p);
             }
         }

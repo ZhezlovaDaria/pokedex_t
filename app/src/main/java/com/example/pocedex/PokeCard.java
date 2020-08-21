@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
@@ -127,14 +129,14 @@ public class PokeCard extends AppCompatActivity {
             Gson gson = builder.create();
             pokemon = gson.fromJson(s, Pokemon.class);
             pokemon.setLink(pok);
-            try {
-                InputStream is = new URL(pokemon.sprites.other.official_artwork.front_default).openStream();
-                bitmap = BitmapFactory.decodeStream(is);
-            }
-            catch (Exception e)
-            {
-                Log.d("Fail Image", pokemon.sprites.other.official_artwork.front_default);
-            }
+//            try {
+//                InputStream is = new URL(pokemon.sprites.other.official_artwork.front_default).openStream();
+//                bitmap = BitmapFactory.decodeStream(is);
+//            }
+//            catch (Exception e)
+//            {
+//                Log.d("Fail Image", pokemon.sprites.other.official_artwork.front_default);
+//            }
             Log.d("Create Response", json.toString());
 
             return null;
@@ -148,7 +150,9 @@ public class PokeCard extends AppCompatActivity {
             EditText et= (EditText)findViewById(R.id.UsCom);
 
             tv1.setText(pokemon.getName());
-            iv1.setImageBitmap(bitmap);
+           // iv1.setImageBitmap(bitmap);
+            Picasso.get().load(pokemon.sprites.other.official_artwork.front_default).into(iv1);
+
             p=findOnId(pokemon.id, PokeWikia.CaFpoke);
             if (p==null)
             {
@@ -196,38 +200,105 @@ public class PokeCard extends AppCompatActivity {
             tv2 = (TextView) findViewById(R.id.typeslist);
             for (int i=0;i<pokemon.types.length;i++)
             {
-                tv2.setText(tv2.getText()+pokemon.types[i].type.name+"\n");
+                tv2.setText(tv2.getText()+pokemon.types[i].type.name);
+                if (i!=pokemon.types.length-1)
+                    tv2.setText(tv2.getText()+"\n");
             }
+            if (pokemon.types.length==0)
+                tv2.setText("None");
 
             tv2 = (TextView) findViewById(R.id.forms);
             for (int i=0;i<pokemon.forms.length;i++)
             {
-                tv2.setText(tv2.getText()+pokemon.forms[i].name+"\n");
+                tv2.setText(tv2.getText()+pokemon.forms[i].name);
+                if (i!=pokemon.forms.length-1)
+                    tv2.setText(tv2.getText()+"\n");
             }
+            if (pokemon.forms.length==0)
+                tv2.setText("None");
 
             tv2 = (TextView) findViewById(R.id.mvs);
             for (int i=0;i<pokemon.moves.length;i++)
             {
-                tv2.setText(tv2.getText()+pokemon.moves[i].move.name+", ");
+                tv2.setText(tv2.getText()+pokemon.moves[i].move.name);
+                if (i!=pokemon.moves.length-1)
+                    tv2.setText(tv2.getText()+", ");
             }
+            if (pokemon.moves.length==0)
+                tv2.setText("None");
 
             tv2 = (TextView) findViewById(R.id.abs);
             for (int i=0;i<pokemon.abilities.length;i++)
             {
-                tv2.setText(tv2.getText()+pokemon.abilities[i].ability.name+", ");
+                tv2.setText(tv2.getText()+pokemon.abilities[i].ability.name);
+                if (i!=pokemon.abilities.length-1)
+                    tv2.setText(tv2.getText()+", ");
             }
+            if (pokemon.abilities.length==0)
+                tv2.setText("None");
 
             tv2 = (TextView) findViewById(R.id.his);
             for (int i=0;i<pokemon.held_items.length;i++)
             {
-                tv2.setText(tv2.getText()+pokemon.held_items[i].item.name+", ");
+                tv2.setText(tv2.getText()+pokemon.held_items[i].item.name);
+                if (i!=pokemon.held_items.length-1)
+                    tv2.setText(tv2.getText()+", ");
             }
+            if (pokemon.held_items.length==0)
+                tv2.setText("None");
 
             tv2 = (TextView) findViewById(R.id.gis);
             for (int i=0;i<pokemon.game_indices.length;i++)
             {
-                tv2.setText(tv2.getText()+""+pokemon.game_indices[i].game_index+" "+pokemon.game_indices[i].version.name+", ");
+                tv2.setText(tv2.getText()+""+pokemon.game_indices[i].game_index+" "+pokemon.game_indices[i].version.name);
+                if (i!=pokemon.game_indices.length-1)
+                    tv2.setText(tv2.getText()+", ");
             }
+            if (pokemon.types.length==0)
+                tv2.setText("None");
+
+            if (pokemon.sprites.back_default!=null) {
+                iv1=(ImageView) findViewById(R.id.sp1);
+                Picasso.get().load(pokemon.sprites.back_default).into(iv1);
+                iv1=(ImageView) findViewById(R.id.sp2);
+                Picasso.get().load(pokemon.sprites.front_default).into(iv1);
+                iv1=(ImageView) findViewById(R.id.sp3);
+                Picasso.get().load(pokemon.sprites.back_shiny).into(iv1);
+                iv1=(ImageView) findViewById(R.id.sp4);
+                Picasso.get().load(pokemon.sprites.front_shiny).into(iv1);
+            }
+            else
+                {
+                    iv1=(ImageView) findViewById(R.id.sp1);
+                    iv1.setVisibility(View.GONE);
+                    iv1=(ImageView) findViewById(R.id.sp2);
+                    iv1.setVisibility(View.GONE);
+                    iv1=(ImageView) findViewById(R.id.sp3);
+                    iv1.setVisibility(View.GONE);
+                    iv1=(ImageView) findViewById(R.id.sp4);
+                    iv1.setVisibility(View.GONE);
+                }
+            if (pokemon.sprites.back_female!=null) {
+                iv1=(ImageView) findViewById(R.id.sp5);
+                Picasso.get().load(pokemon.sprites.back_female).into(iv1);
+                iv1=(ImageView) findViewById(R.id.sp6);
+                Picasso.get().load(pokemon.sprites.front_female).into(iv1);
+                iv1=(ImageView) findViewById(R.id.sp7);
+                Picasso.get().load(pokemon.sprites.back_shiny_female).into(iv1);
+                iv1=(ImageView) findViewById(R.id.sp8);
+                Picasso.get().load(pokemon.sprites.front_shiny_female).into(iv1);
+            }
+            else
+                {
+                    iv1=(ImageView) findViewById(R.id.sp5);
+                    iv1.setVisibility(View.GONE);
+                    iv1=(ImageView) findViewById(R.id.sp6);
+                    iv1.setVisibility(View.GONE);
+                    iv1=(ImageView) findViewById(R.id.sp7);
+                    iv1.setVisibility(View.GONE);
+                    iv1=(ImageView) findViewById(R.id.sp8);
+                    iv1.setVisibility(View.GONE);
+                }
 
         }
 

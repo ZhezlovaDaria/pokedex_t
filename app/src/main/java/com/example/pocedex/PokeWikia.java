@@ -121,8 +121,9 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                 for (int i=0; i<jsonArray.length();i++)
                 {
                     pokemons.add(decodeJSON1(jsonArray.getJSONObject(i)));
-                    InputStream is = new URL("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(imid+1)+".png").openStream();
-                    pokemons.get(imid).perview = BitmapFactory.decodeStream(is);
+                    //InputStream is = new URL("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(imid+1)+".png").openStream();
+                    //pokemons.get(imid).perview = BitmapFactory.decodeStream(is);
+                    pokemons.get(imid).id=imid;
                     imid++;
                 }
             }

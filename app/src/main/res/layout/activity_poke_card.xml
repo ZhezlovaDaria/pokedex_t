@@ -16,6 +16,8 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:textColor="@android:color/black"/>
 
         <ImageButton
             android:id="@+id/favBtn"
@@ -43,10 +46,9 @@
             android:id="@+id/hrs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_margin="8dp"
+            android:padding="10dp"
+            android:background="@drawable/rounded"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/ab"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,25 +65,37 @@
                 <TextView
                     android:id="@+id/baex"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="base\nexperience " />
+                    android:layout_height="match_parent"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="base exp " />
 
                 <TextView
                     android:id="@+id/order"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
                     android:text="order " />
 
                 <TextView
                     android:id="@+id/height"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
                     android:text="height " />
 
                 <TextView
                     android:id="@+id/weight"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
                     android:text="weight " />
             </LinearLayout>
 
@@ -91,20 +105,6 @@
                 android:layout_height="200dp"
                 android:layout_weight="1"
                 tools:srcCompat="@tools:sample/avatars" />
-
-            <LinearLayout
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/types1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Types:" />
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/types"
@@ -117,18 +117,26 @@
                     android:id="@+id/typeslist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:text="Types: \n" />
             </LinearLayout>
         </LinearLayout>
 
     <TextView
         android:id="@+id/ab"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="479dp"
         android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded"
         android:text="Stats"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hrs" />
@@ -137,10 +145,12 @@
         android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="32dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -156,18 +166,24 @@
                 android:id="@+id/hp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
                 android:text="HP " />
 
             <TextView
                 android:id="@+id/attack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
                 android:text="Attack " />
 
             <TextView
                 android:id="@+id/defense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
                 android:text="Defense " />
 
         </LinearLayout>
@@ -182,18 +198,24 @@
                 android:id="@+id/sa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
                 android:text="Special-attack " />
 
             <TextView
                 android:id="@+id/sd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
                 android:text="Special-defense " />
 
             <TextView
                 android:id="@+id/speed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
                 android:text="Speed " />
         </LinearLayout>
     </LinearLayout>
@@ -203,6 +225,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -222,7 +245,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="saveComm"
-            android:text="send" />
+            android:text="SAVE" />
 
     </LinearLayout>
 
@@ -231,7 +254,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="32dp"
         android:text="Species: "
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:background="@drawable/rounded"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -242,6 +273,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="32dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -252,6 +289,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
             android:gravity="right"
             android:text="Forms: " />
 
@@ -260,6 +299,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
             android:text="" />
     </LinearLayout>
 
@@ -267,26 +308,27 @@
         android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"></LinearLayout>
+
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
             android:text="Moves" />
 
         <TextView
@@ -300,6 +342,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
             android:text="Abilities" />
 
         <TextView
@@ -313,6 +357,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
             android:text="Held items" />
 
         <TextView
@@ -326,6 +372,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
             android:text="Game indices" />
 
         <TextView
@@ -339,7 +387,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
             android:text="Sprites" />
+
+        <HorizontalScrollView
+            android:id="@+id/hscroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/sp1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+            <ImageView
+                android:id="@+id/sp2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+            <ImageView
+                android:id="@+id/sp3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+            <ImageView
+                android:id="@+id/sp4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+            <ImageView
+                android:id="@+id/sp5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+            <ImageView
+                android:id="@+id/sp6"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+            <ImageView
+                android:id="@+id/sp7"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+            <ImageView
+                android:id="@+id/sp8"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                tools:srcCompat="@tools:sample/avatars" />
+        </LinearLayout>
+        </HorizontalScrollView>
+
     </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
