@@ -1,10 +1,14 @@
 package com.example.pocedex;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +33,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public void onBindViewHolder(TweetsAdapter.ViewHolder holder, int position) {
         PokeTweet twe = tweets.get(position);
         //holder.ava.setImageResource(twe.user.profile_image_url_https);
+        Picasso.get().load(twe.user.profile_image_url_https).into(holder.ava);
+        try {
+            Picasso.get().load(twe.entities.medias[0].media_url).into(holder.media);
+        }
+        catch (Exception e)
+        {
+            Log.d("Media", e.getMessage());
+        }
         //holder.media.setImageResource(twe.getImage());
         holder.name.setText(twe.user.name);
         holder.named.setText("@"+twe.user.screen_name);

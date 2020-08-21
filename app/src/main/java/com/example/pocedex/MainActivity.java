@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "States";
     private static String twp="https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
     JSONParser jsonParser = new JSONParser();
-    PeriodicWorkRequest TweetcheckRequest;
+    //PeriodicWorkRequest TweetcheckRequest;
     ArrayList<PokeTweet> pokeTweets=new ArrayList<>();
     TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
 
@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         new TweetLenta().execute();
 
-        TweetcheckRequest= new PeriodicWorkRequest.Builder(TweetsCheck.class, 16, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
-                .build();
-        WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
+        //TweetcheckRequest= new PeriodicWorkRequest.Builder(TweetsCheck.class, 16, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
+              //  .build();
+       // WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.twwfeed);
@@ -55,21 +55,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        WorkManager.getInstance().enqueue(TweetcheckRequest);
+        //WorkManager.getInstance().enqueue(TweetcheckRequest);
         Log.d(TAG, "MainActivity: onPause()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        WorkManager.getInstance().enqueue(TweetcheckRequest);
+        //WorkManager.getInstance().enqueue(TweetcheckRequest);
         Log.d(TAG, "MainActivity: onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        WorkManager.getInstance().enqueue(TweetcheckRequest);
+        //WorkManager.getInstance().enqueue(TweetcheckRequest);
         Log.d(TAG, "MainActivity: onDestroy()");
     }
 
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                     "      \"profile_background_image_url_https\": \"https://pbs.twimg.com/profile_background_images/656927849/miyt9dpjz77sc0w3d4vj.png\",\n" +
                     "      \"profile_background_tile\": true,\n" +
                     "      \"profile_image_url\": \"http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png\",\n" +
-                    "      \"profile_image_url_https\": \"https://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png\",\n" +
+                    "      \"profile_image_url_https\": \"https://pbs.twimg.com/profile_images/1293217550050799617/8LFWTYD3_400x400.jpg\",\n" +
                     "      \"profile_banner_url\": \"https://pbs.twimg.com/profile_banners/6253282/1431474710\",\n" +
                     "      \"profile_link_color\": \"0084B4\",\n" +
                     "      \"profile_sidebar_border_color\": \"C0DEED\",\n" +
@@ -285,8 +285,8 @@ public class MainActivity extends AppCompatActivity {
                     "        \"profile_background_image_url\": \"http://abs.twimg.com/images/themes/theme1/bg.png\",\n" +
                     "        \"profile_background_image_url_https\": \"https://abs.twimg.com/images/themes/theme1/bg.png\",\n" +
                     "        \"profile_background_tile\": false,\n" +
-                    "        \"profile_image_url\": \"http://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png\",\n" +
-                    "        \"profile_image_url_https\": \"https://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png\",\n" +
+                    "        \"profile_image_url\": \"https://pbs.twimg.com/profile_images/1293217550050799617/8LFWTYD3_400x400.jpg\",\n" +
+                    "        \"profile_image_url_https\": \"https://pbs.twimg.com/profile_images/1293217550050799617/8LFWTYD3_400x400.jpg\",\n" +
                     "        \"profile_banner_url\": \"https://pbs.twimg.com/profile_banners/2244994945/1396995246\",\n" +
                     "        \"profile_link_color\": \"0084B4\",\n" +
                     "        \"profile_sidebar_border_color\": \"FFFFFF\",\n" +
@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
                     "      \"profile_background_image_url_https\": \"https://pbs.twimg.com/profile_background_images/656927849/miyt9dpjz77sc0w3d4vj.png\",\n" +
                     "      \"profile_background_tile\": true,\n" +
                     "      \"profile_image_url\": \"http://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png\",\n" +
-                    "      \"profile_image_url_https\": \"https://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png\",\n" +
+                    "      \"profile_image_url_https\": \"https://pbs.twimg.com/profile_images/1293217550050799617/8LFWTYD3_400x400.jpg\",\n" +
                     "      \"profile_banner_url\": \"https://pbs.twimg.com/profile_banners/6253282/1431474710\",\n" +
                     "      \"profile_link_color\": \"0084B4\",\n" +
                     "      \"profile_sidebar_border_color\": \"C0DEED\",\n" +

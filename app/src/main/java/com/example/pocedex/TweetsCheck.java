@@ -2,7 +2,6 @@ package com.example.pocedex;
 
 import android.util.Log;
 
-import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;

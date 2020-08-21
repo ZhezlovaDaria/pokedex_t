@@ -49,11 +49,11 @@ public class PokeTweet {
         public String profile_image_url_https;
     }
 
-    private class Media
+    public class Media
     {
         public Urls[] medias;
 
-        private class Urls
+        public class Urls
         {
             public String media_url;
         }
