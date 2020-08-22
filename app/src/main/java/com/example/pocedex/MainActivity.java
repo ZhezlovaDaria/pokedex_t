@@ -3,6 +3,7 @@ package com.example.pocedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -23,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "States";
     private static String twp="https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
     JSONParser jsonParser = new JSONParser();
-    //PeriodicWorkRequest TweetcheckRequest;
+    PeriodicWorkRequest TweetcheckRequest= new PeriodicWorkRequest.Builder(TweetsCheck.class, 60, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
+            .build();
     ArrayList<PokeTweet> pokeTweets=new ArrayList<>();
     TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
 
@@ -34,15 +36,24 @@ public class MainActivity extends AppCompatActivity {
 
         new TweetLenta().execute();
 
-        //TweetcheckRequest= new PeriodicWorkRequest.Builder(TweetsCheck.class, 16, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
-              //  .build();
-       // WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
-
+       WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.twwfeed);
         final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
+                        Log.d("TAG", "End of list");
+                        new TweetLenta().execute();
+                    }
+                }
+            }
+        });
         recyclerView.setAdapter(adapter);
     }
 
@@ -55,21 +66,39 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //WorkManager.getInstance().enqueue(TweetcheckRequest);
+        try {
+            WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, TweetcheckRequest);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, e.getMessage());
+        }
         Log.d(TAG, "MainActivity: onPause()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //WorkManager.getInstance().enqueue(TweetcheckRequest);
+        try {
+            WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, TweetcheckRequest);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, e.getMessage());
+        }
         Log.d(TAG, "MainActivity: onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //WorkManager.getInstance().enqueue(TweetcheckRequest);
+        try {
+            WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, TweetcheckRequest);
+        }
+        catch (Exception e)
+        {
+            Log.d(TAG, e.getMessage());
+        }
         Log.d(TAG, "MainActivity: onDestroy()");
     }
 

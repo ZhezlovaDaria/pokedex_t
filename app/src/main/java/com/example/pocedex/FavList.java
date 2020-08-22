@@ -42,6 +42,13 @@ public class FavList extends AppCompatActivity implements PokDataAdapter.ItemCli
         recyclerView.setAdapter(adapter);
     }
 
+    public void ToNews(View view)
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onItemClick(View view, int position) {
         try{
