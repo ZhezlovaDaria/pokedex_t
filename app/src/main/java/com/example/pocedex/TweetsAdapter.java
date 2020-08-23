@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -46,18 +47,42 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             else
             {
                 twe.text=twe.text.substring(0, twe.text.indexOf("RT @"));
+
+                holder.ret.setVisibility(View.VISIBLE);
+
+                Picasso.get().load(twe.retweeted_status.user.profile_image_url_https).into(holder.rava);
+                try {
+                        Picasso.get().load(twe.retweeted_status.entities.medias[0].media_url).into(holder.mediar1);
+                        Picasso.get().load(twe.retweeted_status.entities.medias[1].media_url).into(holder.mediar2);
+                        Picasso.get().load(twe.retweeted_status.entities.medias[2].media_url).into(holder.mediar3);
+                        Picasso.get().load(twe.retweeted_status.entities.medias[3].media_url).into(holder.mediar4);
+
+                }
+                catch (Exception e)
+                {
+                    Log.d("Image", e.getMessage());
+                }
+                holder.rname.setText(twe.retweeted_status.user.name);
+                holder.rtext.setText(twe.retweeted_status.text);
             }
 
         }
-        //holder.ava.setImageResource(twe.user.profile_image_url_https);
         Picasso.get().load(twe.user.profile_image_url_https).into(holder.ava);
+
         try {
-            Picasso.get().load(twe.entities.medias[0].media_url).into(holder.media);
+
+            Picasso.get().load(twe.entities.medias[0].media_url).into(holder.media1);
+            Picasso.get().load(twe.entities.medias[1].media_url).into(holder.media2);
+            Picasso.get().load(twe.entities.medias[2].media_url).into(holder.media3);
+            Picasso.get().load(twe.entities.medias[3].media_url).into(holder.media4);
         }
         catch (Exception e)
         {
-            Log.d("Media", e.getMessage());
+            Log.d("Image", e.getMessage());
         }
+
+
+
         //holder.media.setImageResource(twe.getImage());
         holder.name.setText(twe.user.name);
         holder.named.setText("@"+twe.user.screen_name);
@@ -73,18 +98,30 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final ImageView ava, media;
-        final TextView name, named, des, dnt, rets, likes;
+        final ImageView ava, rava, media1, media2, media3, media4, mediar1,mediar2,mediar3,mediar4;
+        final TextView name, named, des, dnt, rets, likes, rname, rtext;
+        final LinearLayout ret;
         ViewHolder(View view){
             super(view);
             ava = (ImageView)view.findViewById(R.id.twiava);
-            media = (ImageView)view.findViewById(R.id.media1);
+            rava = (ImageView)view.findViewById(R.id.rtwiava);
+            media1 = (ImageView)view.findViewById(R.id.media1);
+            media2 = (ImageView)view.findViewById(R.id.media2);
+            media3 = (ImageView)view.findViewById(R.id.media3);
+            media4 = (ImageView)view.findViewById(R.id.media4);
+            mediar1 = (ImageView)view.findViewById(R.id.rmedia1);
+            mediar2 = (ImageView)view.findViewById(R.id.rmedia2);
+            mediar3 = (ImageView)view.findViewById(R.id.rmedia3);
+            mediar4 = (ImageView)view.findViewById(R.id.rmedia4);
             name = (TextView) view.findViewById(R.id.name1);
             named = (TextView) view.findViewById(R.id.name2);
             des = (TextView) view.findViewById(R.id.des);
             dnt = (TextView) view.findViewById(R.id.twdata);
             rets = (TextView) view.findViewById(R.id.retwe);
             likes = (TextView) view.findViewById(R.id.like);
+            rname = (TextView) view.findViewById(R.id.namere);
+            rtext = (TextView) view.findViewById(R.id.redes);
+            ret=(LinearLayout) view.findViewById(R.id.retweet);
         }
     }
 }
