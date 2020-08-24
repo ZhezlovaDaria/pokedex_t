@@ -57,7 +57,7 @@ public class PokeCard extends AppCompatActivity {
 
     public void saveComm(View view)
     {
-        p.comment=((EditText) findViewById(R.id.UsCom)).getText().toString();
+        p.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
         showToast("Your comment save");
         save();
         hideKeyboard(this);
@@ -72,8 +72,8 @@ public class PokeCard extends AppCompatActivity {
     }
     public void saveFav(View view)
     {
-        p.is_fav=!p.is_fav;
-        if (p.is_fav)
+        p.setIsFav(!p.getIsFav());
+        if (p.getIsFav())
         {
             ib.setImageResource(android.R.drawable.star_big_on);
             showToast("Save in Fav");
@@ -92,7 +92,7 @@ public class PokeCard extends AppCompatActivity {
         }
         FileOutputStream fos;
         try {
-            fos = openFileOutput("commandfav.txt", Context.MODE_PRIVATE);
+            fos = openFileOutput("commandfav1.txt", Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(PokeWikia.CaFpoke);
             oos.close();
@@ -136,17 +136,17 @@ public class PokeCard extends AppCompatActivity {
             if (p==null)
             {
                 p=new CommAndFav();
-                p.id=pokemon.getId();
-                p.name=pokemon.getName();
-                p.link=pok;
+                p.setId(pokemon.getId());
+                p.setName(pokemon.getName());
+                p.setUrl(pok);
             }
-            if (p.is_fav)
+            if (p.getIsFav())
             {
                 ib.setImageResource(android.R.drawable.star_big_on);
             }
-            if (p.comment!=null)
+            if (p.getComment()!=null)
             {
-               et.setText(p.comment);
+               et.setText(p.getComment());
             }
         }
 

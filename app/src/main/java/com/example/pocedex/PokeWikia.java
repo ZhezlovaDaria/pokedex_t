@@ -3,11 +3,13 @@ package com.example.pocedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TabHost;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,9 +28,12 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     private static String pw = "https://pokeapi.co/api/v2/pokemon";
     private static String pwnext = "";
     List<Pokemon> pokemons = new ArrayList<>();
+    List<Pokemon> favpokemons = new ArrayList<>();
     public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
     JSONParser jsonParser = new JSONParser();
     PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
+    PokDataAdapter favadapter = new PokDataAdapter(this, favpokemons);
+    TabHost tabs;
     int imid;
 
     @Override
@@ -39,6 +44,15 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         imid=0;
         new FullPokeList().execute();
         CommandfavList();
+        UpdateFavList();
+
+
+        tabs = (TabHost)this.findViewById(R.id.tabhost);
+        tabs.setup();
+
+        tabs.addTab(tabs.newTabSpec("All").setContent(R.id.list).setIndicator("All pokemons"));
+        tabs.addTab(tabs.newTabSpec("Fav").setContent(R.id.list2).setIndicator("Favorite"));
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -57,13 +71,24 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
             }
         });
         recyclerView.setAdapter(adapter);
+
+        RecyclerView recyclerView1 = (RecyclerView) findViewById(R.id.list2);
+        final LinearLayoutManager layoutManager1
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView1.setLayoutManager(layoutManager1);
+        favadapter.setClickListener(this);
+
+        recyclerView1.setAdapter(favadapter);
+
     }
 
-    public void toFav(View view)
-    {
-        Intent intent = new Intent(this, FavList.class);
-        startActivity(intent);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UpdateFavList();
+        favadapter.notifyDataSetChanged();
     }
+
     public void ToNews(View view)
     {
         Intent intent = new Intent(this, MainActivity.class);
@@ -74,7 +99,10 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     @Override
     public void onItemClick(View view, int position) {
         try{
-            String link=(adapter.getPok(position)).getUrl();
+            String link;
+            if (tabs.getCurrentTab()==0)
+                    link=(adapter.getPok(position)).getUrl();
+            else link=(favadapter.getPok(position)).getUrl();
             Intent intent = new Intent(this, PokeCard.class);
             intent.putExtra("link", link);
             startActivity(intent);
@@ -86,21 +114,29 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     private void CommandfavList()
     {
         try{
-            FileInputStream fis = openFileInput("commandfav.txt");
+            FileInputStream fis = openFileInput("commandfav1.txt");
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                List<CommAndFav> CaFpoke1 = (ArrayList<CommAndFav>) ois.readObject();
-                CaFpoke.clear();
-                for(int i=0; i<CaFpoke1.size();i++)
-                {
-                    CaFpoke.add(CaFpoke1.get(i));
-                }
-                adapter.notifyDataSetChanged();
+                CaFpoke = (ArrayList<CommAndFav>) ois.readObject();
             } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
+        }
+    }
+    private void UpdateFavList()
+    {
+        favpokemons.clear();
+        for (int i=0; i<CaFpoke.size();i++)
+        {
+            if (CaFpoke.get(i).getIsFav()) {
+                Pokemon p = new Pokemon();
+                p.setName(CaFpoke.get(i).getName());
+                p.setUrl(CaFpoke.get(i).getUrl());
+                p.setId(CaFpoke.get(i).getId()-1);
+                favpokemons.add(p);
+            }
         }
     }
 
