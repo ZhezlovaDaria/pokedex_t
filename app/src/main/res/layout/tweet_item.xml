@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".PokeCard">
+    <data>
+
+        <variable
+            name="tweet"
+            type="com.example.pocedex.PokeTweet" />
+        <variable
+            name="retweet"
+            type="com.example.pocedex.PokeTweet" />
+
+    </data>
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -18,7 +30,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/twiava"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            app:url="@{tweet.getUserPfp()}"/>
 
     </LinearLayout>
 
@@ -38,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"
+                android:text="@{tweet.getUserName()}"
                 android:textSize="18sp" />
 
             <TextView
@@ -46,21 +59,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text='@{"@" +tweet.getUserName()}' />
 
             <TextView
                 android:id="@+id/twdata"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="@{tweet.getCreated_at()}" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/des"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text='@{tweet.getShortTxt()}'
             android:autoLink="web"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
@@ -78,12 +91,14 @@
             android:id="@+id/media1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            app:url="@{tweet.getEntities(0)}"/>
                 <ImageView
                     android:id="@+id/media4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@tools:sample/avatars"
+                    app:url="@{tweet.getEntities(3)}"/>
             </LinearLayout>
 
             <LinearLayout
@@ -95,12 +110,14 @@
                     android:id="@+id/media2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@tools:sample/avatars"
+                    app:url="@{tweet.getEntities(1)}"/>
                 <ImageView
                     android:id="@+id/media3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@tools:sample/avatars"
+                    app:url="@{tweet.getEntities(2)}"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -123,7 +140,8 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/rtwiava"
                     android:layout_width="50dp"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    app:url="@{retweet.getUserPfp()}"/>
 
             </LinearLayout>
             <LinearLayout
@@ -142,14 +160,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="TextView"
+                        android:text="@{retweet.getUserName()}"
                         android:textSize="18sp" />
                 </LinearLayout>
                 <TextView
                     android:id="@+id/redes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@{retweet.getShortTxt()}"
                     android:autoLink="web"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
@@ -167,12 +185,14 @@
                             android:id="@+id/rmedia1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars" />
+                            tools:srcCompat="@tools:sample/avatars"
+                            app:url="@{tweet.getEntities(0)}"/>
                         <ImageView
                             android:id="@+id/rmedia4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars" />
+                            tools:srcCompat="@tools:sample/avatars"
+                            app:url="@{tweet.getEntities(3)}"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -184,12 +204,14 @@
                             android:id="@+id/rmedia2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars" />
+                            tools:srcCompat="@tools:sample/avatars"
+                            app:url="@{tweet.getEntities(1)}"/>
                         <ImageView
                             android:id="@+id/rmedia3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars" />
+                            tools:srcCompat="@tools:sample/avatars"
+                            app:url="@{tweet.getEntities(2)}"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -220,7 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text='@{String.valueOf(tweet.getRTcount())}' />
             </LinearLayout>
 
             <LinearLayout
@@ -242,8 +264,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text='@{String.valueOf(tweet.getFavCount())}' />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+</layout>

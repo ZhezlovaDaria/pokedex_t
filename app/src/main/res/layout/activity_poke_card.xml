@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".PokeCard">
+    <data>
+
+        <variable
+            name="pokemon"
+            type="com.example.pocedex.Pokemon" />
+
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,6 +39,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="30sp"
+            android:text="@{pokemon.getName()}"
             android:textColor="@android:color/black"/>
 
         <ImageButton
@@ -69,7 +79,7 @@
                     android:textSize="18sp"
                     android:layout_weight="1"
                     android:textColor="@android:color/black"
-                    android:text="base exp " />
+                    android:text='@{"base exp " +String.valueOf(pokemon.getBe())}'/>
 
                 <TextView
                     android:id="@+id/order"
@@ -78,7 +88,7 @@
                     android:textSize="18sp"
                     android:layout_weight="1"
                     android:textColor="@android:color/black"
-                    android:text="order " />
+                    android:text='@{"order " +String.valueOf(pokemon.getOrder())}' />
 
                 <TextView
                     android:id="@+id/height"
@@ -87,7 +97,7 @@
                     android:textSize="18sp"
                     android:layout_weight="1"
                     android:textColor="@android:color/black"
-                    android:text="height " />
+                    android:text='@{"height " +String.valueOf(pokemon.getHeight())}' />
 
                 <TextView
                     android:id="@+id/weight"
@@ -96,7 +106,7 @@
                     android:textSize="18sp"
                     android:layout_weight="1"
                     android:textColor="@android:color/black"
-                    android:text="weight " />
+                    android:text='@{"weight " +String.valueOf(pokemon.getWeight())}' />
             </LinearLayout>
 
             <ImageView
@@ -104,7 +114,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(0)}"/>
 
             <LinearLayout
                 android:id="@+id/types"
@@ -119,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:textColor="@android:color/black"
-                    android:text="Types: \n" />
+                    android:text='@{"Types: \n"+ pokemon.getTypesString()}'/>
             </LinearLayout>
         </LinearLayout>
 
@@ -168,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
-                android:text="HP " />
+                android:text='@{"HP: "+ pokemon.getStats(0)}' />
 
             <TextView
                 android:id="@+id/attack"
@@ -176,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
-                android:text="Attack " />
+                android:text='@{"Attack: "+ pokemon.getStats(1)}'/>
 
             <TextView
                 android:id="@+id/defense"
@@ -184,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
-                android:text="Defense " />
+                android:text='@{"Defense: "+ pokemon.getStats(2)}' />
 
         </LinearLayout>
 
@@ -200,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
-                android:text="Special-attack " />
+                android:text='@{"Special-attack: "+ pokemon.getStats(3)}'/>
 
             <TextView
                 android:id="@+id/sd"
@@ -208,7 +219,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
-                android:text="Special-defense " />
+                android:text='@{"Special-defense: "+ pokemon.getStats(4)}'/>
 
             <TextView
                 android:id="@+id/speed"
@@ -216,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
-                android:text="Speed " />
+                android:text='@{"Speed: "+ pokemon.getStats(5)}'/>
         </LinearLayout>
     </LinearLayout>
 
@@ -259,7 +270,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="32dp"
-        android:text="Species: "
+        android:text='@{"Species:"+ pokemon.getSpecies()}'
         android:textSize="24sp"
         android:textColor="@android:color/black"
         android:background="@drawable/rounded"
@@ -301,7 +312,7 @@
             android:layout_weight="1"
             android:textSize="24sp"
             android:textColor="@android:color/black"
-            android:text="" />
+            android:text='@{pokemon.getFormsString()}'/>
     </LinearLayout>
 
     <LinearLayout
@@ -335,7 +346,7 @@
             android:id="@+id/mvs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" " />
+            android:text='@{pokemon.getMovesString()}'/>
 
         <TextView
             android:id="@+id/textView10"
@@ -350,7 +361,7 @@
             android:id="@+id/abs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" " />
+            android:text='@{pokemon.getAbilityString()}'/>
 
         <TextView
             android:id="@+id/textView11"
@@ -365,7 +376,7 @@
             android:id="@+id/his"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" " />
+            android:text='@{pokemon.getHeldItemsString()}'/>
 
         <TextView
             android:id="@+id/textView12"
@@ -380,7 +391,7 @@
             android:id="@+id/gis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" " />
+            android:text='@{pokemon.getgetGameIndiceString()}'/>
 
         <TextView
             android:id="@+id/textView13"
@@ -404,49 +415,57 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(1)}"/>
             <ImageView
                 android:id="@+id/sp2"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(2)}"/>
             <ImageView
                 android:id="@+id/sp3"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(3)}"/>
             <ImageView
                 android:id="@+id/sp4"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(4)}" />
             <ImageView
                 android:id="@+id/sp5"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(5)}"/>
             <ImageView
                 android:id="@+id/sp6"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(6)}"/>
             <ImageView
                 android:id="@+id/sp7"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(7)}" />
             <ImageView
                 android:id="@+id/sp8"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                app:url="@{pokemon.getSprite(8)}" />
         </LinearLayout>
         </HorizontalScrollView>
 
@@ -454,3 +473,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView >
+</layout>

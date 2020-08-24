@@ -74,7 +74,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     @Override
     public void onItemClick(View view, int position) {
         try{
-            String link=(adapter.getPok(position)).getLink();
+            String link=(adapter.getPok(position)).getUrl();
             Intent intent = new Intent(this, PokeCard.class);
             intent.putExtra("link", link);
             startActivity(intent);
@@ -124,7 +124,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                 for (int i=0; i<jsonArray.length();i++)
                 {
                     pokemons.add(decodeJSON1(jsonArray.getJSONObject(i)));
-                    pokemons.get(imid).id=imid;
+                    pokemons.get(imid).setId(imid);
                     imid++;
                 }
             }
@@ -150,7 +150,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                 String link = json.get("url").toString();
                 Pokemon p=new Pokemon();
                 p.setName(name);
-                p.setLink(link);
+                p.setUrl(link);
                 return p;
 
             }catch (Exception e) {

@@ -1,83 +1,219 @@
 package com.example.pocedex;
 
-
-import android.graphics.Bitmap;
-
 import com.google.gson.annotations.SerializedName;
 
 public class Pokemon {
 
-    public int id;
-    public boolean is_default;
+    private int id;
     private String name;
-    private String link;
-    public Bitmap perview;
-    public int base_experience;
-    public ability[] abilities;
-    public form[] forms;
-    public game_indice[] game_indices;
-    public String height;
-    public held_item[] held_items;
-    public move[] moves;
-    public specie species;
-    public sprite sprites;
-    public stat[] stats;
-    public type[] types;
-    public String weight;
-    public String order;
-    public String location_area_encounters;
+    private String url;
+    private int base_experience;
+    private Ability[] abilities;
+    private Form[] forms;
+    private GameIndice[] game_indices;
+    private String height;
+    private HeldItem[] held_items;
+    private Move[] moves;
+    private Specie species;
+    private Sprite sprites=new Sprite();
+    private Stat[] stats;
+    private Type[] types;
+    private String weight;
+    private String order;
+
+    public void setId(int id){this.id=id;}
+    public int getId() {return id;}
 
     public void setName(String name){this.name=name;}
     public String getName() {return name;}
-    public void setLink(String link){this.link=link;}
-    public String getLink() {return link;}
+
+    public void setUrl(String link){this.url=link;}
+    public String getUrl() {return url;}
+
+    public void setBE(int be){base_experience=be;}
+    public int getBe() {return base_experience;}
+
+    public void setHeight(String height){this.height=height;}
+    public String getHeight() {return height;}
+
+    public void setWeight(String weight){this.weight=weight;}
+    public String getWeight() {return weight;}
+
+    public void setOrder(String order){this.order=order;}
+    public String getOrder() {return order;}
+
+    public void setAbility(Ability[] ability){abilities=ability;}
+    public Ability[] getAbility() {return abilities;}
+    public String getAbilityString() {
+        if (abilities.length==0)
+            return "None";
+        String t="";
+        for (int i=0; i<abilities.length;i++)
+        {
+            t+=abilities[i].ability.name;
+            if (i!=abilities.length-1)
+                t+=", ";
+        }
+        return t;
+    }
+
+    public void setForms(Form[] forms){this.forms=forms;}
+    public Form[] getForms() {return forms;}
+    public String getFormsString() {
+        if (forms.length==0)
+            return "None";
+        String t="";
+        for (int i=0; i<forms.length;i++)
+        {
+            t+=forms[i].name;
+            if (i!=forms.length-1)
+                t+="\n";
+        }
+        return t;
+    }
+
+    public void setGameIndice(GameIndice[] game_indices){this.game_indices=game_indices;}
+    public GameIndice[] getGameIndice() {return game_indices;}
+    public String getgetGameIndiceString() {
+        if (game_indices.length==0)
+            return "None";
+        String t="";
+        for (int i=0; i<game_indices.length;i++)
+        {
+            t+=game_indices[i].version.name;
+            if (i!=game_indices.length-1)
+                t+=", ";
+        }
+        return t;
+    }
+
+    public void setHeldItems(HeldItem[] held_items){this.held_items=held_items;}
+    public HeldItem[] getHeldItems() {return held_items;}
+    public String getHeldItemsString() {
+        if (held_items.length==0)
+            return "None";
+        String t="";
+        for (int i=0; i<held_items.length;i++)
+        {
+            t+=held_items[i].item.name;
+            if (i!=held_items.length-1)
+                t+=", ";
+        }
+        return t;
+    }
+
+    public void setMoves(Move[] moves){this.moves=moves;}
+    public Move[] getMoves() {return moves;}
+    public String getMovesString() {
+        if (moves.length==0)
+            return "None";
+        String t="";
+        for (int i=0; i<moves.length;i++)
+        {
+            t+=moves[i].move.name;
+            if (i!=moves.length-1)
+                t+=", ";
+        }
+        return t;
+    }
+
+    public void setStats(Stat[] stats){this.stats=stats;}
+    public int getStats(int num) { return stats[num].base_stat;}
+
+    public void setTypes(Type[] types){this.types=types;}
+    public Type[] getTypes() {return types;}
+    public String getTypesString() {
+        if (types.length==0)
+            return "None";
+        String t="";
+        for (int i=0; i<types.length;i++)
+        {
+            t+=types[i].type.name;
+            if (i!=types.length-1)
+                t+="\n";
+        }
+        return t;
+    }
 
 
-    public class ability
+    public void setSpecies(Specie species){this.species=species;}
+    public String getSpecies() {return species.name;}
+
+    public void setSprite(String sp, int num){
+        switch (num) {
+            case 0:  sprites.other.official_artwork.front_default=sp;
+            case 1:  sprites.back_default=sp;
+            case 2:  sprites.front_default=sp;
+            case 3:  sprites.back_shiny=sp;
+            case 4:  sprites.front_shiny=sp;
+            case 5:  sprites.back_female=sp;
+            case 6:  sprites.front_female=sp;
+            case 7:  sprites.back_shiny_female=sp;
+            case 8:  sprites.front_shiny_female=sp;
+        }
+    }
+    public String getSprite(int num)
     {
-        public Ab ability;
+        switch (num) {
+            case 0:  return sprites.other.official_artwork.front_default;
+            case 1:  return sprites.back_default;
+            case 2:  return sprites.front_default;
+            case 3:  return sprites.back_shiny;
+            case 4:  return sprites.front_shiny;
+            case 5:  return sprites.back_female;
+            case 6:  return sprites.front_female;
+            case 7:  return sprites.back_shiny_female;
+            case 8:  return sprites.front_shiny_female;
+    }
+    return null;
+    }
+
+
+    private class Ability
+    {
+        public Abil ability;
         public boolean is_hidden;
         public int slot;
-        public class Ab
+        private class Abil
         {
             public String name;
             public String url;
         }
     }
 
-    public class form
+    private class Form
     {
         public String name;
         public String url;
     }
-    public class game_indice
+    private class GameIndice
     {
         public int game_index;
         public Version version;
-        public class Version {
+        private class Version {
             public String name;
             public String url;
         }
     }
-    public class move
+    private class Move
     {
-        public mov move;
-        public class mov
+        public Mov move;
+        public class Mov
         {
             public String name;
             public String url;
         }
     }
-    public class held_item
+    private class HeldItem
     {
-        public item item;
-        public class item
+        public Item item;
+        public class Item
         {
             public String name;
             public String url;
         }
     }
-    public class sprite
+    private class Sprite
     {
         public String back_default;
         public String back_female;
@@ -105,24 +241,24 @@ public class Pokemon {
             }
         }
     }
-    public class specie
+    private class Specie
     {
         public String name;
         public String url;
     }
-    public class stat
+    private class Stat
     {
         public int base_stat;
         public int effot;
         public String name;
         public String url;
     }
-    public class type
+    private class Type
     {
         public int slot;
-        public typ type;
+        public Typ type;
 
-        public class typ
+        private class Typ
         {
             public String name;
             public String url;

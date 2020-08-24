@@ -27,8 +27,8 @@ public class FavList extends AppCompatActivity implements PokDataAdapter.ItemCli
             if (PokeWikia.CaFpoke.get(i).is_fav) {
                 Pokemon p = new Pokemon();
                 p.setName(PokeWikia.CaFpoke.get(i).name);
-                p.setLink(PokeWikia.CaFpoke.get(i).link);
-                p.id=PokeWikia.CaFpoke.get(i).id-1;
+                p.setUrl(PokeWikia.CaFpoke.get(i).link);
+                p.setId(PokeWikia.CaFpoke.get(i).id-1);
                 pokemons.add(p);
             }
         }
@@ -52,7 +52,7 @@ public class FavList extends AppCompatActivity implements PokDataAdapter.ItemCli
     @Override
     public void onItemClick(View view, int position) {
         try{
-            String link=(adapter.getPok(position)).getLink();
+            String link=(adapter.getPok(position)).getUrl();
             Intent intent = new Intent(this, PokeCard.class);
             intent.putExtra("link", link);
             startActivity(intent);

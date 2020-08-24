@@ -4,10 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.databinding.DataBindingUtil;
 
-import com.squareup.picasso.Picasso;
+import com.example.pocedex.databinding.ListItemBinding;
 
 import java.util.List;
 
@@ -25,16 +24,15 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType)
     {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item,parent,false);
-        return  new ViewHolder(v);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ListItemBinding binding = ListItemBinding.inflate(inflater, parent, false);
+        return new ViewHolder(binding.getRoot());
     }
     @Override
     public void onBindViewHolder(PokDataAdapter.ViewHolder holder, int position) {
         Pokemon pokemon = pokemons.get(position);
-        holder.nameView.setText(pokemon.getName());
-        Picasso.get().load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(pokemon.id+1)+".png").into(holder.imageView);
-        //holder.imageView.setImageBitmap(pokemon.perview);
+        pokemon.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(pokemon.getId()+1)+".png",1);
+        holder.binding.setPokemon(pokemon);
     }
 
     @Override
@@ -43,12 +41,10 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView nameView;
-        final ImageView imageView;
+        ListItemBinding binding;
         ViewHolder(View view){
             super(view);
-            nameView = (TextView) view.findViewById(R.id.name);
-            imageView = (ImageView) view.findViewById(R.id.imageView);
+            binding=DataBindingUtil.bind(view);
 
             view.setOnClickListener(this);
         }
