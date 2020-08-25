@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class UnreadNews extends AppCompatActivity {
 
 
-    ArrayList<PokeTweet> pokeTweets=new ArrayList<>();
+    ArrayList<PokeTweet> pokeTweets = new ArrayList<>();
 
 
     @Override
@@ -21,7 +21,7 @@ public class UnreadNews extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unread_news);
 
-        pokeTweets=TweetsCheck.pokeTweets;
+        pokeTweets = Utils.NewTweets;
         TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.urt);
         final LinearLayoutManager layoutManager
@@ -30,8 +30,7 @@ public class UnreadNews extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    public void ToAll(View view)
-    {
+    public void ToAll(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
