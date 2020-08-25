@@ -4,23 +4,23 @@ package com.example.pocedex;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
-public class CommAndFav implements Parcelable, Serializable {
+public class CommAndFav implements Parcelable {
 
     private String name;
     private int id;
     private String url;
-    private boolean is_fav=false;
-    private String comment=null;
+    private boolean is_fav = false;
+    private String comment = null;
 
-    public CommAndFav() {}
+    public CommAndFav() {
+    }
+
     public CommAndFav(String name, int id, String url, boolean is_fav, String comment) {
-        this.name=name;
-        this.id=id;
-        this.url=url;
-        this.is_fav=is_fav;
-        this.comment=comment;
+        this.name = name;
+        this.id = id;
+        this.url = url;
+        this.is_fav = is_fav;
+        this.comment = comment;
     }
 
 
@@ -31,20 +31,45 @@ public class CommAndFav implements Parcelable, Serializable {
         return false;
     }
 
-    public void setId(int id){this.id=id;}
-    public int getId() {return id;}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public void setName(String name){this.name=name;}
-    public String getName() {return name;}
+    public int getId() {
+        return id;
+    }
 
-    public void setUrl(String link){this.url=link;}
-    public String getUrl() {return url;}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public void setIsFav(boolean iffav){is_fav=iffav;}
-    public boolean getIsFav() {return is_fav;}
+    public String getName() {
+        return name;
+    }
 
-    public void setComment(String comment){this.comment=comment;}
-    public String getComment() {return comment;}
+    public void setUrl(String link) {
+        this.url = link;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setIsFav(boolean iffav) {
+        is_fav = iffav;
+    }
+
+    public boolean getIsFav() {
+        return is_fav;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return comment;
+    }
 
     @Override
     public int describeContents() {
@@ -59,9 +84,9 @@ public class CommAndFav implements Parcelable, Serializable {
             int id = source.readInt();
             String url = source.readString();
             boolean is_fav;
-            if  (source.readInt()==1)
-                is_fav=true;
-            else is_fav=false;
+            if (source.readInt() == 1)
+                is_fav = true;
+            else is_fav = false;
             String comment = source.readString();
             return new CommAndFav(name, id, url, is_fav, comment);
         }
@@ -79,8 +104,7 @@ public class CommAndFav implements Parcelable, Serializable {
         parcel.writeString(url);
         if (is_fav) {
             parcel.writeInt(1);
-        }
-        else {
+        } else {
             parcel.writeInt(0);
         }
         parcel.writeString(comment);
