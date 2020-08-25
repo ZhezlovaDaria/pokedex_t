@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.databinding.DataBindingUtil;
 
 import com.example.pocedex.databinding.ListItemBinding;
@@ -21,17 +22,17 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
     PokDataAdapter(Context context, List<Pokemon> pokemons) {
         this.pokemons = pokemons;
     }
+
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ListItemBinding binding = ListItemBinding.inflate(inflater, parent, false);
         return new ViewHolder(binding.getRoot());
     }
+
     @Override
     public void onBindViewHolder(PokDataAdapter.ViewHolder holder, int position) {
         Pokemon pokemon = pokemons.get(position);
-        pokemon.setSprite("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(pokemon.getId()+1)+".png",1);
         holder.binding.setPokemon(pokemon);
     }
 
@@ -42,19 +43,21 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ListItemBinding binding;
-        ViewHolder(View view){
+
+        ViewHolder(View view) {
             super(view);
-            binding=DataBindingUtil.bind(view);
+            binding = DataBindingUtil.bind(view);
 
             view.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 
-    public Pokemon getPok(int id) {
+    public Pokemon getPokemon(int id) {
         return pokemons.get(id);
     }
 

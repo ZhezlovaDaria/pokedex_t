@@ -103,8 +103,8 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         try {
             String link;
             if (tabs.getCurrentTab() == 0)
-                link = (adapter.getPok(position)).getUrl();
-            else link = (favadapter.getPok(position)).getUrl();
+                link = (adapter.getPokemon(position)).getUrl();
+            else link = (favadapter.getPokemon(position)).getUrl();
             Intent intent = new Intent(this, PokeCard.class);
             intent.putExtra("link", link);
             startActivity(intent);

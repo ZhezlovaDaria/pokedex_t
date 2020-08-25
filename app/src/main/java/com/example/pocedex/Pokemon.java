@@ -167,6 +167,10 @@ public class Pokemon {
     }
     return null;
     }
+    public String getSpriteForList()
+    {
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+(id+1)+".png";
+    }
 
 
     private class Ability
