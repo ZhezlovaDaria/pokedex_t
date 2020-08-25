@@ -1,10 +1,12 @@
 package com.example.pocedex;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -35,6 +37,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     JSONParser jsonParser = new JSONParser();
     PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
     PokDataAdapter favadapter = new PokDataAdapter(this, favpokemons);
+    boolean connetion = true;
     TabHost tabs;
     int imid;
 
@@ -72,7 +75,22 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                 if (dy > 0) {
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
-                        new FullPokeList().execute();
+                        if (Utils.isOnline(PokeWikia.this)) {
+                            new FullPokeList().execute();
+                            connetion = true;
+                        } else {
+                            if (connetion) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(PokeWikia.this);
+                                builder.setTitle("No internet connection!")
+                                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                builder.show();
+                                connetion = false;
+                            }
+                        }
                     }
                 }
             }
