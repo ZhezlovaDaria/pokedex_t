@@ -1,12 +1,10 @@
 package com.example.pocedex;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -14,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -76,18 +75,15 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
                         if (Utils.isOnline(PokeWikia.this)) {
-                            new FullPokeList().execute();
+                            if (pwnext != "null") {
+                                new FullPokeList().execute();
+                            } else {
+                                showToast("End of list");
+                            }
                             connetion = true;
                         } else {
                             if (connetion) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(PokeWikia.this);
-                                builder.setTitle("No internet connection!")
-                                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                builder.show();
+                                showToast("No internet connection");
                                 connetion = false;
                             }
                         }
@@ -105,6 +101,11 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
 
         recyclerView1.setAdapter(favadapter);
 
+    }
+
+    private void showToast(String mes) {
+        Toast toast = Toast.makeText(this, mes, Toast.LENGTH_LONG);
+        toast.show();
     }
 
     @Override
