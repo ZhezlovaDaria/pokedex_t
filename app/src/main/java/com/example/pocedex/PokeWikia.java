@@ -4,21 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +27,8 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
 
     private static String pw = "https://pokeapi.co/api/v2/pokemon";
     private static String pwnext = "";
+
+    SharedPreferences mPrefs;
     List<Pokemon> pokemons = new ArrayList<>();
     List<Pokemon> favpokemons = new ArrayList<>();
     public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
@@ -40,14 +42,15 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poce_wikia);
-        pwnext=pw;
-        imid=0;
+        pwnext = pw;
+        imid = 0;
+        mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, Context.MODE_PRIVATE);
         new FullPokeList().execute();
         CommandfavList();
         UpdateFavList();
 
 
-        tabs = (TabHost)this.findViewById(R.id.tabhost);
+        tabs = (TabHost) this.findViewById(R.id.tabhost);
         tabs.setup();
 
         tabs.addTab(tabs.newTabSpec("All").setContent(R.id.list).setIndicator("All pokemons"));
@@ -89,8 +92,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         favadapter.notifyDataSetChanged();
     }
 
-    public void ToNews(View view)
-    {
+    public void ToNews(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -98,43 +100,41 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
 
     @Override
     public void onItemClick(View view, int position) {
-        try{
+        try {
             String link;
-            if (tabs.getCurrentTab()==0)
-                    link=(adapter.getPok(position)).getUrl();
-            else link=(favadapter.getPok(position)).getUrl();
+            if (tabs.getCurrentTab() == 0)
+                link = (adapter.getPok(position)).getUrl();
+            else link = (favadapter.getPok(position)).getUrl();
             Intent intent = new Intent(this, PokeCard.class);
             intent.putExtra("link", link);
             startActivity(intent);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void CommandfavList()
-    {
-        try{
-            FileInputStream fis = openFileInput("commandfav1.txt");
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                CaFpoke = (ArrayList<CommAndFav>) ois.readObject();
-            } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+    private void CommandfavList() {
+        try {
+            Gson gson = new Gson();
+            String json = mPrefs.getString("commandfav2", "");
+            CommAndFav[] caf;
+            caf = gson.fromJson(json, CommAndFav[].class);
+            for (int i = 0; i < caf.length; i++) {
+                CaFpoke.add(caf[i]);
+            }
+        } catch (Exception e) {
+            Log.d("prefs", e.getMessage());
         }
     }
-    private void UpdateFavList()
-    {
+
+    private void UpdateFavList() {
         favpokemons.clear();
-        for (int i=0; i<CaFpoke.size();i++)
-        {
+        for (int i = 0; i < CaFpoke.size(); i++) {
             if (CaFpoke.get(i).getIsFav()) {
                 Pokemon p = new Pokemon();
                 p.setName(CaFpoke.get(i).getName());
                 p.setUrl(CaFpoke.get(i).getUrl());
-                p.setId(CaFpoke.get(i).getId()-1);
+                p.setId(CaFpoke.get(i).getId() - 1);
                 favpokemons.add(p);
             }
         }
@@ -151,24 +151,20 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
             JSONObject json = jsonParser.makeHttpRequest(pwnext);
 
             Log.d("Create Response", json.toString());
-            String s=json.toString();
-            String result = s.substring(s.indexOf('['), s.indexOf(']')+1);
+            String s = json.toString();
+            String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
 
             try {
-                pwnext= json.get("next").toString();
+                pwnext = json.get("next").toString();
                 JSONArray jsonArray = new JSONArray(result);
-                for (int i=0; i<jsonArray.length();i++)
-                {
+                for (int i = 0; i < jsonArray.length(); i++) {
                     pokemons.add(decodeJSON1(jsonArray.getJSONObject(i)));
                     pokemons.get(imid).setId(imid);
                     imid++;
                 }
-            }
-            catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
-            }
-            catch (Exception e)
-            {
+            } catch (JSONException e) {
+                Log.e("JSON Parser", "Error parsing data " + e.toString());
+            } catch (Exception e) {
                 Log.d("Fail Image", "png");
             }
             return null;
@@ -179,17 +175,16 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         }
 
 
-        public  Pokemon decodeJSON1(JSONObject json)
-        {
+        public Pokemon decodeJSON1(JSONObject json) {
             try {
                 String name = json.get("name").toString();
                 String link = json.get("url").toString();
-                Pokemon p=new Pokemon();
+                Pokemon p = new Pokemon();
                 p.setName(name);
                 p.setUrl(link);
                 return p;
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;

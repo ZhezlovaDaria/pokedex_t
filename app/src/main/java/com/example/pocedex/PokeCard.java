@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,31 +13,32 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import org.json.JSONObject;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 
 public class PokeCard extends AppCompatActivity {
 
     private static String pok = "";
+    SharedPreferences mPrefs;
     JSONParser jsonParser = new JSONParser();
     CommAndFav p;
     Pokemon pokemon;
     ImageView ib;
     ActivityPokeCardBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pok = arguments.get("link").toString();
-
+        mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, MODE_PRIVATE);
         new Card().execute();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
@@ -55,13 +56,13 @@ public class PokeCard extends AppCompatActivity {
         return null;
     }
 
-    public void saveComm(View view)
-    {
+    public void saveComm(View view) {
         p.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
         showToast("Your comment save");
         save();
         hideKeyboard(this);
     }
+
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
@@ -70,42 +71,36 @@ public class PokeCard extends AppCompatActivity {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-    public void saveFav(View view)
-    {
+
+    public void saveFav(View view) {
         p.setIsFav(!p.getIsFav());
-        if (p.getIsFav())
-        {
+        if (p.getIsFav()) {
             ib.setImageResource(android.R.drawable.star_big_on);
             showToast("Save in Fav");
-        }
-        else {
+        } else {
             ib.setImageResource(android.R.drawable.star_big_off);
             showToast("Delete from Fav");
         }
         save();
     }
 
-    private void save()
-    {
-        if (findOnId(pokemon.getId(), PokeWikia.CaFpoke)==null) {
+    private void save() {
+        if (findOnId(pokemon.getId(), PokeWikia.CaFpoke) == null) {
             PokeWikia.CaFpoke.add(p);
         }
-        FileOutputStream fos;
         try {
-            fos = openFileOutput("commandfav1.txt", Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(PokeWikia.CaFpoke);
-            oos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }catch(IOException e){
-            e.printStackTrace();
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(PokeWikia.CaFpoke);
+            prefsEditor.putString("commandfav2", json);
+            prefsEditor.commit();
+        } catch (Exception e) {
+            Log.d("comfavsave", e.getMessage());
         }
     }
 
-    private void showToast(String mes)
-    {
-        Toast toast = Toast.makeText(this, mes,Toast.LENGTH_LONG);
+    private void showToast(String mes) {
+        Toast toast = Toast.makeText(this, mes, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -118,7 +113,7 @@ public class PokeCard extends AppCompatActivity {
 
         protected String doInBackground(String... args) {
             JSONObject json = jsonParser.makeHttpRequest(pok);
-            String s=json.toString();
+            String s = json.toString();
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
             pokemon = gson.fromJson(s, Pokemon.class);
@@ -129,24 +124,21 @@ public class PokeCard extends AppCompatActivity {
         }
 
         protected void onPostExecute(String file_url) {
-            ib =(ImageView) findViewById(R.id.favBtn);
-            EditText et= (EditText)findViewById(R.id.UsCom);
+            ib = (ImageView) findViewById(R.id.favBtn);
+            EditText et = (EditText) findViewById(R.id.UsCom);
             binding.setPokemon(pokemon);
-            p=findOnId(pokemon.getId(), PokeWikia.CaFpoke);
-            if (p==null)
-            {
-                p=new CommAndFav();
+            p = findOnId(pokemon.getId(), PokeWikia.CaFpoke);
+            if (p == null) {
+                p = new CommAndFav();
                 p.setId(pokemon.getId());
                 p.setName(pokemon.getName());
                 p.setUrl(pok);
             }
-            if (p.getIsFav())
-            {
+            if (p.getIsFav()) {
                 ib.setImageResource(android.R.drawable.star_big_on);
             }
-            if (p.getComment()!=null)
-            {
-               et.setText(p.getComment());
+            if (p.getComment() != null) {
+                et.setText(p.getComment());
             }
         }
 
