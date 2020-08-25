@@ -41,6 +41,10 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Utils.isOnline(this)) {
+            setContentView(R.layout.offline);
+            return;
+        }
         setContentView(R.layout.activity_poce_wikia);
         pwnext = pw;
         imid = 0;
