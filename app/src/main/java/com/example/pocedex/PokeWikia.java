@@ -115,8 +115,6 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     }
 
     public void ToNews(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 
