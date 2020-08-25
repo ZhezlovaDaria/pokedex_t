@@ -25,7 +25,7 @@
         android:layout_weight="1"
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/avatars"
-        app:url="@{pokemon.getSprite(1)}"/>
+        app:url="@{pokemon.getSpriteForList()}"/>
 
     <TextView
         android:id="@+id/name"

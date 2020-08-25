@@ -57,7 +57,8 @@ public class PokeCard extends AppCompatActivity {
     }
 
     public void saveComm(View view) {
-        p.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
+        p.setComment(binding.UsCom.getText().toString());
+        //p.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
         showToast("Your comment save");
         save();
         hideKeyboard(this);
@@ -75,10 +76,12 @@ public class PokeCard extends AppCompatActivity {
     public void saveFav(View view) {
         p.setIsFav(!p.getIsFav());
         if (p.getIsFav()) {
-            ib.setImageResource(android.R.drawable.star_big_on);
+            binding.favBtn.setImageResource(android.R.drawable.star_big_on);
+            //ib.setImageResource(android.R.drawable.star_big_on);
             showToast("Save in Fav");
         } else {
-            ib.setImageResource(android.R.drawable.star_big_off);
+            binding.favBtn.setImageResource(android.R.drawable.star_big_off);
+            //ib.setImageResource(android.R.drawable.star_big_off);
             showToast("Delete from Fav");
         }
         save();
@@ -139,6 +142,13 @@ public class PokeCard extends AppCompatActivity {
             }
             if (p.getComment() != null) {
                 et.setText(p.getComment());
+            }
+            if (pokemon.getSprite(5)==null)
+            {
+                binding.sp5.setVisibility(View.GONE);
+                binding.sp6.setVisibility(View.GONE);
+                binding.sp7.setVisibility(View.GONE);
+                binding.sp8.setVisibility(View.GONE);
             }
         }
 
