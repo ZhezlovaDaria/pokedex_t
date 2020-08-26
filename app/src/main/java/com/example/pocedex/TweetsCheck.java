@@ -1,6 +1,7 @@
 package com.example.pocedex;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 public class TweetsCheck extends Worker {
 
@@ -19,6 +21,12 @@ public class TweetsCheck extends Worker {
     private static final int NOTIFY_ID = 101;
     private static String CHANNEL_ID = "Pokedex";
     private static int nn = 0;
+
+    public TweetsCheck(
+            @NonNull Context context,
+            @NonNull WorkerParameters params) {
+        super(context, params);
+    }
 
     @NonNull
     @Override
@@ -39,7 +47,7 @@ public class TweetsCheck extends Worker {
             if (nn > 0)
                 SetNot();
         }
-        return Result.SUCCESS;
+        return Result.success();
     }
 
     private void SetNot() {
