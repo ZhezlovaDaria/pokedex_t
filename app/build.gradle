@@ -31,12 +31,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    def paging_version = "2.1.2"
     implementation 'android.arch.work:work-runtime:1.0.1'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation "androidx.paging:paging-runtime:$paging_version"
-    testImplementation "androidx.paging:paging-common:$paging_version"
-    implementation "androidx.paging:paging-rxjava2:$paging_version"
 
 }
