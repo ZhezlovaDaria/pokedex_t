@@ -2,6 +2,9 @@ package com.example.pocedex;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -18,6 +21,7 @@ import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,7 +30,6 @@ public class PokeCard extends AppCompatActivity {
 
     private static String pok = "";
     SharedPreferences mPrefs;
-    JSONParser jsonParser = new JSONParser();
     CommAndFav p;
     Pokemon pokemon;
     ImageView ib;
@@ -119,13 +122,30 @@ public class PokeCard extends AppCompatActivity {
         }
 
         protected String doInBackground(String... args) {
-            JSONObject json = jsonParser.makeHttpRequest(pok);
-            String s = json.toString();
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            pokemon = gson.fromJson(s, Pokemon.class);
-            pokemon.setUrl(pok);
-            Log.d("Create Response", json.toString());
+            JSONObject json;
+            OkHttpClient client = new OkHttpClient();
+            String serverAnswer;
+            Request request = new Request.Builder()
+                    .url(pok)
+                    .get()
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+
+                serverAnswer = response.body().string();
+                json = new JSONObject(serverAnswer);
+
+                String s = json.toString();
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                pokemon = gson.fromJson(s, Pokemon.class);
+                pokemon.setUrl(pok);
+                Log.d("Create Response", json.toString());
+            } catch (JSONException e) {
+                Log.e("JSON Parser", "Error parsing data " + e.toString());
+            } catch (Exception e) {
+                Log.d("Exception", e.getMessage());
+            }
 
             return null;
         }

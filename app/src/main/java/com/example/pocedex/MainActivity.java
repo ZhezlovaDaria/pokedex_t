@@ -16,6 +16,8 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     final String TAG = "States";
     private static String twp = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
-    JSONParser jsonParser = new JSONParser();
     PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 60, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
             .build();
     ArrayList<PokeTweet> pokeTweets = new ArrayList<>();
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected String doInBackground(String... args) {
-            // JSONObject json = jsonParser.makeHttpRequest(twp);
+            JSONObject json;
             String s = Utils.ExmpStr();
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();

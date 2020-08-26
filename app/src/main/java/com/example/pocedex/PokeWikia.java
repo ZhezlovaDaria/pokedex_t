@@ -3,6 +3,12 @@ package com.example.pocedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +40,6 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     List<Pokemon> pokemons = new ArrayList<>();
     List<Pokemon> favpokemons = new ArrayList<>();
     public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
-    JSONParser jsonParser = new JSONParser();
     PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
     PokDataAdapter favadapter = new PokDataAdapter(this, favpokemons);
     boolean connetion = true;
@@ -169,13 +175,22 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         }
 
         protected String doInBackground(String... args) {
-            JSONObject json = jsonParser.makeHttpRequest(pwnext);
+            JSONObject json;
+            String serverAnswer;
 
-            Log.d("Create Response", json.toString());
-            String s = json.toString();
-            String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
-
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(pwnext)
+                    .get()
+                    .build();
             try {
+                Response response = client.newCall(request).execute();
+
+                serverAnswer = response.body().string();
+                json = new JSONObject(serverAnswer);
+                String s = json.toString();
+                String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
+
                 pwnext = json.get("next").toString();
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i = 0; i < jsonArray.length(); i++) {
