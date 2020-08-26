@@ -3,270 +3,287 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".PokeCard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/rounder_margin"
+        android:background="@drawable/rounded"
+        android:orientation="horizontal"
+        android:padding="@dimen/rounder_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/twiava"
+                android:layout_width="@dimen/avatar"
+                android:layout_height="@dimen/avatar"
+                app:url="@{tweet.getUserPfp()}" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/name1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{tweet.getUserName()}"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/name2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{"@" +tweet.getUserName()}' />
+
+                <TextView
+                    android:id="@+id/twdata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{tweet.getCreated_at()}" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text='@{tweet.getShortTxt()}'
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/media1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:url="@{tweet.getEntities(0)}"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <ImageView
+                        android:id="@+id/media4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:url="@{tweet.getEntities(3)}"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/media2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:url="@{tweet.getEntities(1)}"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <ImageView
+                        android:id="@+id/media3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:url="@{tweet.getEntities(2)}"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/retweet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/little_rounder_margin"
+                android:background="@drawable/rounded"
+                android:orientation="horizontal"
+                android:padding="@dimen/little_rounder_padding"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/rtwiava"
+                        android:layout_width="@dimen/avatar"
+                        android:layout_height="@dimen/avatar"
+                        app:url="@{retweet.getUserPfp()}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/namere"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{retweet.getUserName()}"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/redes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:text="@{retweet.getShortTxt()}"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/rmedia1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:url="@{tweet.getEntities(0)}"
+                                tools:srcCompat="@tools:sample/avatars" />
+
+                            <ImageView
+                                android:id="@+id/rmedia4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:url="@{tweet.getEntities(3)}"
+                                tools:srcCompat="@tools:sample/avatars" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/rmedia2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:url="@{tweet.getEntities(1)}"
+                                tools:srcCompat="@tools:sample/avatars" />
+
+                            <ImageView
+                                android:id="@+id/rmedia3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:url="@{tweet.getEntities(2)}"
+                                tools:srcCompat="@tools:sample/avatars" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/rt_im"
+                        tools:srcCompat="@mipmap/rt_im" />
+
+                    <TextView
+                        android:id="@+id/retwe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text='@{String.valueOf(tweet.getRTcount())}' />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/tw_like"
+                        tools:srcCompat="@mipmap/tw_like" />
+
+                    <TextView
+                        android:id="@+id/like"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text='@{String.valueOf(tweet.getFavCount())}' />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
     <data>
 
         <variable
             name="tweet"
             type="com.example.pocedex.PokeTweet" />
+
         <variable
             name="retweet"
             type="com.example.pocedex.PokeTweet" />
 
     </data>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:padding="10dp"
-    android:background="@drawable/rounded"
-    android:orientation="horizontal">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:orientation="vertical">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/twiava"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:url="@{tweet.getUserPfp()}"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/name1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@{tweet.getUserName()}"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/name2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text='@{"@" +tweet.getUserName()}' />
-
-            <TextView
-                android:id="@+id/twdata"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@{tweet.getCreated_at()}" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/des"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text='@{tweet.getShortTxt()}'
-            android:autoLink="web"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-        <ImageView
-            android:id="@+id/media1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars"
-            app:url="@{tweet.getEntities(0)}"/>
-                <ImageView
-                    android:id="@+id/media4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars"
-                    app:url="@{tweet.getEntities(3)}"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/media2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars"
-                    app:url="@{tweet.getEntities(1)}"/>
-                <ImageView
-                    android:id="@+id/media3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars"
-                    app:url="@{tweet.getEntities(2)}"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/retweet"
-            android:background="@drawable/rounded"
-            android:padding="5dp"
-            android:visibility="gone"
-            android:layout_margin="3dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:orientation="vertical">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/rtwiava"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:url="@{retweet.getUserPfp()}"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/namere"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{retweet.getUserName()}"
-                        android:textSize="18sp" />
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/redes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{retweet.getShortTxt()}"
-                    android:autoLink="web"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:id="@+id/rmedia1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars"
-                            app:url="@{tweet.getEntities(0)}"/>
-                        <ImageView
-                            android:id="@+id/rmedia4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars"
-                            app:url="@{tweet.getEntities(3)}"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:id="@+id/rmedia2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars"
-                            app:url="@{tweet.getEntities(1)}"/>
-                        <ImageView
-                            android:id="@+id/rmedia3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:srcCompat="@tools:sample/avatars"
-                            app:url="@{tweet.getEntities(2)}"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:srcCompat="@mipmap/rt_im"
-                    tools:srcCompat="@mipmap/rt_im" />
-
-                <TextView
-                    android:id="@+id/retwe"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text='@{String.valueOf(tweet.getRTcount())}' />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@mipmap/tw_like"
-                    tools:srcCompat="@mipmap/tw_like" />
-
-                <TextView
-                    android:id="@+id/like"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text='@{String.valueOf(tweet.getFavCount())}' />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
 </layout>

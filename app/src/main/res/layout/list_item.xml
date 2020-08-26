@@ -3,6 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".PokeCard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/rounder_margin"
+        android:background="@drawable/rounded"
+        android:orientation="horizontal"
+        android:padding="@dimen/rounder_padding">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/sprite"
+            android:layout_height="@dimen/sprite"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            app:url="@{pokemon.getSpriteForList()}"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center|center_vertical"
+            android:text="@{pokemon.getName()}"
+            android:textSize="@dimen/text_big_size" />
+    </LinearLayout>
+
     <data>
 
         <variable
@@ -10,30 +38,4 @@
             type="com.example.pocedex.Pokemon" />
 
     </data>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@drawable/rounded"
-    android:orientation="horizontal"
-    android:padding="10dp">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_weight="1"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/avatars"
-        app:url="@{pokemon.getSpriteForList()}"/>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:gravity="center|center_vertical"
-        android:text="@{pokemon.getName()}"
-        android:textSize="30sp" />
-</LinearLayout>
 </layout>

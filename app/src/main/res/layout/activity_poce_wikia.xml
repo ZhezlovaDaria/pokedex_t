@@ -20,9 +20,9 @@
         android:id="@+id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/big_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
@@ -33,7 +33,7 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></TabWidget>
+                android:layout_height="wrap_content"/>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
