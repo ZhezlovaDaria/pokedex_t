@@ -32,7 +32,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Utils.isOnline(this)) {
+            setContentView(R.layout.offline);
+            return;
+        }
+
         setContentView(R.layout.activity_main);
+
+        if (Utils.isOnline(this))
 
         new TweetLenta().execute();
 
@@ -61,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         Intent intent = new Intent(this, PokeWikia.class);
         startActivity(intent);
-        finish();
     }
 
     @Override

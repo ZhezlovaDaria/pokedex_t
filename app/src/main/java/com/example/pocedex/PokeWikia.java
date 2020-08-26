@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -35,12 +36,17 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     JSONParser jsonParser = new JSONParser();
     PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
     PokDataAdapter favadapter = new PokDataAdapter(this, favpokemons);
+    boolean connetion = true;
     TabHost tabs;
     int imid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Utils.isOnline(this)) {
+            setContentView(R.layout.offline);
+            return;
+        }
         setContentView(R.layout.activity_poce_wikia);
         pwnext = pw;
         imid = 0;
@@ -68,7 +74,19 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                 if (dy > 0) {
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
-                        new FullPokeList().execute();
+                        if (Utils.isOnline(PokeWikia.this)) {
+                            if (pwnext != "null") {
+                                new FullPokeList().execute();
+                            } else {
+                                showToast("End of list");
+                            }
+                            connetion = true;
+                        } else {
+                            if (connetion) {
+                                showToast("No internet connection");
+                                connetion = false;
+                            }
+                        }
                     }
                 }
             }
@@ -85,6 +103,11 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
 
     }
 
+    private void showToast(String mes) {
+        Toast toast = Toast.makeText(this, mes, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -93,8 +116,6 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     }
 
     public void ToNews(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 

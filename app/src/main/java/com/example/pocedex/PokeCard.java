@@ -35,6 +35,10 @@ public class PokeCard extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Utils.isOnline(this)) {
+            setContentView(R.layout.offline);
+            return;
+        }
         setContentView(R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pok = arguments.get("link").toString();
@@ -143,8 +147,7 @@ public class PokeCard extends AppCompatActivity {
             if (p.getComment() != null) {
                 et.setText(p.getComment());
             }
-            if (pokemon.getSprite(5)==null)
-            {
+            if (pokemon.getSprite(5) == null) {
                 binding.sp5.setVisibility(View.GONE);
                 binding.sp6.setVisibility(View.GONE);
                 binding.sp7.setVisibility(View.GONE);
