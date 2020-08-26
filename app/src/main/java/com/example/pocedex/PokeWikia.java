@@ -3,11 +3,8 @@ package com.example.pocedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import android.content.Context;
@@ -142,6 +139,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
 
     private void CommandfavList() {
         try {
+            CaFpoke.clear();
             Gson gson = new Gson();
             String json = mPrefs.getString("commandfav2", "");
             CommAndFav[] caf;
