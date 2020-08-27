@@ -44,7 +44,7 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
         }
         new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
-        mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, Context.MODE_PRIVATE);
+        mPrefs = getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
         UpdatePokemonList(new Network().getPokemonsForList());
         commAndFavList();
         UpdateFavList();

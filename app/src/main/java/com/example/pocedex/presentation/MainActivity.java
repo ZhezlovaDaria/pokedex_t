@@ -15,6 +15,7 @@ import android.view.View;
 import com.example.pocedex.R;
 import com.example.pocedex.data.Network;
 import com.example.pocedex.data.Tweet;
+import com.example.pocedex.domain.NotificationControl;
 import com.example.pocedex.domain.TweetsCheck;
 import com.example.pocedex.domain.Utils;
 
@@ -24,9 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String TAG = "States";
-    PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 15, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
-            .build();
+    //PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 60, TimeUnit.MINUTES, 1, TimeUnit.MINUTES).build();
     ArrayList<Tweet> tweets = new ArrayList<>();
     TweetsAdapter adapter = new TweetsAdapter(this, tweets);
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateTweetsFeed(new Network().getTweetsFeed());
 
-        WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
+        //WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.twwfeed);
         final LinearLayoutManager layoutManager
@@ -80,36 +79,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        try {
-            WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, TweetcheckRequest);
-        } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
-        }
-        Log.d(TAG, "MainActivity: onPause()");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        try {
-            WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, TweetcheckRequest);
-        } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
-        }
-        Log.d(TAG, "MainActivity: onStop()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, TweetcheckRequest);
-        } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
-        }
-        Log.d(TAG, "MainActivity: onDestroy()");
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        try {
+//            WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, TweetcheckRequest);
+//        } catch (Exception e) {
+//            Log.d(TAG, e.getMessage());
+//        }
+//        Log.d(TAG, "MainActivity: onPause()");
+//    }
 }

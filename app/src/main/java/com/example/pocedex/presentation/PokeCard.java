@@ -41,7 +41,7 @@ public class PokeCard extends AppCompatActivity {
         setContentView(R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pok = arguments.get("link").toString();
-        mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, MODE_PRIVATE);
+        mPrefs = getSharedPreferences(Utils.getPreferenses(), MODE_PRIVATE);
         pokemon = new Network().getPokemon(pok);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
