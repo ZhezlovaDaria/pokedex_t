@@ -1,4 +1,4 @@
-package com.example.pocedex;
+package com.example.pocedex.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.pocedex.R;
+import com.example.pocedex.data.PokeTweet;
+import com.example.pocedex.domain.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

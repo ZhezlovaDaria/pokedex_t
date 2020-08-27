@@ -1,4 +1,4 @@
-package com.example.pocedex;
+package com.example.pocedex.domain;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.pocedex.data.PokeTweet;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;

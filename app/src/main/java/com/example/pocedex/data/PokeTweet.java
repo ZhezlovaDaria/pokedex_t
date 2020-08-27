@@ -1,7 +1,9 @@
-package com.example.pocedex;
+package com.example.pocedex.data;
 
 
 import android.util.Log;
+
+import com.example.pocedex.domain.Utils;
 
 public class PokeTweet {
 

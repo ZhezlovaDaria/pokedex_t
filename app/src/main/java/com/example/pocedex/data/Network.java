@@ -1,8 +1,9 @@
-package com.example.pocedex;
+package com.example.pocedex.data;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.pocedex.domain.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,7 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class Network {
+public class Network {
 
     private static String pw = "https://pokeapi.co/api/v2/pokemon";
     private static String pwnext = "https://pokeapi.co/api/v2/pokemon";

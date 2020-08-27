@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UnreadNews"></activity>
-        <activity android:name=".PokeCard" />
-        <activity android:name=".PokeWikia" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".presentation.UnreadNews"></activity>
+        <activity android:name=".presentation.PokeCard" />
+        <activity android:name=".presentation.PokeWikia" />
+        <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

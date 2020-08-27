@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PokeCard">
+    tools:context=".presentation.PokeCard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
 
         <variable
             name="pokemon"
-            type="com.example.pocedex.Pokemon" />
+            type="com.example.pocedex.data.Pokemon" />
 
     </data>
 </layout>

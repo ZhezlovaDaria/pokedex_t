@@ -1,4 +1,4 @@
-package com.example.pocedex;
+package com.example.pocedex.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +13,11 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.example.pocedex.R;
+import com.example.pocedex.data.CommAndFav;
+import com.example.pocedex.data.Network;
+import com.example.pocedex.data.Pokemon;
+import com.example.pocedex.domain.Utils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

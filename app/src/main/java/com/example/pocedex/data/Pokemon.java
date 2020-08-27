@@ -1,4 +1,4 @@
-package com.example.pocedex;
+package com.example.pocedex.data;
 
 import com.google.gson.annotations.SerializedName;
 

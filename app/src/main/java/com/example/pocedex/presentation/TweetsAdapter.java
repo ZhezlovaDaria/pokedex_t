@@ -1,10 +1,11 @@
-package com.example.pocedex;
+package com.example.pocedex.presentation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pocedex.data.PokeTweet;
 import com.example.pocedex.databinding.TweetItemBinding;
 
 import java.util.List;

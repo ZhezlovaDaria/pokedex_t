@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PokeCard">
+    tools:context=".presentation.PokeCard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -279,11 +279,11 @@
 
         <variable
             name="tweet"
-            type="com.example.pocedex.PokeTweet" />
+            type="com.example.pocedex.data.PokeTweet" />
 
         <variable
             name="retweet"
-            type="com.example.pocedex.PokeTweet" />
+            type="com.example.pocedex.data.PokeTweet" />
 
     </data>
 </layout>
