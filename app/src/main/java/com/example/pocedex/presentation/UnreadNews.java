@@ -1,4 +1,4 @@
-package com.example.pocedex;
+package com.example.pocedex.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,12 +8,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.pocedex.R;
+import com.example.pocedex.data.Tweet;
+import com.example.pocedex.domain.Utils;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class UnreadNews extends AppCompatActivity {
 
 
-    ArrayList<PokeTweet> pokeTweets = new ArrayList<>();
+    List<Tweet> tweets = new ArrayList<>();
 
 
     @Override
@@ -21,8 +26,8 @@ public class UnreadNews extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unread_news);
 
-        pokeTweets = Utils.NewTweets;
-        TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
+        tweets = Utils.getNewTweets();
+        TweetsAdapter adapter = new TweetsAdapter(this, tweets);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.urt);
         final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

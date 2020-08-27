@@ -1,4 +1,4 @@
-package com.example.pocedex;
+package com.example.pocedex.presentation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,31 +7,32 @@ import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 
-import com.example.pocedex.databinding.ListItemBinding;
+import com.example.pocedex.data.Pokemon;
+import com.example.pocedex.databinding.PokemonItemBinding;
 
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
+class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.ViewHolder> {
 
     private List<Pokemon> pokemons;
     private ItemClickListener mClickListener;
 
 
-    PokDataAdapter(Context context, List<Pokemon> pokemons) {
+    PokemonListAdapter(Context context, List<Pokemon> pokemons) {
         this.pokemons = pokemons;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int ViewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ListItemBinding binding = ListItemBinding.inflate(inflater, parent, false);
+        PokemonItemBinding binding = PokemonItemBinding.inflate(inflater, parent, false);
         return new ViewHolder(binding.getRoot());
     }
 
     @Override
-    public void onBindViewHolder(PokDataAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(PokemonListAdapter.ViewHolder holder, int position) {
         Pokemon pokemon = pokemons.get(position);
         holder.binding.setPokemon(pokemon);
     }
@@ -42,7 +43,7 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ListItemBinding binding;
+        PokemonItemBinding binding;
 
         ViewHolder(View view) {
             super(view);
@@ -61,7 +62,7 @@ class PokDataAdapter extends RecyclerView.Adapter<PokDataAdapter.ViewHolder> {
         return pokemons.get(id);
     }
 
-    public void setClickListener(PokDataAdapter.ItemClickListener itemClickListener) {
+    public void setClickListener(PokemonListAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

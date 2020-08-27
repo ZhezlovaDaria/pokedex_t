@@ -1,10 +1,11 @@
-package com.example.pocedex;
+package com.example.pocedex.presentation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pocedex.data.Tweet;
 import com.example.pocedex.databinding.TweetItemBinding;
 
 import java.util.List;
@@ -14,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
-    private List<PokeTweet> tweets;
+    private List<Tweet> tweets;
 
-    TweetsAdapter(Context context, List<PokeTweet> tweets) {
+    TweetsAdapter(Context context, List<Tweet> tweets) {
         this.tweets = tweets;
     }
 
@@ -30,9 +31,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(TweetsAdapter.ViewHolder holder, int position) {
-        PokeTweet twe = tweets.get(position);
+        Tweet twe = tweets.get(position);
         if (twe.getRetweeted_status() != null) {
-            PokeTweet retwe = twe.getRetweeted_status();
+            Tweet retwe = twe.getRetweeted_status();
             String s = "RT @" + retwe.getUserSName() + ": " + retwe.getText();
             if (s.length() >= 139) {
                 s = s.substring(0, 139);

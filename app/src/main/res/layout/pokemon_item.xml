@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.PokeCard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/rounder_margin"
+        android:background="@drawable/rounded"
+        android:orientation="horizontal"
+        android:padding="@dimen/rounder_padding">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/sprite"
+            android:layout_height="@dimen/sprite"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            app:url="@{pokemon.getSpriteForList()}"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center|center_vertical"
+            android:text="@{pokemon.getName()}"
+            android:textSize="@dimen/text_big_size" />
+    </LinearLayout>
+
+    <data>
+
+        <variable
+            name="pokemon"
+            type="com.example.pocedex.data.Pokemon" />
+
+    </data>
+</layout>

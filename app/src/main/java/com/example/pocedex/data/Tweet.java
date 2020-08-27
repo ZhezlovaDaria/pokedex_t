@@ -1,9 +1,14 @@
-package com.example.pocedex;
+package com.example.pocedex.data;
 
 
 import android.util.Log;
 
-public class PokeTweet {
+import com.example.pocedex.domain.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Tweet {
 
     private String created_at;
     private long id;
@@ -12,7 +17,7 @@ public class PokeTweet {
     private int retweet_count;
     private int favorite_count;
     private Media entities = new Media();
-    private PokeTweet retweeted_status;
+    private Tweet retweeted_status;
 
     private User user;
 
@@ -58,25 +63,25 @@ public class PokeTweet {
         return favorite_count;
     }
 
-    public void setEntities(String url, int n) {
-        entities.medias[n].media_url = url;
+    public void setEntities(String url) {
+        entities.addMediaUrl(url);
     }
 
     public String getEntities(int n) {
         String m = null;
         try {
-            m = entities.medias[n].media_url;
+            m = entities.medias.get(n).media_url;
         } catch (Exception e) {
             Log.d("Media", e.getMessage());
         }
         return m;
     }
 
-    public void setReTweet(PokeTweet retweeted_status) {
+    public void setReTweet(Tweet retweeted_status) {
         this.retweeted_status = retweeted_status;
     }
 
-    public PokeTweet getRetweeted_status() {
+    public Tweet getRetweeted_status() {
         return retweeted_status;
     }
 
@@ -117,7 +122,7 @@ public class PokeTweet {
     }
 
     public String getCreated_at() {
-        return Utils.DateFormat(created_at);
+        return Utils.dateFormat(created_at);
     }
 
     private class User {
@@ -128,7 +133,13 @@ public class PokeTweet {
     }
 
     private class Media {
-        public Urls[] medias = new Urls[4];
+        public List<Urls> medias = new ArrayList<Urls>();
+
+        public void addMediaUrl(String url) {
+            Urls urls = new Urls();
+            urls.media_url = url;
+            medias.add(urls);
+        }
 
         public class Urls {
             public String media_url;

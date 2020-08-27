@@ -1,4 +1,4 @@
-package com.example.pocedex;
+package com.example.pocedex.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,38 +7,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.example.pocedex.R;
+import com.example.pocedex.data.CommAndFav;
+import com.example.pocedex.data.Network;
+import com.example.pocedex.data.Pokemon;
+import com.example.pocedex.domain.Utils;
 import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemClickListener {
+public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.ItemClickListener {
 
-
-    private static String pw = "https://pokeapi.co/api/v2/pokemon";
-    private static String pwnext = "";
 
     SharedPreferences mPrefs;
     List<Pokemon> pokemons = new ArrayList<>();
     List<Pokemon> favpokemons = new ArrayList<>();
     public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
-    JSONParser jsonParser = new JSONParser();
-    PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
-    PokDataAdapter favadapter = new PokDataAdapter(this, favpokemons);
+    PokemonListAdapter adapter = new PokemonListAdapter(this, pokemons);
+    PokemonListAdapter favadapter = new PokemonListAdapter(this, favpokemons);
     boolean connetion = true;
     TabHost tabs;
-    int imid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +42,12 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
             setContentView(R.layout.offline);
             return;
         }
+        new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
-        pwnext = pw;
-        imid = 0;
-        mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, Context.MODE_PRIVATE);
-        new FullPokeList().execute();
-        CommandfavList();
+        mPrefs = getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
+        UpdatePokemonList(new Network().getPokemonsForList());
+        commAndFavList();
         UpdateFavList();
-
 
         tabs = (TabHost) this.findViewById(R.id.tabhost);
         tabs.setup();
@@ -75,11 +68,8 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
                         if (Utils.isOnline(PokeWikia.this)) {
-                            if (pwnext != "null") {
-                                new FullPokeList().execute();
-                            } else {
+                            if (!UpdatePokemonList(new Network().getPokemonsForList()))
                                 showToast("End of list");
-                            }
                             connetion = true;
                         } else {
                             if (connetion) {
@@ -115,7 +105,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         favadapter.notifyDataSetChanged();
     }
 
-    public void ToNews(View view) {
+    public void toNews(View view) {
         finish();
     }
 
@@ -134,8 +124,9 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         }
     }
 
-    private void CommandfavList() {
+    private void commAndFavList() {
         try {
+            CaFpoke.clear();
             Gson gson = new Gson();
             String json = mPrefs.getString("commandfav2", "");
             CommAndFav[] caf;
@@ -161,54 +152,15 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         }
     }
 
-
-    class FullPokeList extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected String doInBackground(String... args) {
-            JSONObject json = jsonParser.makeHttpRequest(pwnext);
-
-            Log.d("Create Response", json.toString());
-            String s = json.toString();
-            String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
-
-            try {
-                pwnext = json.get("next").toString();
-                JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    pokemons.add(decodeJSON1(jsonArray.getJSONObject(i)));
-                    pokemons.get(imid).setId(imid);
-                    imid++;
-                }
-            } catch (JSONException e) {
-                Log.e("JSON Parser", "Error parsing data " + e.toString());
-            } catch (Exception e) {
-                Log.d("Fail Image", "png");
+    private boolean UpdatePokemonList(List<Pokemon> p) {
+        if (p.isEmpty())
+            return false;
+        else {
+            for (int i = 0; i < p.size(); i++) {
+                pokemons.add(p.get(i));
             }
-            return null;
-        }
-
-        protected void onPostExecute(String file_url) {
             adapter.notifyDataSetChanged();
-        }
-
-
-        public Pokemon decodeJSON1(JSONObject json) {
-            try {
-                String name = json.get("name").toString();
-                String link = json.get("url").toString();
-                Pokemon p = new Pokemon();
-                p.setName(name);
-                p.setUrl(link);
-                return p;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
+            return true;
         }
     }
 }
