@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.example.pocedex.domain.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PokeTweet {
 
     private String created_at;
@@ -60,14 +63,14 @@ public class PokeTweet {
         return favorite_count;
     }
 
-    public void setEntities(String url, int n) {
-        entities.medias[n].media_url = url;
+    public void setEntities(String url) {
+        entities.addMediaUrl(url);
     }
 
     public String getEntities(int n) {
         String m = null;
         try {
-            m = entities.medias[n].media_url;
+            m = entities.medias.get(n).media_url;
         } catch (Exception e) {
             Log.d("Media", e.getMessage());
         }
@@ -130,7 +133,13 @@ public class PokeTweet {
     }
 
     private class Media {
-        public Urls[] medias = new Urls[4];
+        public List<Urls> medias = new ArrayList<Urls>();
+
+        public void addMediaUrl(String url) {
+            Urls urls = new Urls();
+            urls.media_url = url;
+            medias.add(urls);
+        }
 
         public class Urls {
             public String media_url;

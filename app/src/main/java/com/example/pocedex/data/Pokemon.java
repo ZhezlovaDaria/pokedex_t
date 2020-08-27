@@ -2,22 +2,24 @@ package com.example.pocedex.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Pokemon {
 
     private int id;
     private String name;
     private String url;
     private int base_experience;
-    private Ability[] abilities;
-    private Form[] forms;
-    private GameIndice[] game_indices;
+    private List<Ability> abilities;
+    private List<Form> forms;
+    private List<GameIndice> game_indices;
     private String height;
-    private HeldItem[] held_items;
-    private Move[] moves;
+    private List<HeldItem> held_items;
+    private List<Move> moves;
     private Specie species;
     private Sprite sprites=new Sprite();
-    private Stat[] stats;
-    private Type[] types;
+    private List<Stat> stats;
+    private List<Type> types;
     private String weight;
     private String order;
 
@@ -42,94 +44,94 @@ public class Pokemon {
     public void setOrder(String order){this.order=order;}
     public String getOrder() {return order;}
 
-    public void setAbility(Ability[] ability){abilities=ability;}
-    public Ability[] getAbility() {return abilities;}
+    public void setAbility(List<Ability> ability){abilities=ability;}
+    public List<Ability> getAbility() {return abilities;}
     public String getAbilityString() {
-        if (abilities.length==0)
+        if (abilities.size()==0)
             return "None";
         String t="";
-        for (int i=0; i<abilities.length;i++)
+        for (int i=0; i<abilities.size();i++)
         {
-            t+=abilities[i].ability.name;
-            if (i!=abilities.length-1)
+            t+=abilities.get(i).ability.name;
+            if (i!=abilities.size()-1)
                 t+=", ";
         }
         return t;
     }
 
-    public void setForms(Form[] forms){this.forms=forms;}
-    public Form[] getForms() {return forms;}
+    public void setForms(List<Form> forms){this.forms=forms;}
+    public List<Form> getForms() {return forms;}
     public String getFormsString() {
-        if (forms.length==0)
+        if (forms.size()==0)
             return "None";
         String t="";
-        for (int i=0; i<forms.length;i++)
+        for (int i=0; i<forms.size();i++)
         {
-            t+=forms[i].name;
-            if (i!=forms.length-1)
+            t+=forms.get(i).name;
+            if (i!=forms.size()-1)
                 t+="\n";
         }
         return t;
     }
 
-    public void setGameIndice(GameIndice[] game_indices){this.game_indices=game_indices;}
-    public GameIndice[] getGameIndice() {return game_indices;}
+    public void setGameIndice(List<GameIndice> game_indices){this.game_indices=game_indices;}
+    public List<GameIndice> getGameIndice() {return game_indices;}
     public String getgetGameIndiceString() {
-        if (game_indices.length==0)
+        if (game_indices.size()==0)
             return "None";
         String t="";
-        for (int i=0; i<game_indices.length;i++)
+        for (int i=0; i<game_indices.size();i++)
         {
-            t+=game_indices[i].version.name;
-            if (i!=game_indices.length-1)
+            t+=game_indices.get(i).version.name;
+            if (i!=game_indices.size()-1)
                 t+=", ";
         }
         return t;
     }
 
-    public void setHeldItems(HeldItem[] held_items){this.held_items=held_items;}
-    public HeldItem[] getHeldItems() {return held_items;}
+    public void setHeldItems(List<HeldItem> held_items){this.held_items=held_items;}
+    public List<HeldItem> getHeldItems() {return held_items;}
     public String getHeldItemsString() {
-        if (held_items.length==0)
+        if (held_items.size()==0)
             return "None";
         String t="";
-        for (int i=0; i<held_items.length;i++)
+        for (int i=0; i<held_items.size();i++)
         {
-            t+=held_items[i].item.name;
-            if (i!=held_items.length-1)
+            t+=held_items.get(i).item.name;
+            if (i!=held_items.size()-1)
                 t+=", ";
         }
         return t;
     }
 
-    public void setMoves(Move[] moves){this.moves=moves;}
-    public Move[] getMoves() {return moves;}
+    public void setMoves(List<Move> moves){this.moves=moves;}
+    public List<Move> getMoves() {return moves;}
     public String getMovesString() {
-        if (moves.length==0)
+        if (moves.size()==0)
             return "None";
         String t="";
-        for (int i=0; i<moves.length;i++)
+        for (int i=0; i<moves.size();i++)
         {
-            t+=moves[i].move.name;
-            if (i!=moves.length-1)
+            t+=moves.get(i).move.name;
+            if (i!=moves.size()-1)
                 t+=", ";
         }
         return t;
     }
 
-    public void setStats(Stat[] stats){this.stats=stats;}
-    public int getStats(int num) { return stats[num].base_stat;}
+    public void setStats(List<Stat> stats){this.stats=stats;}
+    public int getStats(int num) { return stats.get(num).base_stat;}
 
-    public void setTypes(Type[] types){this.types=types;}
-    public Type[] getTypes() {return types;}
+    public void setTypes(List<Type> types){this.types=types;}
+    public List<Type> getTypes() {return types;}
     public String getTypesString() {
-        if (types.length==0)
+        if (types.size()==0)
             return "None";
         String t="";
-        for (int i=0; i<types.length;i++)
+        for (int i=0; i<types.size();i++)
         {
-            t+=types[i].type.name;
-            if (i!=types.length-1)
+            t+=types.get(i).type.name;
+            if (i!=types.size()-1)
                 t+="\n";
         }
         return t;
