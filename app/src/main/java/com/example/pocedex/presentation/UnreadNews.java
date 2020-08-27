@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.pocedex.R;
-import com.example.pocedex.data.PokeTweet;
+import com.example.pocedex.data.Tweet;
 import com.example.pocedex.domain.Utils;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 public class UnreadNews extends AppCompatActivity {
 
 
-    List<PokeTweet> pokeTweets = new ArrayList<>();
+    List<Tweet> tweets = new ArrayList<>();
 
 
     @Override
@@ -26,8 +26,8 @@ public class UnreadNews extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unread_news);
 
-        pokeTweets = Utils.NewTweets;
-        TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
+        tweets = Utils.getNewTweets();
+        TweetsAdapter adapter = new TweetsAdapter(this, tweets);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.urt);
         final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

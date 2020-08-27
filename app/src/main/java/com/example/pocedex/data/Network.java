@@ -28,12 +28,12 @@ public class Network {
     private static int imid = 0;
     private JSONObject json;
 
-    public void ResetList() {
+    public void resetList() {
         pwnext = pw;
         imid = 0;
     }
 
-    public List<Pokemon> GetPokemonsForList() {
+    public List<Pokemon> getPokemonsForList() {
         link = pwnext;
         AsyncTask fpl = new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         try {
@@ -60,40 +60,40 @@ public class Network {
         return null;
     }
 
-    public List<PokeTweet> GetTweetsFeed() {
-        List<PokeTweet> pokeTweets = new ArrayList<PokeTweet>();
+    public List<Tweet> getTweetsFeed() {
+        List<Tweet> tweets = new ArrayList<Tweet>();
         JSONObject json;
-        String s = Utils.ExmpStr();
+        String s = Utils.exampleString();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        PokeTweet[] p = gson.fromJson(s, PokeTweet[].class);
+        Tweet[] p = gson.fromJson(s, Tweet[].class);
         if (p.length != 0) {
             for (int i = 0; i < p.length; i++) {
-                pokeTweets.add(p[i]);
+                tweets.add(p[i]);
             }
-            return pokeTweets;
+            return tweets;
         }
         return null;
     }
 
-    public List<PokeTweet> GetUnreadTweets() {
-        List<PokeTweet> pokeTweets = new ArrayList<PokeTweet>();
-        String s = Utils.ExmpStr();
+    public List<Tweet> getUnreadTweets() {
+        List<Tweet> tweets = new ArrayList<Tweet>();
+        String s = Utils.exampleString();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        PokeTweet[] p = gson.fromJson(s, PokeTweet[].class);
+        Tweet[] p = gson.fromJson(s, Tweet[].class);
         if (p.length != 0) {
             for (int i = 0; i < p.length; i++) {
-                //if(p[i].id!=pokeTweets.get(pokeTweets.size()-1).id)
-                pokeTweets.add(p[i]);
+                //if(p[i].id!=tweets.get(tweets.size()-1).id)
+                tweets.add(p[i]);
                 //else {break;}
             }
-            return pokeTweets;
+            return tweets;
         }
         return null;
     }
 
-    public Pokemon GetPokemon(String url) {
+    public Pokemon getPokemon(String url) {
         link = url;
         AsyncTask fpl = new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         try {

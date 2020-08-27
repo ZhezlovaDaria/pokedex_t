@@ -8,7 +8,7 @@ import com.example.pocedex.domain.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokeTweet {
+public class Tweet {
 
     private String created_at;
     private long id;
@@ -17,7 +17,7 @@ public class PokeTweet {
     private int retweet_count;
     private int favorite_count;
     private Media entities = new Media();
-    private PokeTweet retweeted_status;
+    private Tweet retweeted_status;
 
     private User user;
 
@@ -77,11 +77,11 @@ public class PokeTweet {
         return m;
     }
 
-    public void setReTweet(PokeTweet retweeted_status) {
+    public void setReTweet(Tweet retweeted_status) {
         this.retweeted_status = retweeted_status;
     }
 
-    public PokeTweet getRetweeted_status() {
+    public Tweet getRetweeted_status() {
         return retweeted_status;
     }
 
@@ -122,7 +122,7 @@ public class PokeTweet {
     }
 
     public String getCreated_at() {
-        return Utils.DateFormat(created_at);
+        return Utils.dateFormat(created_at);
     }
 
     private class User {

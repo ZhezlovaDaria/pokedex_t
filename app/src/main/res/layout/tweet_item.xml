@@ -279,11 +279,11 @@
 
         <variable
             name="tweet"
-            type="com.example.pocedex.data.PokeTweet" />
+            type="com.example.pocedex.data.Tweet" />
 
         <variable
             name="retweet"
-            type="com.example.pocedex.data.PokeTweet" />
+            type="com.example.pocedex.data.Tweet" />
 
     </data>
 </layout>

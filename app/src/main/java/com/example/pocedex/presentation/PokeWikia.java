@@ -23,15 +23,15 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemClickListener {
+public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.ItemClickListener {
 
 
     SharedPreferences mPrefs;
     List<Pokemon> pokemons = new ArrayList<>();
     List<Pokemon> favpokemons = new ArrayList<>();
     public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
-    PokDataAdapter adapter = new PokDataAdapter(this, pokemons);
-    PokDataAdapter favadapter = new PokDataAdapter(this, favpokemons);
+    PokemonListAdapter adapter = new PokemonListAdapter(this, pokemons);
+    PokemonListAdapter favadapter = new PokemonListAdapter(this, favpokemons);
     boolean connetion = true;
     TabHost tabs;
 
@@ -42,11 +42,11 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
             setContentView(R.layout.offline);
             return;
         }
-        new Network().ResetList();
+        new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
         mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, Context.MODE_PRIVATE);
-        UpdatePokemonList(new Network().GetPokemonsForList());
-        CommandfavList();
+        UpdatePokemonList(new Network().getPokemonsForList());
+        commAndFavList();
         UpdateFavList();
 
         tabs = (TabHost) this.findViewById(R.id.tabhost);
@@ -68,7 +68,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
                         if (Utils.isOnline(PokeWikia.this)) {
-                            if (!UpdatePokemonList(new Network().GetPokemonsForList()))
+                            if (!UpdatePokemonList(new Network().getPokemonsForList()))
                                 showToast("End of list");
                             connetion = true;
                         } else {
@@ -105,7 +105,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         favadapter.notifyDataSetChanged();
     }
 
-    public void ToNews(View view) {
+    public void toNews(View view) {
         finish();
     }
 
@@ -124,7 +124,7 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         }
     }
 
-    private void CommandfavList() {
+    private void commAndFavList() {
         try {
             CaFpoke.clear();
             Gson gson = new Gson();

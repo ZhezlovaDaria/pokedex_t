@@ -33,16 +33,16 @@ public class TweetsCheck extends Worker {
     public Result doWork() {
         if (!isStopped()) {
             Log.d(TAG, "check");
-            Utils.NewTweets = new Network().GetUnreadTweets();
-            nn = Utils.NewTweets.size();
+            Utils.addNewTweets(new Network().getUnreadTweets());
+            nn = Utils.getNewTweetsSize();
             Log.d("Create Response", "");
             if (nn > 0)
-                SetNot();
+                setNot();
         }
         return Result.success();
     }
 
-    private void SetNot() {
+    private void setNot() {
         Intent resultIntent = new Intent(getApplicationContext(), UnreadNews.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

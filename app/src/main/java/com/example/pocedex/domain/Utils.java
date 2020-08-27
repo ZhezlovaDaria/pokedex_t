@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.example.pocedex.data.PokeTweet;
+import com.example.pocedex.data.Tweet;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -20,8 +20,8 @@ import androidx.databinding.BindingAdapter;
 
 public class Utils {
 
-    public static final String APP_PREFERENCES = "commandfav";
-    public static List<PokeTweet> NewTweets = new ArrayList<>();
+    private static final String APP_PREFERENCES = "commandfav";
+    private static List<Tweet> NewTweets = new ArrayList<>();
 
     @BindingAdapter({"app:url"})
     public static void loadImage(ImageView view, String url) {
@@ -32,7 +32,22 @@ public class Utils {
         }
     }
 
-    public static String ExmpStr() {
+    public static String getPreferenses() {
+        return APP_PREFERENCES;
+    }
+
+    public static List<Tweet> getNewTweets() {
+        return NewTweets;
+    }
+
+    public static void addNewTweets(List<Tweet> tweets) {
+        NewTweets.addAll(tweets);
+    }
+    public static int getNewTweetsSize() {
+       return NewTweets.size();
+    }
+
+    public static String exampleString() {
         //region JSON example
         String s = "[\n" +
                 "  {\n" +
@@ -461,7 +476,7 @@ public class Utils {
         return s;
     }
 
-    public static String DateFormat(String date) {
+    public static String dateFormat(String date) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
         try {

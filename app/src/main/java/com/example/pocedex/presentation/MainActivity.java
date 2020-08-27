@@ -14,7 +14,7 @@ import android.view.View;
 
 import com.example.pocedex.R;
 import com.example.pocedex.data.Network;
-import com.example.pocedex.data.PokeTweet;
+import com.example.pocedex.data.Tweet;
 import com.example.pocedex.domain.TweetsCheck;
 import com.example.pocedex.domain.Utils;
 
@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "States";
     PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 15, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
             .build();
-    ArrayList<PokeTweet> pokeTweets = new ArrayList<>();
-    TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
+    ArrayList<Tweet> tweets = new ArrayList<>();
+    TweetsAdapter adapter = new TweetsAdapter(this, tweets);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        UpdateTweetsFeed(new Network().GetTweetsFeed());
+        updateTweetsFeed(new Network().getTweetsFeed());
 
         WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 if (dy > 0) {
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
-                        UpdateTweetsFeed(new Network().GetTweetsFeed());
+                        updateTweetsFeed(new Network().getTweetsFeed());
                     }
                 }
             }
@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private boolean UpdateTweetsFeed(List<PokeTweet> p) {
+    private boolean updateTweetsFeed(List<Tweet> p) {
         if (p.isEmpty())
             return false;
         else {
             for (int i = 0; i < p.size(); i++) {
-                pokeTweets.add(p.get(i));
+                tweets.add(p.get(i));
             }
             adapter.notifyDataSetChanged();
             return true;

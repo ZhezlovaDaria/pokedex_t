@@ -42,7 +42,7 @@ public class PokeCard extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         pok = arguments.get("link").toString();
         mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, MODE_PRIVATE);
-        pokemon = new Network().GetPokemon(pok);
+        pokemon = new Network().getPokemon(pok);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
 
@@ -101,11 +101,9 @@ public class PokeCard extends AppCompatActivity {
         p.setIsFav(!p.getIsFav());
         if (p.getIsFav()) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on);
-            //ib.setImageResource(android.R.drawable.star_big_on);
             showToast("Save in Fav");
         } else {
             binding.favBtn.setImageResource(android.R.drawable.star_big_off);
-            //ib.setImageResource(android.R.drawable.star_big_off);
             showToast("Delete from Fav");
         }
         save();
