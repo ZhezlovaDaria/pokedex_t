@@ -2,27 +2,18 @@ package com.example.pocedex;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -46,9 +37,30 @@ public class PokeCard extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         pok = arguments.get("link").toString();
         mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, MODE_PRIVATE);
-        new Card().execute();
+        pokemon = new Network().GetPokemon(pok);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
+
+        binding.setPokemon(pokemon);
+        p = findOnId(pokemon.getId(), PokeWikia.CaFpoke);
+        if (p == null) {
+            p = new CommAndFav();
+            p.setId(pokemon.getId());
+            p.setName(pokemon.getName());
+            p.setUrl(pok);
+        }
+        if (p.getIsFav()) {
+            binding.favBtn.setImageResource(android.R.drawable.star_big_on);
+        }
+        if (p.getComment() != null) {
+            binding.UsCom.setText(p.getComment());
+        }
+        if (pokemon.getSprite(5) == null) {
+            binding.sp5.setVisibility(View.GONE);
+            binding.sp6.setVisibility(View.GONE);
+            binding.sp7.setVisibility(View.GONE);
+            binding.sp8.setVisibility(View.GONE);
+        }
 
     }
 
@@ -112,68 +124,5 @@ public class PokeCard extends AppCompatActivity {
     private void showToast(String mes) {
         Toast toast = Toast.makeText(this, mes, Toast.LENGTH_LONG);
         toast.show();
-    }
-
-
-    class Card extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected String doInBackground(String... args) {
-            JSONObject json;
-            OkHttpClient client = new OkHttpClient();
-            String serverAnswer;
-            Request request = new Request.Builder()
-                    .url(pok)
-                    .get()
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-
-                serverAnswer = response.body().string();
-                json = new JSONObject(serverAnswer);
-
-                String s = json.toString();
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-                pokemon = gson.fromJson(s, Pokemon.class);
-                pokemon.setUrl(pok);
-                Log.d("Create Response", json.toString());
-            } catch (JSONException e) {
-                Log.e("JSON Parser", "Error parsing data " + e.toString());
-            } catch (Exception e) {
-                Log.d("Exception", e.getMessage());
-            }
-
-            return null;
-        }
-
-        protected void onPostExecute(String file_url) {
-            ib = (ImageView) findViewById(R.id.favBtn);
-            EditText et = (EditText) findViewById(R.id.UsCom);
-            binding.setPokemon(pokemon);
-            p = findOnId(pokemon.getId(), PokeWikia.CaFpoke);
-            if (p == null) {
-                p = new CommAndFav();
-                p.setId(pokemon.getId());
-                p.setName(pokemon.getName());
-                p.setUrl(pok);
-            }
-            if (p.getIsFav()) {
-                ib.setImageResource(android.R.drawable.star_big_on);
-            }
-            if (p.getComment() != null) {
-                et.setText(p.getComment());
-            }
-            if (pokemon.getSprite(5) == null) {
-                binding.sp5.setVisibility(View.GONE);
-                binding.sp6.setVisibility(View.GONE);
-                binding.sp7.setVisibility(View.GONE);
-                binding.sp8.setVisibility(View.GONE);
-            }
-        }
-
     }
 }

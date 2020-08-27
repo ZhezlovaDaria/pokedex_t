@@ -9,11 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UnreadNews extends AppCompatActivity {
 
 
-    ArrayList<PokeTweet> pokeTweets = new ArrayList<>();
+    List<PokeTweet> pokeTweets = new ArrayList<>();
 
 
     @Override

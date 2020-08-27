@@ -3,14 +3,10 @@ package com.example.pocedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,19 +15,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemClickListener {
 
-
-    private static String pw = "https://pokeapi.co/api/v2/pokemon";
-    private static String pwnext = "";
 
     SharedPreferences mPrefs;
     List<Pokemon> pokemons = new ArrayList<>();
@@ -41,7 +29,6 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
     PokDataAdapter favadapter = new PokDataAdapter(this, favpokemons);
     boolean connetion = true;
     TabHost tabs;
-    int imid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +37,12 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
             setContentView(R.layout.offline);
             return;
         }
+        new Network().ResetList();
         setContentView(R.layout.activity_poce_wikia);
-        pwnext = pw;
-        imid = 0;
         mPrefs = getSharedPreferences(Utils.APP_PREFERENCES, Context.MODE_PRIVATE);
-        new FullPokeList().execute();
+        UpdatePokemonList(new Network().GetPokemonsForList());
         CommandfavList();
         UpdateFavList();
-
 
         tabs = (TabHost) this.findViewById(R.id.tabhost);
         tabs.setup();
@@ -78,11 +63,8 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
                         if (Utils.isOnline(PokeWikia.this)) {
-                            if (pwnext != "null") {
-                                new FullPokeList().execute();
-                            } else {
+                            if (!UpdatePokemonList(new Network().GetPokemonsForList()))
                                 showToast("End of list");
-                            }
                             connetion = true;
                         } else {
                             if (connetion) {
@@ -165,63 +147,15 @@ public class PokeWikia extends AppCompatActivity implements PokDataAdapter.ItemC
         }
     }
 
-
-    class FullPokeList extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected String doInBackground(String... args) {
-            JSONObject json;
-            String serverAnswer;
-
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(pwnext)
-                    .get()
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-
-                serverAnswer = response.body().string();
-                json = new JSONObject(serverAnswer);
-                String s = json.toString();
-                String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
-
-                pwnext = json.get("next").toString();
-                JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    pokemons.add(decodeJSON1(jsonArray.getJSONObject(i)));
-                    pokemons.get(imid).setId(imid);
-                    imid++;
-                }
-            } catch (JSONException e) {
-                Log.e("JSON Parser", "Error parsing data " + e.toString());
-            } catch (Exception e) {
-                Log.d("Fail Image", "png");
+    private boolean UpdatePokemonList(List<Pokemon> p) {
+        if (p.isEmpty())
+            return false;
+        else {
+            for (int i = 0; i < p.size(); i++) {
+                pokemons.add(p.get(i));
             }
-            return null;
-        }
-
-        protected void onPostExecute(String file_url) {
             adapter.notifyDataSetChanged();
-        }
-
-
-        public Pokemon decodeJSON1(JSONObject json) {
-            try {
-                String name = json.get("name").toString();
-                String link = json.get("url").toString();
-                Pokemon p = new Pokemon();
-                p.setName(name);
-                p.setUrl(link);
-                return p;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
+            return true;
         }
     }
 }

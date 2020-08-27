@@ -8,24 +8,18 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     final String TAG = "States";
-    private static String twp = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
-    PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 60, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
+    PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 15, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
             .build();
     ArrayList<PokeTweet> pokeTweets = new ArrayList<>();
     TweetsAdapter adapter = new TweetsAdapter(this, pokeTweets);
@@ -40,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        if (Utils.isOnline(this))
-
-        new TweetLenta().execute();
+        UpdateTweetsFeed(new Network().GetTweetsFeed());
 
         WorkManager.getInstance().cancelWorkById(TweetcheckRequest.getId());
 
@@ -57,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 if (dy > 0) {
                     if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
                         Log.d("TAG", "End of list");
-                        new TweetLenta().execute();
+                        UpdateTweetsFeed(new Network().GetTweetsFeed());
                     }
                 }
             }
@@ -65,6 +57,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private boolean UpdateTweetsFeed(List<PokeTweet> p) {
+        if (p.isEmpty())
+            return false;
+        else {
+            for (int i = 0; i < p.size(); i++) {
+                pokeTweets.add(p.get(i));
+            }
+            adapter.notifyDataSetChanged();
+            return true;
+        }
+    }
 
     public void onClick(View view) {
         Intent intent = new Intent(this, PokeWikia.class);
@@ -102,33 +105,5 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, e.getMessage());
         }
         Log.d(TAG, "MainActivity: onDestroy()");
-    }
-
-    class TweetLenta extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected String doInBackground(String... args) {
-            JSONObject json;
-            String s = Utils.ExmpStr();
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            PokeTweet[] p = gson.fromJson(s, PokeTweet[].class);
-            for (int i = 0; i < p.length; i++) {
-                pokeTweets.add(p[i]);
-            }
-
-            Log.d("Create Response", "");
-
-            return null;
-        }
-
-        protected void onPostExecute(String file_url) {
-            adapter.notifyDataSetChanged();
-        }
-
-
     }
 }

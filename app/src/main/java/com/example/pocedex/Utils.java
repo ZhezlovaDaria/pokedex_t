@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.databinding.BindingAdapter;
@@ -19,15 +20,13 @@ import androidx.databinding.BindingAdapter;
 public class Utils {
 
     public static final String APP_PREFERENCES = "commandfav";
-    public static ArrayList<PokeTweet> NewTweets = new ArrayList<>();
+    public static List<PokeTweet> NewTweets = new ArrayList<>();
 
     @BindingAdapter({"app:url"})
     public static void loadImage(ImageView view, String url) {
         try {
             Picasso.get().load(url).into(view);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d("Image", e.getMessage());
         }
     }
@@ -461,8 +460,7 @@ public class Utils {
         return s;
     }
 
-    public static String DateFormat(String date)
-    {
+    public static String DateFormat(String date) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
         try {
@@ -470,20 +468,17 @@ public class Utils {
             Date date1 = cal.getTime();
             sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             return sdf.format(date1);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.d("Fail Date", "");
         }
         return date;
     }
-    public static boolean isOnline(Context context)
-    {
+
+    public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting())
-        {
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
             return true;
         }
         return false;

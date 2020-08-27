@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -33,15 +29,7 @@ public class TweetsCheck extends Worker {
     public Result doWork() {
         if (!isStopped()) {
             Log.d(TAG, "check");
-            String s = Utils.ExmpStr();
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            PokeTweet[] p = gson.fromJson(s, PokeTweet[].class);
-            for (int i = 0; i < p.length; i++) {
-                //if(p[i].id!=pokeTweets.get(pokeTweets.size()-1).id)
-                Utils.NewTweets.add(p[i]);
-                //else {break;}
-            }
+            Utils.NewTweets = new Network().GetUnreadTweets();
             nn = Utils.NewTweets.size();
             Log.d("Create Response", "");
             if (nn > 0)
