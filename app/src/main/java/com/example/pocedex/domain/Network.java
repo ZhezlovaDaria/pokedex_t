@@ -1,8 +1,10 @@
-package com.example.pocedex.data;
+package com.example.pocedex.domain;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.pocedex.data.Pokemon;
+import com.example.pocedex.data.Tweet;
 import com.example.pocedex.domain.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

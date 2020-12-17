@@ -1,7 +1,9 @@
-package com.example.pocedex.domain;
+package com.example.pocedex.application;
 
 import android.app.Application;
 import android.util.Log;
+
+import com.example.pocedex.domain.TweetsCheck;
 
 import java.util.concurrent.TimeUnit;
 

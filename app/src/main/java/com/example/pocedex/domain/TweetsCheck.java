@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.example.pocedex.R;
 import com.example.pocedex.presentation.UnreadNews;
-import com.example.pocedex.data.Network;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;

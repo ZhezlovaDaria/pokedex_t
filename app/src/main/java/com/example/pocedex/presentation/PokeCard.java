@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.pocedex.R;
 import com.example.pocedex.data.CommAndFav;
-import com.example.pocedex.data.Network;
+import com.example.pocedex.domain.Network;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.example.pocedex.domain.Utils;
