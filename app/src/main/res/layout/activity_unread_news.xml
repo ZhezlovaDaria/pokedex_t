@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="@dimen/height_width"
+        android:layout_width="@dimen/height_width0dp"
         android:layout_height="wrap_content"
         android:onClick="ToAll"
         android:text="To alll news"
@@ -19,7 +19,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/urt"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_width"
+        android:layout_height="@dimen/height_width0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

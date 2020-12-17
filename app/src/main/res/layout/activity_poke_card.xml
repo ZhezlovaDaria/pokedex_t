@@ -18,8 +18,8 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/height_width"
-                android:layout_marginBottom="@dimen/height_width"
+                android:layout_marginTop="@dimen/height_width0dp"
+                android:layout_marginBottom="@dimen/height_width0dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -456,7 +456,7 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="@dimen/height_width"
+                android:layout_width="@dimen/height_width0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/big_margin"
                 android:layout_marginTop="@dimen/margin"
