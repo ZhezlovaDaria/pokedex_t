@@ -16,21 +16,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.databinding.BindingAdapter;
 
 public class Utils {
 
     private static final String APP_PREFERENCES = "commandfav";
     private static List<Tweet> NewTweets = new ArrayList<>();
-
-    @BindingAdapter({"app:url"})
-    public static void loadImage(ImageView view, String url) {
-        try {
-            Picasso.get().load(url).into(view);
-        } catch (Exception e) {
-            Log.d("Image", e.getMessage());
-        }
-    }
 
     public static String getPreferenses() {
         return APP_PREFERENCES;
