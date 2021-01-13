@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,11 +13,10 @@ import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.example.pocedex.R;
-import com.example.pocedex.data.CommAndFav;
+import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.domain.Utils;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +24,8 @@ import java.util.List;
 public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.ItemClickListener {
 
 
-    SharedPreferences mPrefs;
     List<Pokemon> pokemons = new ArrayList<>();
     List<Pokemon> favpokemons = new ArrayList<>();
-    public static ArrayList<CommAndFav> CaFpoke = new ArrayList<>();
     PokemonListAdapter adapter = new PokemonListAdapter(this, pokemons);
     PokemonListAdapter favadapter = new PokemonListAdapter(this, favpokemons);
     boolean connetion = true;
@@ -44,7 +40,7 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
         }
         new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
-        mPrefs = getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
+        LocalSave.SavePreferences = getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
         UpdatePokemonList(new Network().getPokemonsForList());
         commAndFavList();
         UpdateFavList();
@@ -125,28 +121,17 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
     }
 
     private void commAndFavList() {
-        try {
-            CaFpoke.clear();
-            Gson gson = new Gson();
-            String json = mPrefs.getString("commandfav2", "");
-            CommAndFav[] caf;
-            caf = gson.fromJson(json, CommAndFav[].class);
-            for (int i = 0; i < caf.length; i++) {
-                CaFpoke.add(caf[i]);
-            }
-        } catch (Exception e) {
-            Log.d("prefs", e.getMessage());
-        }
+        LocalSave.open();
     }
 
     private void UpdateFavList() {
         favpokemons.clear();
-        for (int i = 0; i < CaFpoke.size(); i++) {
-            if (CaFpoke.get(i).getIsFav()) {
+        for (int i = 0; i < LocalSave.CaFpoke.size(); i++) {
+            if (LocalSave.CaFpoke.get(i).getIsFav()) {
                 Pokemon p = new Pokemon();
-                p.setName(CaFpoke.get(i).getName());
-                p.setUrl(CaFpoke.get(i).getUrl());
-                p.setId(CaFpoke.get(i).getId() - 1);
+                p.setName(LocalSave.CaFpoke.get(i).getName());
+                p.setUrl(LocalSave.CaFpoke.get(i).getUrl());
+                p.setId(LocalSave.CaFpoke.get(i).getId() - 1);
                 favpokemons.add(p);
             }
         }

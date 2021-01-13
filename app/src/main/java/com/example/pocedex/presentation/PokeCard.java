@@ -14,18 +14,17 @@ import android.widget.Toast;
 
 import com.example.pocedex.R;
 import com.example.pocedex.data.CommAndFav;
+import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.example.pocedex.domain.Utils;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class PokeCard extends AppCompatActivity {
 
     private static String pok = "";
-    SharedPreferences mPrefs;
     CommAndFav p;
     Pokemon pokemon;
     ImageView ib;
@@ -41,13 +40,12 @@ public class PokeCard extends AppCompatActivity {
         setContentView(R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pok = arguments.get("link").toString();
-        mPrefs = getSharedPreferences(Utils.getPreferenses(), MODE_PRIVATE);
         pokemon = new Network().getPokemon(pok);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
 
         binding.setPokemon(pokemon);
-        p = findOnId(pokemon.getId(), PokeWikia.CaFpoke);
+        p = findOnId(pokemon.getId(), LocalSave.CaFpoke);
         if (p == null) {
             p = new CommAndFav();
             p.setId(pokemon.getId());
@@ -110,16 +108,13 @@ public class PokeCard extends AppCompatActivity {
     }
 
     private void save() {
-        if (findOnId(pokemon.getId(), PokeWikia.CaFpoke) == null) {
-            PokeWikia.CaFpoke.add(p);
+        if (findOnId(pokemon.getId(), LocalSave.CaFpoke) == null) {
+            LocalSave.CaFpoke.add(p);
         }
         try {
-            SharedPreferences.Editor prefsEditor = mPrefs.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(PokeWikia.CaFpoke);
-            prefsEditor.putString("commandfav2", json);
-            prefsEditor.commit();
-        } catch (Exception e) {
+            LocalSave.save();
+        }
+        catch (Exception e) {
             Log.d("comfavsave", e.getMessage());
         }
     }
