@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.example.pocedex.data.CommAndFav;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class LocalSave {
@@ -18,11 +20,8 @@ public class LocalSave {
         try {
             Gson gson = new Gson();
             String json = SavePreferences.getString(path, "");
-            CommAndFav[] caf;
-            caf = gson.fromJson(json, CommAndFav[].class);
-            for (int i = 0; i < caf.length; i++) {
-                CaFpoke.add(caf[i]);
-            }
+            Type cafType = new TypeToken<ArrayList<CommAndFav>>(){}.getType();
+            CaFpoke = gson.fromJson(json, cafType);
         } catch (Exception e) {
             Log.d("prefs", e.getMessage());
         }

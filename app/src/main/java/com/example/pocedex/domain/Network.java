@@ -8,10 +8,12 @@ import com.example.pocedex.data.Tweet;
 import com.example.pocedex.domain.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -63,36 +65,23 @@ public class Network {
     }
 
     public List<Tweet> getTweetsFeed() {
-        List<Tweet> tweets = new ArrayList<Tweet>();
-        JSONObject json;
+        List<Tweet> tweets;
         String s = Utils.exampleString();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        Tweet[] p = gson.fromJson(s, Tweet[].class);
-        if (p.length != 0) {
-            for (int i = 0; i < p.length; i++) {
-                tweets.add(p[i]);
-            }
-            return tweets;
-        }
-        return null;
+        Type tweetsType = new TypeToken<ArrayList<Tweet>>(){}.getType();
+        tweets = gson.fromJson(s, tweetsType);
+        return tweets;
     }
 
     public List<Tweet> getUnreadTweets() {
-        List<Tweet> tweets = new ArrayList<Tweet>();
+        List<Tweet> tweets;
         String s = Utils.exampleString();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        Tweet[] p = gson.fromJson(s, Tweet[].class);
-        if (p.length != 0) {
-            for (int i = 0; i < p.length; i++) {
-                //if(p[i].id!=tweets.get(tweets.size()-1).id)
-                tweets.add(p[i]);
-                //else {break;}
-            }
-            return tweets;
-        }
-        return null;
+        Type tweetsType = new TypeToken<ArrayList<Tweet>>(){}.getType();
+        tweets = gson.fromJson(s, tweetsType);
+        return tweets;
     }
 
     public Pokemon getPokemon(String url) {
