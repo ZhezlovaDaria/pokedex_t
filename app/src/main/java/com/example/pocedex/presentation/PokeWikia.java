@@ -1,8 +1,11 @@
 package com.example.pocedex.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.Toast;
 
 import com.example.pocedex.R;
 import com.example.pocedex.domain.LocalSave;
@@ -28,8 +30,10 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
     List<Pokemon> favpokemons = new ArrayList<>();
     PokemonListAdapter adapter = new PokemonListAdapter(this, pokemons);
     PokemonListAdapter favadapter = new PokemonListAdapter(this, favpokemons);
-    boolean connetion = true;
     TabHost tabs;
+    ViewPager pager;
+    PagerAdapter pagerAdapter;
+    static final int PAGE_COUNT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,57 +45,30 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
         new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
         LocalSave.SavePreferences = getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
-        UpdatePokemonList(new Network().getPokemonsForList());
         commAndFavList();
-        UpdateFavList();
 
-        tabs = (TabHost) this.findViewById(R.id.tabhost);
-        tabs.setup();
+        pager = (ViewPager) findViewById(R.id.pager);
+        pagerAdapter = new WikiaFragmentPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(pagerAdapter);
 
-        tabs.addTab(tabs.newTabSpec("All").setContent(R.id.list).setIndicator("All pokemons"));
-        tabs.addTab(tabs.newTabSpec("Fav").setContent(R.id.list2).setIndicator("Favorite"));
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-        final LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter.setClickListener(this);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
-                        Log.d("TAG", "End of list");
-                        if (Utils.isOnline(PokeWikia.this)) {
-                            if (!UpdatePokemonList(new Network().getPokemonsForList()))
-                                showToast("End of list");
-                            connetion = true;
-                        } else {
-                            if (connetion) {
-                                showToast("No internet connection");
-                                connetion = false;
-                            }
-                        }
-                    }
-                }
+            public void onPageSelected(int position) {
+                Log.d("", "position = " + position);
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
-        recyclerView.setAdapter(adapter);
 
-        RecyclerView recyclerView1 = (RecyclerView) findViewById(R.id.list2);
-        final LinearLayoutManager layoutManager1
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView1.setLayoutManager(layoutManager1);
-        favadapter.setClickListener(this);
-
-        recyclerView1.setAdapter(favadapter);
-
-    }
-
-    private void showToast(String mes) {
-        Toast toast = Toast.makeText(this, mes, Toast.LENGTH_LONG);
-        toast.show();
     }
 
     @Override
@@ -137,15 +114,27 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
         }
     }
 
-    private boolean UpdatePokemonList(List<Pokemon> p) {
-        if (p.isEmpty())
-            return false;
-        else {
-            for (int i = 0; i < p.size(); i++) {
-                pokemons.add(p.get(i));
-            }
-            adapter.notifyDataSetChanged();
-            return true;
+    private class WikiaFragmentPagerAdapter extends FragmentPagerAdapter {
+
+        public WikiaFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
+
+        @Override
+        public Fragment getItem(int position) {
+            return PageFragment.newInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+
+        public CharSequence getPageTitle(int position) {
+            if (position == 0)
+                return "All";
+            else return "Favorite";
+        }
+
     }
 }
