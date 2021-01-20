@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,8 +38,12 @@ public class PokemonCardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pokemonlink = arguments.get("link").toString();
-        pokemon = new Network().getPokemon(pokemonlink);
+        new Network().getPokemon(this, pokemonlink);
+    }
 
+    public void setPokemon(Pokemon newPokemon)
+    {
+        pokemon=newPokemon;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
 
         binding.setPokemon(pokemon);
@@ -61,7 +66,6 @@ public class PokemonCardActivity extends AppCompatActivity {
             binding.sp7.setVisibility(View.GONE);
             binding.sp8.setVisibility(View.GONE);
         }
-
     }
 
     public CommentAndFavorite findOnId(

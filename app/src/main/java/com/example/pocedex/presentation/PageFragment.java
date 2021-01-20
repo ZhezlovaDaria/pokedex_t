@@ -27,9 +27,10 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
 
     int pageNumber;
     boolean connetion = true;
+    boolean isLoading = false;
     List<Pokemon> pokemons = new ArrayList<>();
 
-    PokemonListAdapter adapter = new PokemonListAdapter(this.getActivity(), pokemons);
+    PokemonListAdapter adapter = new PokemonListAdapter(this.getActivity(), this.pokemons);
 
     static PageFragment newInstance(int page) {
         PageFragment pageFragment = new PageFragment();
@@ -44,9 +45,9 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         super.onCreate(savedInstanceState);
         pageNumber = getArguments().getInt(ARGUMENT_PAGE_NUMBER);
         if (pageNumber == 0) {
-            UpdatePokemonList(new Network().getPokemonsForList());
+            new Network().getPokemonsForList(this.getActivity());
         } else {
-            UpdateFavList();
+            updateFavList();
         }
 
     }
@@ -68,18 +69,15 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    if (dy > 0) {
-                        if ((layoutManager.getChildCount() + layoutManager.findFirstVisibleItemPosition()) >= layoutManager.getItemCount()) {
-                            Log.d("TAG", "End of list");
-                            if (Utils.isOnline(getActivity())) {
-                                if (!UpdatePokemonList(new Network().getPokemonsForList()))
-                                    showToast("End of list");
-                                connetion = true;
-                            } else {
-                                if (connetion) {
-                                    showToast("No internet connection");
-                                    connetion = false;
-                                }
+                    if (!isLoading) {
+                        isLoading = true;
+                        if (Utils.isOnline(getActivity())) {
+                            new Network().getPokemonsForList(getActivity());
+                            connetion = true;
+                        } else {
+                            if (connetion) {
+                                showToast("No internet connection");
+                                connetion = false;
                             }
                         }
                     }
@@ -105,9 +103,9 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         }
     }
 
-    private void UpdateFavList() {
+    private void updateFavList() {
         pokemons.clear();
-        if (LocalSave.getCommentAndFavorites()==null)
+        if (LocalSave.getCommentAndFavorites() == null)
             return;
         for (int i = 0; i < LocalSave.getCommentAndFavorites().size(); i++) {
             if (LocalSave.getCommentAndFavorites().get(i).getIsFav()) {
@@ -120,15 +118,15 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         }
     }
 
-    private boolean UpdatePokemonList(List<Pokemon> p) {
+    public void updatePokemonList(List<Pokemon> p) {
         if (p.isEmpty())
-            return false;
+            return;
         else {
             for (int i = 0; i < p.size(); i++) {
                 pokemons.add(p.get(i));
             }
             adapter.notifyDataSetChanged();
-            return true;
+            isLoading = false;
         }
     }
 

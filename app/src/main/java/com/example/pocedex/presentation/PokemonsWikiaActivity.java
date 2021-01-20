@@ -8,11 +8,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TabHost;
 
 import com.example.pocedex.R;
 import com.example.pocedex.domain.LocalSave;
@@ -20,17 +18,10 @@ import com.example.pocedex.domain.Network;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.domain.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonsWikiaActivity extends AppCompatActivity implements PokemonListAdapter.ItemClickListener {
+public class PokemonsWikiaActivity extends AppCompatActivity {
 
-
-    List<Pokemon> pokemons = new ArrayList<>();
-    List<Pokemon> favpokemons = new ArrayList<>();
-    PokemonListAdapter adapter = new PokemonListAdapter(this, pokemons);
-    PokemonListAdapter favadapter = new PokemonListAdapter(this, favpokemons);
-    TabHost tabs;
     ViewPager pager;
     PagerAdapter pagerAdapter;
     static final int PAGE_COUNT = 2;
@@ -44,7 +35,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements PokemonL
         }
         new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
-        LocalSave.setSavePreferences( getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE));
+        LocalSave.setSavePreferences(getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE));
         commAndFavList();
 
         pager = (ViewPager) findViewById(R.id.pager);
@@ -74,51 +65,24 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements PokemonL
     @Override
     protected void onStart() {
         super.onStart();
-        UpdateFavList();
-        favadapter.notifyDataSetChanged();
     }
 
     public void toNews(View view) {
         finish();
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        try {
-            String link;
-            if (tabs.getCurrentTab() == 0)
-                link = (adapter.getPokemon(position)).getUrl();
-            else link = (favadapter.getPokemon(position)).getUrl();
-            Intent intent = new Intent(this, PokemonCardActivity.class);
-            intent.putExtra("link", link);
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void commAndFavList() {
         LocalSave.open();
     }
 
-    private void UpdateFavList() {
-        favpokemons.clear();
-        if (LocalSave.getCommentAndFavorites()==null)
-            return;
-        for (int i = 0; i < LocalSave.getCommentAndFavorites().size(); i++) {
-            if (LocalSave.getCommentAndFavorites().get(i).getIsFav()) {
-                Pokemon p = new Pokemon();
-                p.setName(LocalSave.getCommentAndFavorites().get(i).getName());
-                p.setUrl(LocalSave.getCommentAndFavorites().get(i).getUrl());
-                p.setId(LocalSave.getCommentAndFavorites().get(i).getId() - 1);
-                favpokemons.add(p);
-            }
-        }
+    public void updatePokemonList(List<Pokemon> p) {
+        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
+        ((PageFragment) allFragments.get(0)).updatePokemonList(p);
     }
 
-    private class WikiaFragmentPagerAdapter extends FragmentPagerAdapter {
+    public class WikiaFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        public WikiaFragmentPagerAdapter(FragmentManager fm) {
+        private WikiaFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
