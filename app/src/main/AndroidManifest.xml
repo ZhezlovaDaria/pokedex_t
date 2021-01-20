@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name="com.example.pocedex.application.AppNotificationControl">
-        <activity android:name=".presentation.UnreadNewsActivity"></activity>
-        <activity android:name=".presentation.PokemonCardActivity" />
-        <activity android:name=".presentation.PokemonsWikiaActivity" />
         <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.UnreadNewsActivity"/>
+        <activity android:name=".presentation.PokemonCardActivity" />
+        <activity android:name=".presentation.PokemonsWikiaActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 
