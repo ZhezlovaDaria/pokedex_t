@@ -4,22 +4,22 @@ package com.example.pocedex.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class CommAndFav implements Parcelable {
+public class CommentAndFavorite implements Parcelable {
 
     private String name;
     private int id;
     private String url;
-    private boolean is_fav = false;
+    private boolean is_favorite = false;
     private String comment = null;
 
-    public CommAndFav() {
+    public CommentAndFavorite() {
     }
 
-    public CommAndFav(String name, int id, String url, boolean is_fav, String comment) {
+    public CommentAndFavorite(String name, int id, String url, boolean is_favorite, String comment) {
         this.name = name;
         this.id = id;
         this.url = url;
-        this.is_fav = is_fav;
+        this.is_favorite = is_favorite;
         this.comment = comment;
     }
 
@@ -55,12 +55,12 @@ public class CommAndFav implements Parcelable {
         return url;
     }
 
-    public void setIsFav(boolean iffav) {
-        is_fav = iffav;
+    public void setIsFav(boolean isfavorite) {
+        is_favorite = isfavorite;
     }
 
     public boolean getIsFav() {
-        return is_fav;
+        return is_favorite;
     }
 
     public void setComment(String comment) {
@@ -76,10 +76,10 @@ public class CommAndFav implements Parcelable {
         return 0;
     }
 
-    public static final Parcelable.Creator<CommAndFav> CREATOR = new Parcelable.Creator<CommAndFav>() {
+    public static final Parcelable.Creator<CommentAndFavorite> CREATOR = new Parcelable.Creator<CommentAndFavorite>() {
 
         @Override
-        public CommAndFav createFromParcel(Parcel source) {
+        public CommentAndFavorite createFromParcel(Parcel source) {
             String name = source.readString();
             int id = source.readInt();
             String url = source.readString();
@@ -88,12 +88,12 @@ public class CommAndFav implements Parcelable {
                 is_fav = true;
             else is_fav = false;
             String comment = source.readString();
-            return new CommAndFav(name, id, url, is_fav, comment);
+            return new CommentAndFavorite(name, id, url, is_fav, comment);
         }
 
         @Override
-        public CommAndFav[] newArray(int size) {
-            return new CommAndFav[size];
+        public CommentAndFavorite[] newArray(int size) {
+            return new CommentAndFavorite[size];
         }
     };
 
@@ -102,7 +102,7 @@ public class CommAndFav implements Parcelable {
         parcel.writeString(name);
         parcel.writeInt(id);
         parcel.writeString(url);
-        if (is_fav) {
+        if (is_favorite) {
             parcel.writeInt(1);
         } else {
             parcel.writeInt(0);

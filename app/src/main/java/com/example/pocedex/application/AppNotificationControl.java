@@ -1,7 +1,9 @@
-package com.example.pocedex.domain;
+package com.example.pocedex.application;
 
 import android.app.Application;
 import android.util.Log;
+
+import com.example.pocedex.domain.TweetsCheck;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +11,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-public class NotificationControl extends Application {
+public class AppNotificationControl extends Application {
 
     PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 60, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
             .build();

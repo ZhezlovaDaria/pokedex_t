@@ -4,31 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.pocedex.R;
-import com.example.pocedex.data.CommAndFav;
-import com.example.pocedex.data.Network;
+import com.example.pocedex.data.CommentAndFavorite;
+import com.example.pocedex.domain.LocalSave;
+import com.example.pocedex.domain.Network;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.example.pocedex.domain.Utils;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class PokeCard extends AppCompatActivity {
+public class PokemonCardActivity extends AppCompatActivity {
 
-    private static String pok = "";
-    SharedPreferences mPrefs;
-    CommAndFav p;
+    private static String pokemonlink = "";
+    CommentAndFavorite cardCommentAndFavorite;
     Pokemon pokemon;
-    ImageView ib;
     ActivityPokeCardBinding binding;
 
     @Override
@@ -40,25 +37,28 @@ public class PokeCard extends AppCompatActivity {
         }
         setContentView(R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
-        pok = arguments.get("link").toString();
-        mPrefs = getSharedPreferences(Utils.getPreferenses(), MODE_PRIVATE);
-        pokemon = new Network().getPokemon(pok);
+        pokemonlink = arguments.get("link").toString();
+        new Network().getPokemon(this, pokemonlink);
+    }
 
+    public void setPokemon(Pokemon newPokemon)
+    {
+        pokemon=newPokemon;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
 
         binding.setPokemon(pokemon);
-        p = findOnId(pokemon.getId(), PokeWikia.CaFpoke);
-        if (p == null) {
-            p = new CommAndFav();
-            p.setId(pokemon.getId());
-            p.setName(pokemon.getName());
-            p.setUrl(pok);
+        cardCommentAndFavorite = findOnId(pokemon.getId(), LocalSave.getCommentAndFavorites());
+        if (cardCommentAndFavorite == null) {
+            cardCommentAndFavorite = new CommentAndFavorite();
+            cardCommentAndFavorite.setId(pokemon.getId());
+            cardCommentAndFavorite.setName(pokemon.getName());
+            cardCommentAndFavorite.setUrl(pokemonlink);
         }
-        if (p.getIsFav()) {
+        if (cardCommentAndFavorite.getIsFav()) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on);
         }
-        if (p.getComment() != null) {
-            binding.UsCom.setText(p.getComment());
+        if (cardCommentAndFavorite.getComment() != null) {
+            binding.UsCom.setText(cardCommentAndFavorite.getComment());
         }
         if (pokemon.getSprite(5) == null) {
             binding.sp5.setVisibility(View.GONE);
@@ -66,23 +66,25 @@ public class PokeCard extends AppCompatActivity {
             binding.sp7.setVisibility(View.GONE);
             binding.sp8.setVisibility(View.GONE);
         }
-
     }
 
-    public CommAndFav findOnId(
-            int id, ArrayList<CommAndFav> caf) {
-
-        for (CommAndFav c : caf) {
-            if (c.equals(id)) {
-                return c;
+    public CommentAndFavorite findOnId(
+            int id, ArrayList<CommentAndFavorite> caf) {
+        try {
+            for (CommentAndFavorite c : caf) {
+                if (c.equals(id)) {
+                    return c;
+                }
             }
+        } catch (Exception e) {
+            Log.d("", e.getMessage());
         }
         return null;
     }
 
     public void saveComm(View view) {
-        p.setComment(binding.UsCom.getText().toString());
-        //p.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
+        cardCommentAndFavorite.setComment(binding.UsCom.getText().toString());
+        //cardCommentAndFavorite.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
         showToast("Your comment save");
         save();
         hideKeyboard(this);
@@ -98,8 +100,8 @@ public class PokeCard extends AppCompatActivity {
     }
 
     public void saveFav(View view) {
-        p.setIsFav(!p.getIsFav());
-        if (p.getIsFav()) {
+        cardCommentAndFavorite.setIsFav(!cardCommentAndFavorite.getIsFav());
+        if (cardCommentAndFavorite.getIsFav()) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on);
             showToast("Save in Fav");
         } else {
@@ -110,15 +112,11 @@ public class PokeCard extends AppCompatActivity {
     }
 
     private void save() {
-        if (findOnId(pokemon.getId(), PokeWikia.CaFpoke) == null) {
-            PokeWikia.CaFpoke.add(p);
+        if (findOnId(pokemon.getId(), LocalSave.getCommentAndFavorites()) == null) {
+            LocalSave.addToCommentAndFavorites(cardCommentAndFavorite);
         }
         try {
-            SharedPreferences.Editor prefsEditor = mPrefs.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(PokeWikia.CaFpoke);
-            prefsEditor.putString("commandfav2", json);
-            prefsEditor.commit();
+            LocalSave.save();
         } catch (Exception e) {
             Log.d("comfavsave", e.getMessage());
         }

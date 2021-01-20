@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.pocedex.R;
-import com.example.pocedex.presentation.UnreadNews;
-import com.example.pocedex.data.Network;
+import com.example.pocedex.presentation.UnreadNewsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -20,7 +19,7 @@ public class TweetsCheck extends Worker {
     static final String TAG = "tweet";
     private static final int NOTIFY_ID = 101;
     private static String CHANNEL_ID = "Pokedex";
-    private static int nn = 0;
+    private static int unreadCount = 0;
 
     public TweetsCheck(
             @NonNull Context context,
@@ -34,16 +33,16 @@ public class TweetsCheck extends Worker {
         if (!isStopped()) {
             Log.d(TAG, "check");
             Utils.addNewTweets(new Network().getUnreadTweets());
-            nn = Utils.getNewTweetsSize();
+            unreadCount = Utils.getNewTweetsSize();
             Log.d("Create Response", "");
-            if (nn > 0)
+            if (unreadCount > 0)
                 setNot();
         }
         return Result.success();
     }
 
     private void setNot() {
-        Intent resultIntent = new Intent(getApplicationContext(), UnreadNews.class);
+        Intent resultIntent = new Intent(getApplicationContext(), UnreadNewsActivity.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -51,7 +50,7 @@ public class TweetsCheck extends Worker {
                 new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                         .setSmallIcon(R.mipmap.pok)
                         .setContentTitle("Pocedex")
-                        .setContentText("You have " + nn + " unread news")
+                        .setContentText("You have " + unreadCount + " unread news")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(resultPendingIntent)
                         .setAutoCancel(true);

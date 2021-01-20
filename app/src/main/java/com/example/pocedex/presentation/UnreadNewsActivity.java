@@ -15,7 +15,7 @@ import com.example.pocedex.domain.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnreadNews extends AppCompatActivity {
+public class UnreadNewsActivity extends AppCompatActivity {
 
 
     List<Tweet> tweets = new ArrayList<>();
