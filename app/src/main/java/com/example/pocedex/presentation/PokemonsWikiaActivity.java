@@ -23,7 +23,7 @@ import com.example.pocedex.domain.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.ItemClickListener {
+public class PokemonsWikiaActivity extends AppCompatActivity implements PokemonListAdapter.ItemClickListener {
 
 
     List<Pokemon> pokemons = new ArrayList<>();
@@ -44,7 +44,7 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
         }
         new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
-        LocalSave.SavePreferences = getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
+        LocalSave.setSavePreferences( getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE));
         commAndFavList();
 
         pager = (ViewPager) findViewById(R.id.pager);
@@ -89,7 +89,7 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
             if (tabs.getCurrentTab() == 0)
                 link = (adapter.getPokemon(position)).getUrl();
             else link = (favadapter.getPokemon(position)).getUrl();
-            Intent intent = new Intent(this, PokeCard.class);
+            Intent intent = new Intent(this, PokemonCardActivity.class);
             intent.putExtra("link", link);
             startActivity(intent);
         } catch (Exception e) {
@@ -103,12 +103,14 @@ public class PokeWikia extends AppCompatActivity implements PokemonListAdapter.I
 
     private void UpdateFavList() {
         favpokemons.clear();
-        for (int i = 0; i < LocalSave.CaFpoke.size(); i++) {
-            if (LocalSave.CaFpoke.get(i).getIsFav()) {
+        if (LocalSave.getCommentAndFavorites()==null)
+            return;
+        for (int i = 0; i < LocalSave.getCommentAndFavorites().size(); i++) {
+            if (LocalSave.getCommentAndFavorites().get(i).getIsFav()) {
                 Pokemon p = new Pokemon();
-                p.setName(LocalSave.CaFpoke.get(i).getName());
-                p.setUrl(LocalSave.CaFpoke.get(i).getUrl());
-                p.setId(LocalSave.CaFpoke.get(i).getId() - 1);
+                p.setName(LocalSave.getCommentAndFavorites().get(i).getName());
+                p.setUrl(LocalSave.getCommentAndFavorites().get(i).getUrl());
+                p.setId(LocalSave.getCommentAndFavorites().get(i).getId() - 1);
                 favpokemons.add(p);
             }
         }

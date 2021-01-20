@@ -11,7 +11,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-public class NotificationControl extends Application {
+public class AppNotificationControl extends Application {
 
     PeriodicWorkRequest TweetcheckRequest = new PeriodicWorkRequest.Builder(TweetsCheck.class, 60, TimeUnit.MINUTES, 1, TimeUnit.MINUTES)
             .build();

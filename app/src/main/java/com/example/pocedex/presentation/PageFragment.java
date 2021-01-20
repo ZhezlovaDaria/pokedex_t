@@ -51,6 +51,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         try {
             String link;
             link = (adapter.getPokemon(position)).getUrl();
-            Intent intent = new Intent(this.getActivity(), PokeCard.class);
+            Intent intent = new Intent(this.getActivity(), PokemonCardActivity.class);
             intent.putExtra("link", link);
             startActivity(intent);
         } catch (Exception e) {
@@ -106,12 +107,14 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
 
     private void UpdateFavList() {
         pokemons.clear();
-        for (int i = 0; i < LocalSave.CaFpoke.size(); i++) {
-            if (LocalSave.CaFpoke.get(i).getIsFav()) {
+        if (LocalSave.getCommentAndFavorites()==null)
+            return;
+        for (int i = 0; i < LocalSave.getCommentAndFavorites().size(); i++) {
+            if (LocalSave.getCommentAndFavorites().get(i).getIsFav()) {
                 Pokemon p = new Pokemon();
-                p.setName(LocalSave.CaFpoke.get(i).getName());
-                p.setUrl(LocalSave.CaFpoke.get(i).getUrl());
-                p.setId(LocalSave.CaFpoke.get(i).getId() - 1);
+                p.setName(LocalSave.getCommentAndFavorites().get(i).getName());
+                p.setUrl(LocalSave.getCommentAndFavorites().get(i).getUrl());
+                p.setId(LocalSave.getCommentAndFavorites().get(i).getId() - 1);
                 pokemons.add(p);
             }
         }

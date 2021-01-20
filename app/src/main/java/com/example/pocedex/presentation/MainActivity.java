@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        Intent intent = new Intent(this, PokeWikia.class);
+        Intent intent = new Intent(this, PokemonsWikiaActivity.class);
         startActivity(intent);
     }
 

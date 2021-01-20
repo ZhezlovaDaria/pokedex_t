@@ -68,13 +68,13 @@ public class Tweet {
     }
 
     public String getEntities(int n) {
-        String m = null;
+        String medias = null;
         try {
-            m = entities.medias.get(n).media_url;
+            medias = entities.medias.get(n).media_url;
         } catch (Exception e) {
             Log.d("Media", e.getMessage());
         }
-        return m;
+        return medias;
     }
 
     public void setReTweet(Tweet retweeted_status) {
