@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -23,35 +22,31 @@ import okhttp3.Response;
 
 public class Network {
 
-    private static String pokemontweet = "https://pokeapi.co/api/v2/pokemon";
-    private static String tweetsnext = "https://pokeapi.co/api/v2/pokemon";
+    private static String pokemonsList = "https://pokeapi.co/api/v2/pokemon";
+    private static String pokemonsListsNext = "https://pokeapi.co/api/v2/pokemon";
     private static String twp = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
     private static String link;
+    private static OkHttpClient client = new OkHttpClient();
     List<Pokemon> pokemons = new ArrayList<>();
-    private static int position = 0;
     private JSONObject json;
 
     public void resetList() {
-        tweetsnext = pokemontweet;
-        position = 0;
+        pokemonsListsNext = pokemonsList;
     }
 
     public List<Pokemon> getPokemonsForList() {
-        link = tweetsnext;
-        AsyncTask connetionTask = new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        link = pokemonsListsNext;
+        AsyncTask<String, String, String> connetionTask = new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         try {
-            String pokemonss = connetionTask.get().toString();
+            String pokemonss = connetionTask.get();
             json = new JSONObject(pokemonss);
             String s = json.toString();
             String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
-
-            tweetsnext = json.get("next").toString();
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                pokemons.add(decodeJSON(jsonArray.getJSONObject(i)));
-                pokemons.get(i).setId(position);
-                position++;
-            }
+            pokemonsListsNext = json.get("next").toString();
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+            Type pokemonType = new TypeToken<ArrayList<Pokemon>>() {}.getType();
+            pokemons = gson.fromJson(result, pokemonType);
             return pokemons;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -68,7 +63,7 @@ public class Network {
         String tweetsString = Utils.exampleString();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        Type tweetsType = new TypeToken<ArrayList<Tweet>>(){}.getType();
+        Type tweetsType = new TypeToken<ArrayList<Tweet>>() {}.getType();
         tweets = gson.fromJson(tweetsString, tweetsType);
         return tweets;
     }
@@ -78,38 +73,22 @@ public class Network {
         String s = Utils.exampleString();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        Type tweetsType = new TypeToken<ArrayList<Tweet>>(){}.getType();
+        Type tweetsType = new TypeToken<ArrayList<Tweet>>() {}.getType();
         tweets = gson.fromJson(s, tweetsType);
         return tweets;
     }
 
     public Pokemon getPokemon(String url) {
         link = url;
-        AsyncTask connetionTask = new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        AsyncTask<String, String, String> connetionTask = new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         try {
-            String s = connetionTask.get().toString();
+            String s = connetionTask.get();
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
-            Pokemon pokemon = gson.fromJson(s, Pokemon.class);
-            return pokemon;
+            return gson.fromJson(s, Pokemon.class);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private Pokemon decodeJSON(JSONObject json) {
-        try {
-            String name = json.get("name").toString();
-            String link = json.get("url").toString();
-            Pokemon p = new Pokemon();
-            p.setName(name);
-            p.setUrl(link);
-            return p;
-
-        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -122,7 +101,6 @@ public class Network {
         }
 
         protected String doInBackground(String... args) {
-            OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(link)
                     .get()
@@ -132,7 +110,7 @@ public class Network {
 
                 return response.body().string();
             } catch (Exception e) {
-                Log.d("Fail Image", "png");
+                Log.d("Fail Image", e.getMessage());
             }
             return null;
         }

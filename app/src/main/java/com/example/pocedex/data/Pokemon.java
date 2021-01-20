@@ -28,6 +28,10 @@ public class Pokemon {
     }
 
     public int getId() {
+        if (id == 0) {
+            String stringId = url.substring(url.lastIndexOf("pokemon/") + 8, url.length() - 1);
+            id = Integer.parseInt(stringId) - 1;
+        }
         return id;
     }
 
@@ -264,7 +268,7 @@ public class Pokemon {
     }
 
     public String getSpriteForList() {
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + (id + 1) + ".png";
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + (getId() + 1) + ".png";
     }
 
 
