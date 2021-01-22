@@ -25,6 +25,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
     ViewPager pager;
     PagerAdapter pagerAdapter;
     static final int PAGE_COUNT = 2;
+    List<Fragment> allFragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,9 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        allFragments = getSupportFragmentManager().getFragments();
+        if (allFragments.size() > 0)
+            ((PageFragment) allFragments.get(1)).updateFavList();
     }
 
     public void toNews(View view) {
@@ -76,7 +80,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
     }
 
     public void updatePokemonList(List<Pokemon> p) {
-        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
+        allFragments = getSupportFragmentManager().getFragments();
         ((PageFragment) allFragments.get(0)).updatePokemonList(p);
     }
 
