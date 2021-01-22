@@ -113,6 +113,8 @@ public class Network {
         }
 
         protected String doInBackground(String... args) {
+            if (link==null||link.equals("null"))
+                return null;
             Request request = new Request.Builder()
                     .url(link)
                     .get()

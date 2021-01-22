@@ -103,7 +103,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         }
     }
 
-    private void updateFavList() {
+    public void updateFavList() {
         pokemons.clear();
         if (LocalSave.getCommentAndFavorites() == null)
             return;
@@ -116,6 +116,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
                 pokemons.add(p);
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
     public void updatePokemonList(List<Pokemon> p) {
