@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.pocedex.R;
+import com.example.pocedex.data.CommentAndFavorite;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
@@ -107,19 +108,22 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         }
     }
 
-    private void updateFavList() {
+    public void updateFavList() {
         pokemons.clear();
-        if (Utils.getLocalSave().getCommentAndFavorites() == null)
+        ArrayList<CommentAndFavorite> commentAndFavorite = Utils.getLocalSave().getCommentAndFavorites();
+        if (commentAndFavorite == null)
             return;
-        for (int i = 0; i < Utils.getLocalSave().getCommentAndFavorites().size(); i++) {
-            if (Utils.getLocalSave().getCommentAndFavorites().get(i).getIsFav()) {
+        int count = commentAndFavorite.size();
+        for (int i = 0; i < count; i++) {
+            if (commentAndFavorite.get(i).getIsFav()) {
                 Pokemon p = new Pokemon();
-                p.setName(Utils.getLocalSave().getCommentAndFavorites().get(i).getName());
-                p.setUrl(Utils.getLocalSave().getCommentAndFavorites().get(i).getUrl());
-                p.setId(Utils.getLocalSave().getCommentAndFavorites().get(i).getId() - 1);
+                p.setName(commentAndFavorite.get(i).getName());
+                p.setUrl(commentAndFavorite.get(i).getUrl());
+                p.setId(commentAndFavorite.get(i).getId() - 1);
                 pokemons.add(p);
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
     public void updatePokemonList(List<Pokemon> p) {
