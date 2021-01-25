@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.data.Tweet;
+import com.example.pocedex.presentation.IUpdatePokemon;
 import com.example.pocedex.presentation.PageFragment;
 import com.example.pocedex.presentation.PokemonCardActivity;
 import com.example.pocedex.presentation.PokemonsWikiaActivity;
@@ -36,7 +37,7 @@ public class Network {
     private String twp = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
     private String link;
     private OkHttpClient client = new OkHttpClient();
-    private Context activityContext;
+    private IUpdatePokemon iUpdatePokemon;
     Handler handler;
     private List<Pokemon> pokemons = new ArrayList<>();
     private JSONObject json;
@@ -45,10 +46,10 @@ public class Network {
         pokemonsListsNext = pokemonsList;
     }
 
-    public void getPokemonsForList(Context context) {
+    public void getPokemonsForList(Context context, IUpdatePokemon callactivity) {
         link = pokemonsListsNext;
-        activityContext = context;
-        handler = new Handler(activityContext.getMainLooper());
+        iUpdatePokemon=callactivity;
+        handler = new Handler(context.getMainLooper());
         Request request = new Request.Builder()
                 .url(link)
                 .get()
@@ -82,7 +83,7 @@ public class Network {
 
                         @Override
                         public void run() {
-                            ((PokemonsWikiaActivity) activityContext).updatePokemonList(pokemons);
+                            iUpdatePokemon.refresh(pokemons);
                         }
 
                     });
@@ -113,10 +114,10 @@ public class Network {
         return tweets;
     }
 
-    public void getPokemon(Context context, String url) {
-        activityContext = context;
+    public void getPokemon(Context context, String url,  IUpdatePokemon callactivity) {
         link = url;
-        handler = new Handler(activityContext.getMainLooper());
+        handler = new Handler(context.getMainLooper());
+        iUpdatePokemon=callactivity;
         Request request = new Request.Builder()
                 .url(link)
                 .get()
@@ -135,12 +136,14 @@ public class Network {
                     try {
                         GsonBuilder builder = new GsonBuilder();
                         Gson gson = builder.create();
-                        final Pokemon pokemon = gson.fromJson(answer, Pokemon.class);
+                        Pokemon pokemon = gson.fromJson(answer, Pokemon.class);
+                        final List<Pokemon> pokemons=new ArrayList<Pokemon>();
+                        pokemons.add(pokemon);
                         handler.post(new Runnable() {
 
                             @Override
                             public void run() {
-                                ((PokemonCardActivity) activityContext).setPokemon(pokemon);
+                                iUpdatePokemon.refresh(pokemons);
                             }
                         });
                     } catch (Exception e) {

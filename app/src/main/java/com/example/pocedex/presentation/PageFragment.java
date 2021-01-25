@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PageFragment extends Fragment implements PokemonListAdapter.ItemClickListener {
+public class PageFragment extends Fragment implements PokemonListAdapter.ItemClickListener, IUpdatePokemon {
 
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
 
@@ -45,16 +45,21 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         super.onCreate(savedInstanceState);
         pageNumber = getArguments().getInt(ARGUMENT_PAGE_NUMBER);
         if (pageNumber == 0) {
-            new Network().getPokemonsForList(this.getActivity());
+            new Network().getPokemonsForList(this.getActivity(), this);
         } else {
             updateFavList();
         }
 
     }
 
+    @Override
+    public void refresh(List<Pokemon> pokemons)
+    {
+        updatePokemonList(pokemons);
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment, null);
 
@@ -72,7 +77,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
                     if (!isLoading) {
                         isLoading = true;
                         if (Utils.isOnline(getActivity())) {
-                            new Network().getPokemonsForList(getActivity());
+                           new Network().getPokemonsForList(getActivity(), PageFragment.this);
                             connetion = true;
                         } else {
                             if (connetion) {

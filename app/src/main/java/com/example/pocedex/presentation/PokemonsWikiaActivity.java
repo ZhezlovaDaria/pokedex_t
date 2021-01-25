@@ -75,11 +75,6 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
         LocalSave.open();
     }
 
-    public void updatePokemonList(List<Pokemon> p) {
-        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
-        ((PageFragment) allFragments.get(0)).updatePokemonList(p);
-    }
-
     public class WikiaFragmentPagerAdapter extends FragmentPagerAdapter {
 
         private WikiaFragmentPagerAdapter(FragmentManager fm) {

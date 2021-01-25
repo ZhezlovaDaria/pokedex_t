@@ -20,8 +20,9 @@ import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.example.pocedex.domain.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PokemonCardActivity extends AppCompatActivity {
+public class PokemonCardActivity extends AppCompatActivity implements IUpdatePokemon {
 
     private static String pokemonlink = "";
     CommentAndFavorite cardCommentAndFavorite;
@@ -38,7 +39,13 @@ public class PokemonCardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pokemonlink = arguments.get("link").toString();
-        new Network().getPokemon(this, pokemonlink);
+        new Network().getPokemon(this, pokemonlink, this);
+    }
+
+    @Override
+    public void refresh(List<Pokemon> pokemons)
+    {
+        setPokemon(pokemons.get(0));
     }
 
     public void setPokemon(Pokemon newPokemon)
