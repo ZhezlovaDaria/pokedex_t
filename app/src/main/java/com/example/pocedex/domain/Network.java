@@ -41,6 +41,8 @@ public class Network {
         link = pokemonsListsNext;
         iUpdatePokemon=callactivity;
         handler = new Handler(context.getMainLooper());
+        if (link == null || link.equals("null"))
+            return;
         Request request = new Request.Builder()
                 .url(link)
                 .get()
@@ -87,6 +89,8 @@ public class Network {
         link = url;
         handler = new Handler(context.getMainLooper());
         iUpdatePokemon=callactivity;
+        if (link == null || link.equals("null"))
+            return;
         Request request = new Request.Builder()
                 .url(link)
                 .get()
