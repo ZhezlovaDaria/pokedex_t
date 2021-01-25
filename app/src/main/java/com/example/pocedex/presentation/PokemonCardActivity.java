@@ -36,7 +36,7 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
             setContentView(R.layout.offline);
             return;
         }
-        setContentView(R.layout.activity_poke_card);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pokemonlink = arguments.get("link").toString();
         new Network().getPokemon(this, pokemonlink, this);
@@ -49,7 +49,6 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
 
     public void setPokemon(Pokemon newPokemon) {
         pokemon = newPokemon;
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
 
         binding.setPokemon(pokemon);
         cardCommentAndFavorite = findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites());
