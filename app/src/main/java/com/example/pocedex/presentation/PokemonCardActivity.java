@@ -43,18 +43,16 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
     }
 
     @Override
-    public void refresh(List<Pokemon> pokemons)
-    {
+    public void refresh(List<Pokemon> pokemons) {
         setPokemon(pokemons.get(0));
     }
 
-    public void setPokemon(Pokemon newPokemon)
-    {
-        pokemon=newPokemon;
+    public void setPokemon(Pokemon newPokemon) {
+        pokemon = newPokemon;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
 
         binding.setPokemon(pokemon);
-        cardCommentAndFavorite = findOnId(pokemon.getId(), LocalSave.getCommentAndFavorites());
+        cardCommentAndFavorite = findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites());
         if (cardCommentAndFavorite == null) {
             cardCommentAndFavorite = new CommentAndFavorite();
             cardCommentAndFavorite.setId(pokemon.getId());
@@ -119,11 +117,11 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
     }
 
     private void save() {
-        if (findOnId(pokemon.getId(), LocalSave.getCommentAndFavorites()) == null) {
-            LocalSave.addToCommentAndFavorites(cardCommentAndFavorite);
+        if (findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites()) == null) {
+            Utils.getLocalSave().addToCommentAndFavorites(cardCommentAndFavorite);
         }
         try {
-            LocalSave.save();
+            Utils.getLocalSave().save();
         } catch (Exception e) {
             Log.d("comfavsave", e.getMessage());
         }

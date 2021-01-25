@@ -13,6 +13,8 @@ public class Utils {
         return APP_PREFERENCES;
     }
 
+    private static LocalSave localSave;
+
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -21,5 +23,13 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+    public static void setLocalSave(LocalSave newLocalSave) {
+        localSave = newLocalSave;
+    }
+
+    public static LocalSave getLocalSave() {
+        return localSave;
     }
 }

@@ -35,7 +35,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
         }
         new Network().resetList();
         setContentView(R.layout.activity_poce_wikia);
-        LocalSave.setSavePreferences(getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE));
+        Utils.setLocalSave(new LocalSave(this));
         commAndFavList();
 
         pager = (ViewPager) findViewById(R.id.pager);
@@ -67,12 +67,8 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    public void toNews(View view) {
-        finish();
-    }
-
     private void commAndFavList() {
-        LocalSave.open();
+        Utils.getLocalSave().open();
     }
 
     public class WikiaFragmentPagerAdapter extends FragmentPagerAdapter {

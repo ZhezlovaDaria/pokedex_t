@@ -1,5 +1,6 @@
 package com.example.pocedex.domain;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -11,11 +12,15 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class LocalSave {
-    private static SharedPreferences SavePreferences;
-    private static ArrayList<CommentAndFavorite> commentAndFavorites = new ArrayList<>();
-    private static String path = "commandfav2";
+    private SharedPreferences SavePreferences;
+    private ArrayList<CommentAndFavorite> commentAndFavorites = new ArrayList<>();
+    private String path = "commandfav2";
 
-    public static void open() {
+    public LocalSave(Context context) {
+        SavePreferences = context.getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
+    }
+
+    public void open() {
         commentAndFavorites.clear();
         try {
             Gson gson = new Gson();
@@ -30,32 +35,23 @@ public class LocalSave {
         }
     }
 
-    public static void save() {
+    public void save() {
         try {
             SharedPreferences.Editor prefsEditor = SavePreferences.edit();
             Gson gson = new Gson();
-            String json = gson.toJson(LocalSave.commentAndFavorites);
+            String json = gson.toJson(commentAndFavorites);
             prefsEditor.putString(path, json);
-            prefsEditor.commit();
+            prefsEditor.apply();
         } catch (Exception e) {
             Log.d("comfavsave", e.getMessage());
         }
     }
 
-    public static ArrayList<CommentAndFavorite> getCommentAndFavorites() {
+    public ArrayList<CommentAndFavorite> getCommentAndFavorites() {
         return commentAndFavorites;
     }
 
-    public static void addToCommentAndFavorites(CommentAndFavorite newCommentAndFavorite) {
+    public void addToCommentAndFavorites(CommentAndFavorite newCommentAndFavorite) {
         commentAndFavorites.add(newCommentAndFavorite);
-    }
-
-
-    public static SharedPreferences getSavePreferences() {
-        return SavePreferences;
-    }
-
-    public static void setSavePreferences(SharedPreferences savePreferences) {
-        SavePreferences = savePreferences;
     }
 }

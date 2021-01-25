@@ -53,8 +53,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
     }
 
     @Override
-    public void refresh(List<Pokemon> pokemons)
-    {
+    public void refresh(List<Pokemon> pokemons) {
         updatePokemonList(pokemons);
     }
 
@@ -77,7 +76,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
                     if (!isLoading) {
                         isLoading = true;
                         if (Utils.isOnline(getActivity())) {
-                           new Network().getPokemonsForList(getActivity(), PageFragment.this);
+                            new Network().getPokemonsForList(getActivity(), PageFragment.this);
                             connetion = true;
                         } else {
                             if (connetion) {
@@ -110,14 +109,14 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
 
     private void updateFavList() {
         pokemons.clear();
-        if (LocalSave.getCommentAndFavorites() == null)
+        if (Utils.getLocalSave().getCommentAndFavorites() == null)
             return;
-        for (int i = 0; i < LocalSave.getCommentAndFavorites().size(); i++) {
-            if (LocalSave.getCommentAndFavorites().get(i).getIsFav()) {
+        for (int i = 0; i < Utils.getLocalSave().getCommentAndFavorites().size(); i++) {
+            if (Utils.getLocalSave().getCommentAndFavorites().get(i).getIsFav()) {
                 Pokemon p = new Pokemon();
-                p.setName(LocalSave.getCommentAndFavorites().get(i).getName());
-                p.setUrl(LocalSave.getCommentAndFavorites().get(i).getUrl());
-                p.setId(LocalSave.getCommentAndFavorites().get(i).getId() - 1);
+                p.setName(Utils.getLocalSave().getCommentAndFavorites().get(i).getName());
+                p.setUrl(Utils.getLocalSave().getCommentAndFavorites().get(i).getUrl());
+                p.setId(Utils.getLocalSave().getCommentAndFavorites().get(i).getId() - 1);
                 pokemons.add(p);
             }
         }
