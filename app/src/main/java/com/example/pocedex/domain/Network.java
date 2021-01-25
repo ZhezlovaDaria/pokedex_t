@@ -2,6 +2,7 @@ package com.example.pocedex.domain;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.pocedex.data.Pokemon;
@@ -15,55 +16,79 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import androidx.fragment.app.FragmentManager;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class Network {
 
-    private static String pokemonsList = "https://pokeapi.co/api/v2/pokemon";
+    private String pokemonsList = "https://pokeapi.co/api/v2/pokemon";
     private static String pokemonsListsNext = "https://pokeapi.co/api/v2/pokemon";
-    private static String twp = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
-    private static String link;
-    private static OkHttpClient client = new OkHttpClient();
-    private static int mode = 0;
-    private static Context activityContext;
-    private static List<Pokemon> pokemons = new ArrayList<>();
-    private static JSONObject json;
+    private String twp = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
+    private String link;
+    private OkHttpClient client = new OkHttpClient();
+    private Context activityContext;
+    Handler handler;
+    private List<Pokemon> pokemons = new ArrayList<>();
+    private JSONObject json;
 
     public void resetList() {
         pokemonsListsNext = pokemonsList;
     }
 
     public void getPokemonsForList(Context context) {
-        mode = 1;
         link = pokemonsListsNext;
         activityContext = context;
-        new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
+        handler = new Handler(activityContext.getMainLooper());
+        Request request = new Request.Builder()
+                .url(link)
+                .get()
+                .build();
+        client.newCall(request).enqueue(new Callback() {
 
-    public static void refreshPokemonsForList(String answer) {
-        try {
-            json = new JSONObject(answer);
-            String s = json.toString();
-            String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
-            pokemonsListsNext = json.get("next").toString();
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            Type pokemonType = new TypeToken<ArrayList<Pokemon>>() {
-            }.getType();
-            pokemons = gson.fromJson(result, pokemonType);
-            ((PokemonsWikiaActivity) activityContext).updatePokemonList(pokemons);
+            @Override
+            public void onFailure(Call request, IOException e) {
+                e.printStackTrace();
+            }
 
-        } catch (Exception e) {
-            Log.d("Exe", e.getMessage());
-        }
+            @Override
+            public void onResponse(Call call,Response response) throws IOException {
+                final String answer = response.body().string();
+                if (response.isSuccessful()) {
+                    try {
+                        json = new JSONObject(answer);
+                        String s = json.toString();
+                        String result = s.substring(s.indexOf('['), s.indexOf(']') + 1);
+                        pokemonsListsNext = json.get("next").toString();
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson gson = builder.create();
+                        Type pokemonType = new TypeToken<ArrayList<Pokemon>>() {
+                        }.getType();
+                        pokemons = gson.fromJson(result, pokemonType);
+
+                    } catch (Exception e) {
+                        Log.d("Exe", e.getMessage());
+                    }
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            ((PokemonsWikiaActivity) activityContext).updatePokemonList(pokemons);
+                        }
+
+                    });
+                }
+            }
+        });
     }
 
     public List<Tweet> getTweetsFeed() {
@@ -89,58 +114,41 @@ public class Network {
     }
 
     public void getPokemon(Context context, String url) {
-        mode = 2;
         activityContext = context;
         link = url;
-        new Connection().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-    }
+        handler = new Handler(activityContext.getMainLooper());
+        Request request = new Request.Builder()
+                .url(link)
+                .get()
+                .build();
+        client.newCall(request).enqueue(new Callback() {
 
-    public static void refreshGetPokemon(String answer) {
-        try {
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            Pokemon pokemon = gson.fromJson(answer, Pokemon.class);
-            ((PokemonCardActivity) activityContext).setPokemon(pokemon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static class Connection extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected String doInBackground(String... args) {
-            Request request = new Request.Builder()
-                    .url(link)
-                    .get()
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-
-                return response.body().string();
-            } catch (Exception e) {
-                Log.d("Fail Image", e.getMessage());
+            @Override
+            public void onFailure(Call request, IOException e) {
+                e.printStackTrace();
             }
-            return null;
-        }
 
-        protected void onPostExecute(String answer) {
+            @Override
+            public void onResponse(Call call,Response response) throws IOException {
+                final String answer = response.body().string();
+                if (response.isSuccessful()) {
+                    try {
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson gson = builder.create();
+                        final Pokemon pokemon = gson.fromJson(answer, Pokemon.class);
+                        handler.post(new Runnable() {
 
-            switch (mode) {
-                case 1:
-                    refreshPokemonsForList(answer);
+                            @Override
+                            public void run() {
+                                ((PokemonCardActivity) activityContext).setPokemon(pokemon);
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.d("Exe", e.getMessage());
+                    }
 
-                    break;
-                case 2:
-                    refreshGetPokemon(answer);
-                    break;
-                default:
-                    mode = 0;
-                    break;
+                }
             }
-        }
+        });
     }
 }
