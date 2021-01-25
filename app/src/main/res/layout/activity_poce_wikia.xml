@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".presentation.PokemonsWikiaActivity">
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="toNews"
-        android:text="News"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_width="0dp"
@@ -23,13 +13,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.viewpager.widget.PagerTabStrip
             android:id="@+id/pagerTabStrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"/>
+            android:layout_gravity="top" />
 
     </androidx.viewpager.widget.ViewPager>
 

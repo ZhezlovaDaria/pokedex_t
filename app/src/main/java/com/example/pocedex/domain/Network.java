@@ -1,16 +1,11 @@
 package com.example.pocedex.domain;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
 import com.example.pocedex.data.Pokemon;
-import com.example.pocedex.data.Tweet;
 import com.example.pocedex.presentation.IUpdatePokemon;
-import com.example.pocedex.presentation.PageFragment;
-import com.example.pocedex.presentation.PokemonCardActivity;
-import com.example.pocedex.presentation.PokemonsWikiaActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -21,9 +16,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import androidx.fragment.app.FragmentManager;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -34,7 +26,6 @@ public class Network {
 
     private String pokemonsList = "https://pokeapi.co/api/v2/pokemon";
     private static String pokemonsListsNext = "https://pokeapi.co/api/v2/pokemon";
-    private String twp = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=Pokemon&count=2";
     private String link;
     private OkHttpClient client = new OkHttpClient();
     private IUpdatePokemon iUpdatePokemon;
@@ -90,28 +81,6 @@ public class Network {
                 }
             }
         });
-    }
-
-    public List<Tweet> getTweetsFeed() {
-        List<Tweet> tweets;
-        String tweetsString = Utils.exampleString();
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        Type tweetsType = new TypeToken<ArrayList<Tweet>>() {
-        }.getType();
-        tweets = gson.fromJson(tweetsString, tweetsType);
-        return tweets;
-    }
-
-    public List<Tweet> getUnreadTweets() {
-        List<Tweet> tweets;
-        String s = Utils.exampleString();
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        Type tweetsType = new TypeToken<ArrayList<Tweet>>() {
-        }.getType();
-        tweets = gson.fromJson(s, tweetsType);
-        return tweets;
     }
 
     public void getPokemon(Context context, String url,  IUpdatePokemon callactivity) {
