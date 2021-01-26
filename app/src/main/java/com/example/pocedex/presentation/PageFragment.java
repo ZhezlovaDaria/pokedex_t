@@ -22,11 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PageFragment extends Fragment implements PokemonListAdapter.ItemClickListener, IUpdatePokemon {
 
-    static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
+    private static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
 
-    int pageNumber;
-    boolean connetion = true;
-    boolean isLoading = false;
+    private int pageNumber;
+    private boolean connetion = true;
+    private boolean isLoading = false;
     List<Pokemon> pokemons = new ArrayList<>();
 
     PokemonListAdapter adapter = new PokemonListAdapter(this.getActivity(), this.pokemons);
@@ -80,7 +80,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
                             if (connetion) {
                                 showToast("No internet connection");
                                 connetion = false;
-                                ((PokemonsWikiaActivity)getActivity()).setOffline();
+                                ((PokemonsWikiaActivity) getActivity()).setOffline();
                             }
                         }
                     }
@@ -95,7 +95,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
 
     public void updateConnection() {
         isLoading = false;
-        connetion=true;
+        connetion = true;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         }
     }
 
-    public void updateFavList() {
+    void updateFavList() {
         pokemons.clear();
         ArrayList<CommentAndFavorite> commentAndFavorite = Utils.getLocalSave().getCommentAndFavorites();
         if (commentAndFavorite == null)
@@ -129,13 +129,9 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         adapter.notifyDataSetChanged();
     }
 
-    public void updatePokemonList(List<Pokemon> p) {
-        if (p.isEmpty())
-            return;
-        else {
-            for (int i = 0; i < p.size(); i++) {
-                pokemons.add(p.get(i));
-            }
+    void updatePokemonList(List<Pokemon> p) {
+        if (!p.isEmpty()) {
+            pokemons.addAll(p);
             adapter.notifyDataSetChanged();
             isLoading = false;
         }

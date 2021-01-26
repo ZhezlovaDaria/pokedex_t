@@ -24,7 +24,7 @@ import java.util.List;
 
 public class PokemonCardActivity extends AppCompatActivity implements IUpdatePokemon {
 
-    private static String pokemonlink = "";
+    String pokemonlink = "";
     CommentAndFavorite cardCommentAndFavorite;
     Pokemon pokemon;
     ActivityPokeCardBinding binding;
@@ -63,7 +63,7 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
         setPokemon(pokemons.get(0));
     }
 
-    public void setPokemon(Pokemon newPokemon) {
+    private void setPokemon(Pokemon newPokemon) {
         pokemon = newPokemon;
 
         binding.setPokemon(pokemon);
@@ -88,7 +88,7 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
         }
     }
 
-    public CommentAndFavorite findOnId(
+    private CommentAndFavorite findOnId(
             int id, ArrayList<CommentAndFavorite> caf) {
         try {
             for (CommentAndFavorite c : caf) {
@@ -110,7 +110,7 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
         hideKeyboard(this);
     }
 
-    public static void hideKeyboard(Activity activity) {
+    private static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
         if (view == null) {
