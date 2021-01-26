@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import com.example.pocedex.R;
 import com.example.pocedex.data.CommentAndFavorite;
 import com.example.pocedex.data.Pokemon;
-import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
 import com.example.pocedex.domain.Utils;
 
@@ -78,11 +76,11 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
                         isLoading = true;
                         if (Utils.isOnline(getActivity())) {
                             new Network().getPokemonsForList(getActivity(), PageFragment.this);
-                            connetion = true;
                         } else {
                             if (connetion) {
                                 showToast("No internet connection");
                                 connetion = false;
+                                ((PokemonsWikiaActivity)getActivity()).setOffline();
                             }
                         }
                     }
@@ -93,6 +91,11 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    public void updateConnection() {
+        isLoading = false;
+        connetion=true;
     }
 
     @Override

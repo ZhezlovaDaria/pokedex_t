@@ -32,15 +32,31 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!Utils.isOnline(this)) {
-            setContentView(R.layout.offline);
-            return;
+        if (Utils.isOnline(this)) {
+            setOnline();
+        } else {
+            setOffline();
         }
+
+    }
+
+    public void checkOnline(View view) {
+        if (Utils.isOnline(this))
+            setOnline();
+
+    }
+
+    private void setOffline() {
+        setContentView(R.layout.offline);
+    }
+
+    private void setOnline() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
         Bundle arguments = getIntent().getExtras();
         pokemonlink = arguments.get("link").toString();
         new Network().getPokemon(this, pokemonlink, this);
     }
+
 
     @Override
     public void refresh(List<Pokemon> pokemons) {

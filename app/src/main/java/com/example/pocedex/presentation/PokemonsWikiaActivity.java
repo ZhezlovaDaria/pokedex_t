@@ -26,6 +26,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
     PagerAdapter pagerAdapter;
     static final int PAGE_COUNT = 2;
     List<Fragment> allFragments;
+    boolean listvisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,31 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
             return;
         }
         new Network().resetList();
+        setOnline();
+        listvisible = true;
+
+    }
+
+    public void checkOnline(View view) {
+        if (Utils.isOnline(this)) {
+            if (!listvisible)
+                setOnline();
+            else {
+                findViewById(R.id.tryreconnect).setVisibility(View.INVISIBLE);
+                if (allFragments != null && allFragments.size() > 0)
+                    ((PageFragment) allFragments.get(0)).updateConnection();
+            }
+        }
+    }
+
+    public void setOffline() {
+        findViewById(R.id.tryreconnect).setVisibility(View.VISIBLE);
+    }
+
+    private void setOnline() {
+        listvisible = true;
         setContentView(R.layout.activity_poce_wikia);
+        findViewById(R.id.tryreconnect).setVisibility(View.INVISIBLE);
         Utils.setLocalSave(new LocalSave(this));
         commAndFavList();
 
@@ -60,7 +85,6 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-
     }
 
     @Override
