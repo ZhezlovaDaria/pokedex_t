@@ -27,7 +27,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
     private int pageNumber;
     private boolean connetion = true;
     private boolean isLoading = false;
-    List<Pokemon> pokemons = new ArrayList<>();
+    private List<Pokemon> pokemons = new ArrayList<>();
 
     PokemonListAdapter adapter = new PokemonListAdapter(this.getActivity(), this.pokemons);
 
@@ -62,7 +62,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         View view = inflater.inflate(R.layout.fragment, null);
 
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        RecyclerView recyclerView = view.findViewById(R.id.list);
         final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);

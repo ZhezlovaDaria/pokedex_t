@@ -3,7 +3,6 @@ package com.example.pocedex.domain;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.NetworkRequest;
 
 
 public class Utils {

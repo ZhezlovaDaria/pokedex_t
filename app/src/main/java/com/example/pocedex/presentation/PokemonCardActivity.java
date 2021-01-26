@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.pocedex.R;
 import com.example.pocedex.data.CommentAndFavorite;
-import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
@@ -104,7 +102,6 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
 
     public void saveComm(View view) {
         cardCommentAndFavorite.setComment(binding.UsCom.getText().toString());
-        //cardCommentAndFavorite.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
         showToast("Your comment save");
         save();
         hideKeyboard(this);

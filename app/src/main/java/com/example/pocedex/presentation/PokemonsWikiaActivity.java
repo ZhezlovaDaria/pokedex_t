@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.view.View;
 import com.example.pocedex.R;
 import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
-import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.domain.Utils;
 
 import java.util.List;
@@ -64,7 +62,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
         Utils.setLocalSave(new LocalSave(this));
         commAndFavList();
 
-        pager = (ViewPager) findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
         pagerAdapter = new WikiaFragmentPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
 
