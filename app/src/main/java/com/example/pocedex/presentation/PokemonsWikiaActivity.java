@@ -82,14 +82,6 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         allFragments = getSupportFragmentManager().getFragments();
-        if (allFragments.size() > 0)
-            ((PageFragment) allFragments.get(1)).updateFavList();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        allFragments = getSupportFragmentManager().getFragments();
         if (allFragments.size() > 1)
             ((PageFragment) allFragments.get(1)).updateFavList();
     }
