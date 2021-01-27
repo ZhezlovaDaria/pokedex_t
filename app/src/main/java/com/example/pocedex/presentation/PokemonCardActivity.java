@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,17 +12,17 @@ import android.widget.Toast;
 
 import com.example.pocedex.R;
 import com.example.pocedex.data.CommentAndFavorite;
-import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.example.pocedex.domain.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PokemonCardActivity extends AppCompatActivity {
+public class PokemonCardActivity extends AppCompatActivity implements IUpdatePokemon {
 
-    private static String pokemonlink = "";
+    String pokemonlink = "";
     CommentAndFavorite cardCommentAndFavorite;
     Pokemon pokemon;
     ActivityPokeCardBinding binding;
@@ -31,23 +30,42 @@ public class PokemonCardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!Utils.isOnline(this)) {
-            setContentView(R.layout.offline);
-            return;
+        if (Utils.isOnline(this)) {
+            setOnline();
+        } else {
+            setOffline();
         }
-        setContentView(R.layout.activity_poke_card);
-        Bundle arguments = getIntent().getExtras();
-        pokemonlink = arguments.get("link").toString();
-        new Network().getPokemon(this, pokemonlink);
+
     }
 
-    public void setPokemon(Pokemon newPokemon)
-    {
-        pokemon=newPokemon;
+    public void checkOnline(View view) {
+        if (Utils.isOnline(this))
+            setOnline();
+
+    }
+
+    private void setOffline() {
+        setContentView(R.layout.offline);
+    }
+
+    private void setOnline() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card);
+        Bundle arguments = getIntent().getExtras();
+        pokemonlink = arguments.get("link").toString();
+        new Network().getPokemon(this, pokemonlink, this);
+    }
+
+
+    @Override
+    public void refresh(List<Pokemon> pokemons) {
+        setPokemon(pokemons.get(0));
+    }
+
+    private void setPokemon(Pokemon newPokemon) {
+        pokemon = newPokemon;
 
         binding.setPokemon(pokemon);
-        cardCommentAndFavorite = findOnId(pokemon.getId(), LocalSave.getCommentAndFavorites());
+        cardCommentAndFavorite = findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites());
         if (cardCommentAndFavorite == null) {
             cardCommentAndFavorite = new CommentAndFavorite();
             cardCommentAndFavorite.setId(pokemon.getId());
@@ -68,7 +86,7 @@ public class PokemonCardActivity extends AppCompatActivity {
         }
     }
 
-    public CommentAndFavorite findOnId(
+    private CommentAndFavorite findOnId(
             int id, ArrayList<CommentAndFavorite> caf) {
         try {
             for (CommentAndFavorite c : caf) {
@@ -84,13 +102,12 @@ public class PokemonCardActivity extends AppCompatActivity {
 
     public void saveComm(View view) {
         cardCommentAndFavorite.setComment(binding.UsCom.getText().toString());
-        //cardCommentAndFavorite.setComment(((EditText) findViewById(R.id.UsCom)).getText().toString());
         showToast("Your comment save");
         save();
         hideKeyboard(this);
     }
 
-    public static void hideKeyboard(Activity activity) {
+    private static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
         if (view == null) {
@@ -112,11 +129,11 @@ public class PokemonCardActivity extends AppCompatActivity {
     }
 
     private void save() {
-        if (findOnId(pokemon.getId(), LocalSave.getCommentAndFavorites()) == null) {
-            LocalSave.addToCommentAndFavorites(cardCommentAndFavorite);
+        if (findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites()) == null) {
+            Utils.getLocalSave().addToCommentAndFavorites(cardCommentAndFavorite);
         }
         try {
-            LocalSave.save();
+            Utils.getLocalSave().save();
         } catch (Exception e) {
             Log.d("comfavsave", e.getMessage());
         }

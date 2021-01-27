@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">pocedex</string>
     <string name="noincon">No internet connection</string>
+    <string name="reconnect">Try again</string>
 </resources>
