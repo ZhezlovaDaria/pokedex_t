@@ -103,6 +103,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         }
     }
 
+
     void updateFavList() {
         pokemons.clear();
         ArrayList<CommentAndFavorite> commentAndFavorite = Utils.getLocalSave().getCommentAndFavorites();

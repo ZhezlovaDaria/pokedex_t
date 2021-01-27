@@ -79,12 +79,11 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 0) {
-            super.onBackPressed();
-        } else {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-        }
+    protected void onStart() {
+        super.onStart();
+        allFragments = getSupportFragmentManager().getFragments();
+        if (allFragments.size() > 0)
+            ((PageFragment) allFragments.get(1)).updateFavList();
     }
 
     @Override
