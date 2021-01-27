@@ -31,14 +31,6 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
 
     PokemonListAdapter adapter = new PokemonListAdapter(this.getActivity(), this.pokemons);
 
-    static PageFragment newInstance(int page) {
-        PageFragment pageFragment = new PageFragment();
-        Bundle arguments = new Bundle();
-        arguments.putInt(ARGUMENT_PAGE_NUMBER, page);
-        pageFragment.setArguments(arguments);
-        return pageFragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +51,7 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment, null);
+        View view = inflater.inflate(R.layout.fragment, container, false);
 
 
         RecyclerView recyclerView = view.findViewById(R.id.list);

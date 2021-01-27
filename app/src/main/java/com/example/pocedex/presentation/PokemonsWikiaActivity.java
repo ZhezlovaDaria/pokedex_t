@@ -1,30 +1,31 @@
 package com.example.pocedex.presentation;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.pocedex.R;
 import com.example.pocedex.domain.LocalSave;
 import com.example.pocedex.domain.Network;
 import com.example.pocedex.domain.Utils;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.List;
 
 public class PokemonsWikiaActivity extends AppCompatActivity {
 
-    ViewPager pager;
-    PagerAdapter pagerAdapter;
     static final int PAGE_COUNT = 2;
     List<Fragment> allFragments;
     boolean listvisible = false;
+    private ViewPager2 viewPager;
+    private FragmentStateAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,34 +63,35 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
         Utils.setLocalSave(new LocalSave(this));
         commAndFavList();
 
-        pager = findViewById(R.id.pager);
-        pagerAdapter = new WikiaFragmentPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
+        viewPager = findViewById(R.id.pager);
+        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
 
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    if (position == 0)
+                        tab.setText("All");
+                    else tab.setText("Favorite");
+                }
+        ).attach();
 
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    }
 
-            @Override
-            public void onPageSelected(int position) {
-                Log.d("", "position = " + position);
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         allFragments = getSupportFragmentManager().getFragments();
-        if (allFragments.size() > 0)
+        if (allFragments.size() > 1)
             ((PageFragment) allFragments.get(1)).updateFavList();
     }
 
@@ -97,27 +99,24 @@ public class PokemonsWikiaActivity extends AppCompatActivity {
         Utils.getLocalSave().open();
     }
 
-    public class WikiaFragmentPagerAdapter extends FragmentPagerAdapter {
+    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+        public ScreenSlidePagerAdapter(FragmentActivity fa) {
+            super(fa);
+        }
 
-        private WikiaFragmentPagerAdapter(FragmentManager fm) {
-            super(fm);
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            Fragment fragment = new PageFragment();
+            Bundle args = new Bundle();
+            args.putInt("arg_page_number", position);
+            fragment.setArguments(args);
+            return fragment;
         }
 
         @Override
-        public Fragment getItem(int position) {
-            return PageFragment.newInstance(position);
-        }
-
-        @Override
-        public int getCount() {
+        public int getItemCount() {
             return PAGE_COUNT;
         }
-
-        public CharSequence getPageTitle(int position) {
-            if (position == 0)
-                return "All";
-            else return "Favorite";
-        }
-
     }
 }
