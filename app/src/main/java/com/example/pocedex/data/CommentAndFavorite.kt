@@ -70,9 +70,8 @@ class CommentAndFavorite(_name: String?="", _id: Int=0, _url: String?="", _is_fa
     override fun describeContents(): Int {
         return 0
     }
-    @JvmField
-    val CREATOR: Parcelable.Creator<CommentAndFavorite> = object : Parcelable.Creator<CommentAndFavorite> {
 
+    companion object CREATOR: Parcelable.Creator<CommentAndFavorite> {
         override fun createFromParcel(source: Parcel): CommentAndFavorite {
             val name = source.readString()
             val id = source.readInt()
