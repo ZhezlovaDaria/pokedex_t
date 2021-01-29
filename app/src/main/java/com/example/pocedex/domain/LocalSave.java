@@ -15,6 +15,8 @@ public class LocalSave {
     private SharedPreferences SavePreferences;
     private ArrayList<CommentAndFavorite> commentAndFavorites = new ArrayList<>();
     private String path = "commandfav2";
+    private String pathMenu = "menu";
+    private static boolean showDialog = true;
 
     public LocalSave(Context context) {
         SavePreferences = context.getSharedPreferences(Utils.getPreferenses(), Context.MODE_PRIVATE);
@@ -45,6 +47,34 @@ public class LocalSave {
         } catch (Exception e) {
             Log.d("comfavsave", e.getMessage());
         }
+    }
+
+    public void openMenu() {
+        try {
+            String json = SavePreferences.getString(pathMenu, "");
+            if (!json.equals("")) {
+                showDialog = Boolean.valueOf(json);
+            }
+        } catch (Exception e) {
+            Log.d("prefs", e.getMessage());
+        }
+    }
+
+    public void saveMenu(boolean show) {
+        try {
+            showDialog = show;
+            SharedPreferences.Editor prefsEditor = SavePreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(showDialog);
+            prefsEditor.putString(pathMenu, json);
+            prefsEditor.apply();
+        } catch (Exception e) {
+            Log.d("menusave", e.getMessage());
+        }
+    }
+
+    public boolean getShowDialod() {
+        return showDialog;
     }
 
     public ArrayList<CommentAndFavorite> getCommentAndFavorites() {

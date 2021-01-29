@@ -39,7 +39,7 @@ public class Utils {
         notRandom = new ArrayList<Integer>();
         for (int i = 0; i < commentAndFavorite.size(); i++) {
             if (commentAndFavorite.get(i).getIsFav())
-            notRandom.add(commentAndFavorite.get(i).getId());
+                notRandom.add(commentAndFavorite.get(i).getId());
         }
         return notRandom;
     }
@@ -76,5 +76,14 @@ public class Utils {
         } catch (Exception e) {
             Log.d("comfavsave", e.getMessage());
         }
+    }
+
+    public static void saveShowDialog(boolean show) {
+        localSave.saveMenu(show);
+    }
+
+    public static boolean openShowDialog() {
+        localSave.openMenu();
+        return localSave.getShowDialod();
     }
 }

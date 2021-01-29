@@ -14,6 +14,9 @@ import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +45,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
     private String linkRandom;
     private Dialog pokemonOfDayDialog;
     private int fullCount = 1118; //это число есть в списке покемонов, но оно не успевает подгрузиться перед вызовом рандомайзера...
+    private boolean showPokemonOfDay = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,30 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
         setOnline();
         listvisible = true;
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        menu.getItem(0).setChecked(showPokemonOfDay);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.pokemonofdaycheck) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                showPokemonOfDay = false;
+            } else {
+                item.setChecked(true);
+                showPokemonOfDay = true;
+            }
+            Utils.saveShowDialog(showPokemonOfDay);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void checkOnline(View view) {
@@ -92,7 +120,9 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
                     else tab.setText("Favorite");
                 }
         ).attach();
-        repeat();
+        showPokemonOfDay = Utils.openShowDialog();
+        if (showPokemonOfDay)
+            repeat();
     }
 
     @Override
@@ -103,7 +133,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
     @Override
     public void repeat() {
         List<Integer> notRandom = Utils.getNotRandomNumbers();
-        int randomNumber = 1;
+        int randomNumber = random.nextInt(fullCount) + 1;
         while (notRandom.contains(randomNumber))
             randomNumber = random.nextInt(fullCount) + 1;
         linkRandom = "https://pokeapi.co/api/v2/pokemon/" + randomNumber + "/";
