@@ -15,8 +15,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.pocedex.R;
+import com.example.pocedex.data.CommentAndFavorite;
 import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.databinding.PokemonOfDayBinding;
 import com.example.pocedex.domain.LocalSave;
@@ -36,6 +38,10 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
     private ViewPager2 viewPager;
     private FragmentStateAdapter pagerAdapter;
     final Random random = new Random();
+    private Pokemon pokemon;
+    private String linkRandom;
+    private Dialog pokemonOfDayDialog;
+    private int fullCount = 1118; //это число есть в списке покемонов, но оно не успевает подгрузиться перед вызовом рандомайзера...
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +92,7 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
                     else tab.setText("Favorite");
                 }
         ).attach();
-        new Network().getPokemon(this, "https://pokeapi.co/api/v2/pokemon/" + (random.nextInt(1118) + 1) + "/", this);
-        Log.d("link", "https://pokeapi.co/api/v2/pokemon/" + (random.nextInt(1118) + 1) + "/");
+        repeat();
     }
 
     @Override
@@ -95,8 +100,20 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
         setPokemonOfDay(pokemons.get(0));
     }
 
-    public void setPokemonOfDay(Pokemon pokemon) {
-        Dialog pokemonOfDayDialog = new Dialog(this);
+    @Override
+    public void repeat() {
+        List<Integer> notRandom = Utils.getNotRandomNumbers();
+        int randomNumber = 1;
+        while (notRandom.contains(randomNumber))
+            randomNumber = random.nextInt(fullCount) + 1;
+        linkRandom = "https://pokeapi.co/api/v2/pokemon/" + randomNumber + "/";
+        Log.d("link", linkRandom);
+        new Network().getPokemon(this, linkRandom, this);
+    }
+
+    public void setPokemonOfDay(Pokemon newpokemon) {
+        pokemon = newpokemon;
+        pokemonOfDayDialog = new Dialog(this);
         PokemonOfDayBinding binding = PokemonOfDayBinding.inflate(LayoutInflater.from(this));
         binding.setPokemon(pokemon);
         pokemonOfDayDialog.setContentView(binding.getRoot());
@@ -104,6 +121,19 @@ public class PokemonsWikiaActivity extends AppCompatActivity implements IUpdateP
         InsetDrawable inset = new InsetDrawable(back, 40);
         pokemonOfDayDialog.getWindow().setBackgroundDrawable(inset);
         pokemonOfDayDialog.show();
+    }
+
+    public void saveToFavorite(View view) {
+        CommentAndFavorite commentAndFavorite = Utils.findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites());
+        if (commentAndFavorite == null) {
+            commentAndFavorite = new CommentAndFavorite(pokemon.getName(), pokemon.getId(),
+                    linkRandom, true, null);
+        }
+        commentAndFavorite.setIsFav(true);
+        Utils.save(pokemon, commentAndFavorite);
+        Toast toast = Toast.makeText(this, "Save in Fav", Toast.LENGTH_LONG);
+        toast.show();
+        pokemonOfDayDialog.dismiss();
     }
 
     @Override

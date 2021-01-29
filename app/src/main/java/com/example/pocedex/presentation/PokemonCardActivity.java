@@ -5,7 +5,6 @@ import androidx.databinding.DataBindingUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -17,7 +16,6 @@ import com.example.pocedex.data.Pokemon;
 import com.example.pocedex.databinding.ActivityPokeCardBinding;
 import com.example.pocedex.domain.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonCardActivity extends AppCompatActivity implements IUpdatePokemon {
@@ -65,7 +63,7 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
         pokemon = newPokemon;
 
         binding.setPokemon(pokemon);
-        cardCommentAndFavorite = findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites());
+        cardCommentAndFavorite = Utils.findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites());
         if (cardCommentAndFavorite == null) {
             cardCommentAndFavorite = new CommentAndFavorite();
             cardCommentAndFavorite.setId(pokemon.getId());
@@ -86,24 +84,14 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
         }
     }
 
-    private CommentAndFavorite findOnId(
-            int id, ArrayList<CommentAndFavorite> caf) {
-        try {
-            for (CommentAndFavorite c : caf) {
-                if (c.equals(id)) {
-                    return c;
-                }
-            }
-        } catch (Exception e) {
-            Log.d("", e.getMessage());
-        }
-        return null;
+    @Override
+    public void repeat() {
     }
 
     public void saveComm(View view) {
         cardCommentAndFavorite.setComment(binding.UsCom.getText().toString());
         showToast("Your comment save");
-        save();
+        Utils.save(pokemon, cardCommentAndFavorite);
         hideKeyboard(this);
     }
 
@@ -125,18 +113,7 @@ public class PokemonCardActivity extends AppCompatActivity implements IUpdatePok
             binding.favBtn.setImageResource(android.R.drawable.star_big_off);
             showToast("Delete from Fav");
         }
-        save();
-    }
-
-    private void save() {
-        if (findOnId(pokemon.getId(), Utils.getLocalSave().getCommentAndFavorites()) == null) {
-            Utils.getLocalSave().addToCommentAndFavorites(cardCommentAndFavorite);
-        }
-        try {
-            Utils.getLocalSave().save();
-        } catch (Exception e) {
-            Log.d("comfavsave", e.getMessage());
-        }
+        Utils.save(pokemon, cardCommentAndFavorite);
     }
 
     private void showToast(String mes) {

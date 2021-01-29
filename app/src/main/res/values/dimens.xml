@@ -15,4 +15,6 @@
     <dimen name="sprite">100dp</dimen>
     <dimen name="spritebig">200dp</dimen>
     <dimen name="card">200dp</dimen>
+    <dimen name="round_side_radius">10dp</dimen>
+    <dimen name="round_radius">50dp</dimen>
 </resources>

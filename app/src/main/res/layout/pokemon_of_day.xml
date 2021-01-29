@@ -386,6 +386,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:onClick="saveToFavorite"
             android:text="Save to Favorite"
             app:layout_constraintEnd_toEndOf="@id/bottomlayout" />
     </LinearLayout>
