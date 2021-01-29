@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -39,7 +40,7 @@ public class Network {
 
     public void getPokemonsForList(Context context, IUpdatePokemon callactivity) {
         link = pokemonsListsNext;
-        iUpdatePokemon=callactivity;
+        iUpdatePokemon = callactivity;
         handler = new Handler(context.getMainLooper());
         if (link == null || link.equals("null"))
             return;
@@ -55,7 +56,7 @@ public class Network {
             }
 
             @Override
-            public void onResponse(Call call,Response response) throws IOException {
+            public void onResponse(Call call, Response response) throws IOException {
                 final String answer = response.body().string();
                 if (response.isSuccessful()) {
                     try {
@@ -85,10 +86,10 @@ public class Network {
         });
     }
 
-    public void getPokemon(Context context, String url,  IUpdatePokemon callactivity) {
+    public void getPokemon(Context context, String url, IUpdatePokemon callactivity) {
         link = url;
         handler = new Handler(context.getMainLooper());
-        iUpdatePokemon=callactivity;
+        iUpdatePokemon = callactivity;
         if (link == null || link.equals("null"))
             return;
         Request request = new Request.Builder()
@@ -103,20 +104,32 @@ public class Network {
             }
 
             @Override
-            public void onResponse(Call call,Response response) throws IOException {
+            public void onResponse(Call call, Response response) throws IOException {
                 final String answer = response.body().string();
                 if (response.isSuccessful()) {
                     try {
                         GsonBuilder builder = new GsonBuilder();
                         Gson gson = builder.create();
                         Pokemon pokemon = gson.fromJson(answer, Pokemon.class);
-                        final List<Pokemon> pokemons=new ArrayList<Pokemon>();
+                        final List<Pokemon> pokemons = new ArrayList<Pokemon>();
                         pokemons.add(pokemon);
                         handler.post(new Runnable() {
 
                             @Override
                             public void run() {
                                 iUpdatePokemon.refresh(pokemons);
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.d("Exe", e.getMessage());
+                    }
+                } else {
+                    try {
+                        handler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                iUpdatePokemon.repeat();
                             }
                         });
                     } catch (Exception e) {

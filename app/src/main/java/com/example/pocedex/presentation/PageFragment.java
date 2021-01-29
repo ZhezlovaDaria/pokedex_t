@@ -134,4 +134,8 @@ public class PageFragment extends Fragment implements PokemonListAdapter.ItemCli
         Toast toast = Toast.makeText(this.getActivity(), mes, Toast.LENGTH_LONG);
         toast.show();
     }
+
+    @Override
+    public void repeat() {
+    }
 }

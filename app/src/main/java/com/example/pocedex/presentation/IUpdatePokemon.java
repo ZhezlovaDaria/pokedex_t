@@ -8,4 +8,6 @@ public interface IUpdatePokemon {
 
     void refresh(List<Pokemon> pokemons);
 
+    void repeat();
+
 }
