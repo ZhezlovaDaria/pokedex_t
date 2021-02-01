@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@{pokemon.getName()}"
+                    android:text="@{pokemon.name}"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_big_size" />
 
@@ -72,7 +72,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text='@{"base exp " +String.valueOf(pokemon.getBe())}'
+                        android:text='@{"base exp " +String.valueOf(pokemon.base_experience)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
 
@@ -81,7 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text='@{"order " +String.valueOf(pokemon.getOrder())}'
+                        android:text='@{"order " +String.valueOf(pokemon.order)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
 
@@ -90,7 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text='@{"height " +String.valueOf(pokemon.getHeight())}'
+                        android:text='@{"height " +String.valueOf(pokemon.height)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
 
@@ -99,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text='@{"weight " +String.valueOf(pokemon.getWeight())}'
+                        android:text='@{"weight " +String.valueOf(pokemon.weight)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>

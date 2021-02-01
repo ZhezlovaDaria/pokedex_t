@@ -57,18 +57,18 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
         pokemon = newPokemon
 
         binding.pokemon = pokemon
-        cardCommentAndFavorite = Utils.findOnId(pokemon.getId(), Utils.localSave!!.getCommentAndFavorites())
+        cardCommentAndFavorite = Utils.findOnId(pokemon.safeId, Utils.localSave!!.getCommentAndFavorites())
         if (cardCommentAndFavorite == null) {
             cardCommentAndFavorite = CommentAndFavorite()
-            cardCommentAndFavorite!!.setId(pokemon.getId())
-            cardCommentAndFavorite!!.setName(pokemon.getName()!!)
-            cardCommentAndFavorite!!.setUrl(pokemonlink)
+            cardCommentAndFavorite!!.id = pokemon.safeId
+            cardCommentAndFavorite!!.name = pokemon.name!!
+            cardCommentAndFavorite!!.url = pokemonlink
         }
-        if (cardCommentAndFavorite!!.getIsFav()) {
+        if (cardCommentAndFavorite!!.is_favorite) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on)
         }
-        if (cardCommentAndFavorite!!.getComment() != null) {
-            binding.UsCom.setText(cardCommentAndFavorite!!.getComment())
+        if (cardCommentAndFavorite!!.comment != null) {
+            binding.UsCom.setText(cardCommentAndFavorite!!.comment)
         }
         if (pokemon.getSprite(5) == null) {
             binding.sp5.visibility = View.GONE
@@ -81,7 +81,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     override fun repeat() {}
 
     fun saveComm(view: View) {
-        cardCommentAndFavorite!!.setComment(binding.UsCom.text.toString())
+        cardCommentAndFavorite!!.comment = binding.UsCom.text.toString()
         showToast("Your comment save")
         Utils.save(pokemon, cardCommentAndFavorite!!)
         hideKeyboard(this)
@@ -97,8 +97,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun saveFav(view: View) {
-        cardCommentAndFavorite!!.setIsFav(!cardCommentAndFavorite!!.getIsFav())
-        if (cardCommentAndFavorite!!.getIsFav()) {
+        cardCommentAndFavorite!!.is_favorite = (!cardCommentAndFavorite!!.is_favorite)
+        if (cardCommentAndFavorite!!.is_favorite) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on)
             showToast("Save in Fav")
         } else {

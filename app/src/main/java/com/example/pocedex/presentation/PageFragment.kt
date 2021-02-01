@@ -81,7 +81,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     override fun onItemClick(view: View, position: Int) {
         try {
             val link: String?
-            link = adapter?.getPokemon(position)?.getUrl()
+            link = adapter?.getPokemon(position)?.url
             val intent = Intent(this.activity, PokemonCardActivity::class.java)
             intent.putExtra("link", link)
             startActivity(intent)
@@ -97,11 +97,11 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
         val commentAndFavorite = Utils.localSave!!.getCommentAndFavorites() ?: return
         val count = commentAndFavorite.size
         for (i in 0 until count) {
-            if (commentAndFavorite[i].getIsFav()) {
+            if (commentAndFavorite[i].is_favorite) {
                 val p = Pokemon()
-                p.setName(commentAndFavorite[i].getName()!!)
-                p.setUrl(commentAndFavorite[i].getUrl()!!)
-                p.setId(commentAndFavorite[i].getId() - 1)
+                p.name=commentAndFavorite[i].name
+                p.url=commentAndFavorite[i].url
+                p.id=(commentAndFavorite[i].id - 1)
                 pokemons.add(p)
             }
         }

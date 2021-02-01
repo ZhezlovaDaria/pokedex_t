@@ -21,8 +21,8 @@ internal open class Utils {
                 val commentAndFavorite = localSave!!.getCommentAndFavorites()
                 notRandom = ArrayList()
                 for (i in commentAndFavorite.indices) {
-                    if (commentAndFavorite[i].getIsFav())
-                        notRandom!!.add(commentAndFavorite[i].getId())
+                    if (commentAndFavorite[i].is_favorite)
+                        notRandom!!.add(commentAndFavorite[i].id)
                 }
                 return notRandom
             }
@@ -51,7 +51,7 @@ internal open class Utils {
         }
 
         fun save(pokemon: Pokemon, commentAndFavorite: CommentAndFavorite) {
-            val commentAndFavorite1Check = findOnId(pokemon.getId(), localSave!!.getCommentAndFavorites())
+            val commentAndFavorite1Check = findOnId(pokemon.id, localSave!!.getCommentAndFavorites())
             if (commentAndFavorite1Check == null) {
                 localSave!!.addToCommentAndFavorites(commentAndFavorite)
             }

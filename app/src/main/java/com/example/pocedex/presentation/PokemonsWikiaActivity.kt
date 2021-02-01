@@ -141,12 +141,12 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun saveToFavorite(view: View) {
-        var commentAndFavorite = Utils.findOnId(pokemon!!.getId(), Utils.localSave!!.getCommentAndFavorites())
+        var commentAndFavorite = Utils.findOnId(pokemon!!.id, Utils.localSave!!.getCommentAndFavorites())
         if (commentAndFavorite == null) {
-            commentAndFavorite = CommentAndFavorite(pokemon!!.getName(), pokemon!!.getId(),
+            commentAndFavorite = CommentAndFavorite(pokemon!!.name, pokemon!!.id,
                     linkRandom, true, null)
         }
-        commentAndFavorite!!.setIsFav(true)
+        commentAndFavorite!!.is_favorite=true
         Utils.save(pokemon!!, commentAndFavorite!!)
         val toast = Toast.makeText(this, "Save in Fav", Toast.LENGTH_LONG)
         toast.show()

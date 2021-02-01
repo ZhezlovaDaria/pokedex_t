@@ -3,84 +3,23 @@ package com.example.pocedex.data
 import android.os.Parcel
 import android.os.Parcelable
 
-class CommentAndFavorite(_name: String?="", _id: Int=0, _url: String?="", _is_favorite: Boolean=false, _comment: String?="") : Parcelable
-{
+data class CommentAndFavorite(var name: String? = "", var id: Int = 0, var url: String? = "", var is_favorite: Boolean = false, var comment: String? = "") : Parcelable {
 
-    private var name: String? = ""
-    private var id: Int = 0
-    private var url: String? = ""
-    private var is_favorite = false
-    private var comment: String? = ""
-
-    init
-    {
-        name = _name;
-        id = _id;
-        url = _url;
-        is_favorite = _is_favorite;
-        comment = _comment;
-    }
 
     fun equals(id: Int): Boolean {
-        return if (this.id == id) {
-            true
-        } else false
-    }
-
-    fun setId(id: Int) {
-        this.id = id
-    }
-
-    fun getId(): Int {
-        return id
-    }
-
-    fun setName(name: String) {
-        this.name = name
-    }
-
-    fun getName(): String? {
-        return name
-    }
-
-    fun setUrl(link: String) {
-        this.url = link
-    }
-
-    fun getUrl(): String? {
-        return url
-    }
-
-    fun setIsFav(isfavorite: Boolean) {
-        is_favorite = isfavorite
-    }
-
-    fun getIsFav(): Boolean {
-        return is_favorite
-    }
-
-    fun setComment(comment: String) {
-        this.comment = comment
-    }
-
-    fun getComment(): String? {
-        return comment
+        return this.id == id
     }
 
     override fun describeContents(): Int {
         return 0
     }
 
-    companion object CREATOR: Parcelable.Creator<CommentAndFavorite> {
+    companion object CREATOR : Parcelable.Creator<CommentAndFavorite> {
         override fun createFromParcel(source: Parcel): CommentAndFavorite {
             val name = source.readString()
             val id = source.readInt()
             val url = source.readString()
-            val is_fav: Boolean
-            if (source.readInt() == 1)
-                is_fav = true
-            else
-                is_fav = false
+            val is_fav: Boolean=(source.readInt() == 1)
             val comment = source.readString()
             return CommentAndFavorite(name, id, url, is_fav, comment)
         }
