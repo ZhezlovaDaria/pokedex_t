@@ -28,8 +28,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
-    var allFragments: List<Fragment>? = null
-    var listvisible = false
+    private var allFragments: List<Fragment>? = null
+    private var listvisible = false
     private var viewPager: ViewPager2? = null
     private var pagerAdapter: FragmentStateAdapter? = null
     private var pokemon: Pokemon? = null
@@ -136,7 +136,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
         var commentAndFavorite = Utils.findOnId(pokemon!!.id, Utils.localSave!!.getCommentAndFavorites())
         if (commentAndFavorite == null) {
             commentAndFavorite = CommentAndFavorite(pokemon!!.name, pokemon!!.id,
-                    linkRandom, true, null)
+                    pokemon!!.url, true, null)
         }
         commentAndFavorite!!.is_favorite=true
         Utils.save(pokemon!!, commentAndFavorite!!)

@@ -21,7 +21,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     private var connetion = true
     private var isLoading = false
     private val pokemons = ArrayList<Pokemon>()
-    var adapter: PokemonListAdapter? = null
+    private var adapter: PokemonListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

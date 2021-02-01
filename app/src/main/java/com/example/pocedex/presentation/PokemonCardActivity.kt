@@ -16,10 +16,10 @@ import com.example.pocedex.domain.Utils
 
 internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
 
-    var pokemonlink = ""
-    var cardCommentAndFavorite: CommentAndFavorite? = null
-    internal var pokemon: Pokemon = Pokemon()
-    lateinit var binding: ActivityPokeCardBinding
+    private var pokemonlink = ""
+    private var cardCommentAndFavorite: CommentAndFavorite? = null
+    private var pokemon: Pokemon = Pokemon()
+    private lateinit var binding: ActivityPokeCardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

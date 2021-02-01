@@ -97,6 +97,7 @@ internal class Network {
                         val builder = GsonBuilder()
                         val gson = builder.create()
                         val pokemon = gson.fromJson(answer, Pokemon::class.java)
+                        pokemon.url=link
                         val pokemons = ArrayList<Pokemon>()
                         pokemons.add(pokemon)
                         handler.post { iUpdatePokemon!!.refresh(pokemons) }
