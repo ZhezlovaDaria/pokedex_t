@@ -32,11 +32,9 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     var listvisible = false
     private var viewPager: ViewPager2? = null
     private var pagerAdapter: FragmentStateAdapter? = null
-    val random = Random()
     private var pokemon: Pokemon? = null
     private var linkRandom: String? = null
     private var pokemonOfDayDialog: Dialog? = null
-    private val fullCount = 1118 //это число есть в списке покемонов, но оно не успевает подгрузиться перед вызовом рандомайзера...
     private var showPokemonOfDay = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,13 +117,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     override fun repeat() {
-        val notRandom = Utils.notRandomNumbers
-        var randomNumber = random.nextInt(fullCount) + 1
-        while (notRandom.contains(randomNumber))
-            randomNumber = random.nextInt(fullCount) + 1
-        linkRandom = "https://pokeapi.co/api/v2/pokemon/" + randomNumber + "/"
-        Log.d("link", linkRandom!!)
-        Network().getPokemon(this, linkRandom!!, this)
+        Network().getPokemonOfDay(this, this)
     }
 
     fun setPokemonOfDay(newpokemon: Pokemon) {

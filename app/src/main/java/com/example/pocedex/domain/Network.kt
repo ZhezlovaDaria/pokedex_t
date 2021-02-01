@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 
 internal class Network {
 
@@ -111,6 +111,39 @@ internal class Network {
                         Log.d("Exe", e.message)
                     }
 
+                }
+            }
+        })
+    }
+
+    fun getPokemonOfDay(context: Context, callactivity: IUpdatePokemon) {
+        var linkRandom = ""
+        val request = Request.Builder()
+                .url(pokemonsList)
+                .get()
+                .build()
+        client.newCall(request).enqueue(object : Callback {
+
+            override fun onFailure(request: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                val answer = response.body!!.string()
+                if (response.isSuccessful) {
+                    try {
+                        json = JSONObject(answer)
+                        val count: Int = json!!.get("count").toString().toInt()
+
+                        val randomNumber: Int = Utils.randomNumbers(count)
+                        if (randomNumber != -1) {
+                            linkRandom = "https://pokeapi.co/api/v2/pokemon/" + randomNumber + "/"
+                            getPokemon(context, linkRandom, callactivity)
+                        }
+                    } catch (e: Exception) {
+                        Log.d("Exe", e.message)
+                    }
                 }
             }
         })

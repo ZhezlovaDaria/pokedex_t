@@ -5,27 +5,34 @@ import android.net.ConnectivityManager
 import android.util.Log
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
-import java.util.ArrayList
+import java.util.*
 
 internal open class Utils {
 
     companion object {
         val preferenses = "commandfav"
-
         var localSave: LocalSave? = null
+        var randomNumbers: ArrayList<Int> = ArrayList()
 
-        private var notRandom: MutableList<Int> =ArrayList()
-
-        val notRandomNumbers: MutableList<Int>
-            get() {
+        fun randomNumbers(count: Int): Int {
+            val random = Random()
+            if (randomNumbers.isEmpty()) {
                 val commentAndFavorite = localSave!!.getCommentAndFavorites()
-                notRandom = ArrayList()
+                if (commentAndFavorite.size == count)
+                    return -1
+                val notRandom: ArrayList<Int> = ArrayList()
                 for (i in commentAndFavorite.indices) {
                     if (commentAndFavorite[i].is_favorite)
-                        notRandom!!.add(commentAndFavorite[i].id)
+                        notRandom.add(commentAndFavorite[i].id)
                 }
-                return notRandom
+                for (i in 1..count) {
+                    if (!(notRandom.contains(i)))
+                        randomNumbers.add(i)
+
+                }
             }
+            return randomNumbers[random.nextInt(randomNumbers.size) - 1]
+        }
 
         fun isOnline(context: Context): Boolean {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
