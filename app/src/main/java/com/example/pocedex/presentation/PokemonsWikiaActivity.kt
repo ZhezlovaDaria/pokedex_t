@@ -33,7 +33,6 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     private var viewPager: ViewPager2? = null
     private var pagerAdapter: FragmentStateAdapter? = null
     private var pokemon: Pokemon? = null
-    private var linkRandom: String? = null
     private var pokemonOfDayDialog: Dialog? = null
     private var showPokemonOfDay = true
 
@@ -72,6 +71,9 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun checkOnline(view: View) {
+        if (view.id != R.id.tryreconnect)
+            return
+
         if (Utils.isOnline(this)) {
             if (!listvisible)
                 setOnline()
@@ -133,6 +135,8 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun saveToFavorite(view: View) {
+        if (view.id != R.id.savetofav)
+            return
         var commentAndFavorite = Utils.findOnId(pokemon!!.id, Utils.localSave!!.getCommentAndFavorites())
         if (commentAndFavorite == null) {
             commentAndFavorite = CommentAndFavorite(pokemon!!.name, pokemon!!.id,

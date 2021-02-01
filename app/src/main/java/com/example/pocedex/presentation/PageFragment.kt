@@ -31,7 +31,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
         } else {
             updateFavList()
         }
-        adapter = PokemonListAdapter(this.requireContext(), this.pokemons)
+        adapter = PokemonListAdapter(this.pokemons)
 
     }
 
@@ -94,14 +94,16 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
 
     fun updateFavList() {
         pokemons.clear()
-        val commentAndFavorite = Utils.localSave!!.getCommentAndFavorites() ?: return
+        val commentAndFavorite = Utils.localSave!!.getCommentAndFavorites()
+        if (commentAndFavorite.isEmpty())
+            return
         val count = commentAndFavorite.size
         for (i in 0 until count) {
             if (commentAndFavorite[i].is_favorite) {
                 val p = Pokemon()
-                p.name=commentAndFavorite[i].name
-                p.url=commentAndFavorite[i].url
-                p.id=(commentAndFavorite[i].id - 1)
+                p.name = commentAndFavorite[i].name
+                p.url = commentAndFavorite[i].url
+                p.id = (commentAndFavorite[i].id - 1)
                 pokemons.add(p)
             }
         }

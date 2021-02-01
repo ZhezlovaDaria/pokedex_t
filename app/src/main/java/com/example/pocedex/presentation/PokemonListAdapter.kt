@@ -1,6 +1,5 @@
 package com.example.pocedex.presentation
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pocedex.data.Pokemon
 import com.example.pocedex.databinding.PokemonItemBinding
 
-internal class PokemonListAdapter(context: Context, private val pokemons: List<Pokemon>) : RecyclerView.Adapter<PokemonListAdapter.ViewHolder>() {
+internal class PokemonListAdapter(private val pokemons: List<Pokemon>) : RecyclerView.Adapter<PokemonListAdapter.ViewHolder>() {
     private var clickListener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, ViewType: Int): ViewHolder {
@@ -18,7 +17,7 @@ internal class PokemonListAdapter(context: Context, private val pokemons: List<P
         return ViewHolder(binding.getRoot())
     }
 
-    override fun onBindViewHolder(holder: PokemonListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pokemon = pokemons[position]
         holder.binding!!.pokemon = pokemon
     }
@@ -45,7 +44,7 @@ internal class PokemonListAdapter(context: Context, private val pokemons: List<P
         return pokemons[id]
     }
 
-    fun setClickListener(itemClickListener: PokemonListAdapter.ItemClickListener) {
+    fun setClickListener(itemClickListener: ItemClickListener) {
         this.clickListener = itemClickListener
     }
 

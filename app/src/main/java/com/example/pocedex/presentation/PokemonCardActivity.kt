@@ -32,6 +32,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun checkOnline(view: View) {
+        if (view.id != R.id.tryreconnect)
+            return
         if (Utils.isOnline(this))
             setOnline()
 
@@ -81,6 +83,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     override fun repeat() {}
 
     fun saveComm(view: View) {
+        if (view.id != R.id.svbutton)
+            return
         cardCommentAndFavorite!!.comment = binding.UsCom.text.toString()
         showToast("Your comment save")
         Utils.save(pokemon, cardCommentAndFavorite!!)
@@ -97,6 +101,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun saveFav(view: View) {
+        if (view.id != R.id.favBtn)
+            return
         cardCommentAndFavorite!!.is_favorite = (!cardCommentAndFavorite!!.is_favorite)
         if (cardCommentAndFavorite!!.is_favorite) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on)
