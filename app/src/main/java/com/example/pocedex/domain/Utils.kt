@@ -10,9 +10,9 @@ import java.util.*
 internal open class Utils {
 
     companion object {
-        val preferenses = "commandfav"
+        const val preferenses = "commandfav"
         var localSave: LocalSave? = null
-        var randomNumbers: ArrayList<Int> = ArrayList()
+        private var randomNumbers: ArrayList<Int> = ArrayList()
 
         fun randomNumbers(count: Int): Int {
             val random = Random()
@@ -46,12 +46,12 @@ internal open class Utils {
                 id: Int, caf: ArrayList<CommentAndFavorite>): CommentAndFavorite? {
             try {
                 for (c in caf) {
-                    if (c.equals(id)) {
+                    if (c.alreadyExists(id)) {
                         return c
                     }
                 }
             } catch (e: Exception) {
-                Log.d("", e.message)
+                Log.d("", e.message.toString())
             }
 
             return null
@@ -65,7 +65,7 @@ internal open class Utils {
             try {
                 localSave!!.save()
             } catch (e: Exception) {
-                Log.d("comfavsave", e.message)
+                Log.d("comfavsave", e.message.toString())
             }
 
         }
@@ -76,7 +76,7 @@ internal open class Utils {
 
         fun openShowDialog(): Boolean {
             localSave!!.openMenu()
-            return localSave!!.getShowDialod()
+            return localSave!!.getShowDialog()
         }
     }
 }

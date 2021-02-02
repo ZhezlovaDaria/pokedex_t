@@ -14,7 +14,7 @@ internal class PokemonListAdapter(private val pokemons: List<Pokemon>) : Recycle
     override fun onCreateViewHolder(parent: ViewGroup, ViewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = PokemonItemBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding.getRoot())
+        return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -36,7 +36,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     }
 
     companion object {
-        private val ARGUMENT_PAGE_NUMBER = "arg_page_number"
+        private const val ARGUMENT_PAGE_NUMBER = "arg_page_number"
 
         fun newInstance(page: Int): PageFragment {
             val pageFragment = PageFragment()
@@ -70,7 +70,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
                             Network().getPokemonsForList(activity!!, this@PageFragment)
                         } else {
                             if (connetion) {
-                                showToast("No internet connection")
+                                showToast()
                                 connetion = false
                                 (activity as PokemonsWikiaActivity).setOffline()
                             }
@@ -92,8 +92,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
 
     override fun onItemClick(view: View, position: Int) {
         try {
-            val link: String?
-            link = adapter?.getPokemon(position)?.url
+            val link: String? = adapter?.getPokemon(position)?.url
             val intent = Intent(this.activity, PokemonCardActivity::class.java)
             intent.putExtra("link", link)
             startActivity(intent)
@@ -122,16 +121,16 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
         adapter?.notifyDataSetChanged()
     }
 
-    fun updatePokemonList(p: List<Pokemon>) {
-        if (!p.isEmpty()) {
+    private fun updatePokemonList(p: List<Pokemon>) {
+        if (p.isNotEmpty()) {
             pokemons.addAll(p)
             adapter?.notifyDataSetChanged()
             isLoading = false
         }
     }
 
-    private fun showToast(mes: String) {
-        val toast = Toast.makeText(this.activity, mes, Toast.LENGTH_LONG)
+    private fun showToast() {
+        val toast = Toast.makeText(this.activity, "No internet connection", Toast.LENGTH_LONG)
         toast.show()
     }
 

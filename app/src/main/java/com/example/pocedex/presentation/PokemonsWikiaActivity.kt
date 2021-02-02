@@ -141,8 +141,8 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
             commentAndFavorite = CommentAndFavorite(pokemon!!.name, pokemon!!.id,
                     pokemon!!.url, true, null)
         }
-        commentAndFavorite!!.is_favorite = true
-        Utils.save(pokemon!!, commentAndFavorite!!)
+        commentAndFavorite.is_favorite = true
+        Utils.save(pokemon!!, commentAndFavorite)
         val toast = Toast.makeText(this, "Save in Fav", Toast.LENGTH_LONG)
         toast.show()
         pokemonOfDayDialog!!.dismiss()

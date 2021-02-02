@@ -43,7 +43,7 @@ internal class Network {
                 .build()
         client.newCall(request).enqueue(object : Callback {
 
-            override fun onFailure(request: Call, e: IOException) {
+            override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
             }
 
@@ -64,7 +64,7 @@ internal class Network {
                         pokemons = gson.fromJson(result, pokemonType)
 
                     } catch (e: Exception) {
-                        Log.d("Exe", e.message)
+                        Log.d("Exe", e.message.toString())
                     }
 
                     handler.post { iUpdatePokemon!!.refresh(pokemons) }
@@ -85,7 +85,7 @@ internal class Network {
                 .build()
         client.newCall(request).enqueue(object : Callback {
 
-            override fun onFailure(request: Call, e: IOException) {
+            override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
             }
 
@@ -102,14 +102,14 @@ internal class Network {
                         pokemons.add(pokemon)
                         handler.post { iUpdatePokemon!!.refresh(pokemons) }
                     } catch (e: Exception) {
-                        Log.d("Exe", e.message)
+                        Log.d("Exe", e.message.toString())
                     }
 
                 } else {
                     try {
                         handler.post { iUpdatePokemon!!.repeat() }
                     } catch (e: Exception) {
-                        Log.d("Exe", e.message)
+                        Log.d("Exe", e.message.toString())
                     }
 
                 }
@@ -118,14 +118,14 @@ internal class Network {
     }
 
     fun getPokemonOfDay(context: Context, callactivity: IUpdatePokemon) {
-        var linkRandom = ""
+        var linkRandom: String
         val request = Request.Builder()
                 .url(pokemonsList)
                 .get()
                 .build()
         client.newCall(request).enqueue(object : Callback {
 
-            override fun onFailure(request: Call, e: IOException) {
+            override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
             }
 
@@ -139,11 +139,11 @@ internal class Network {
 
                         val randomNumber: Int = Utils.randomNumbers(count)
                         if (randomNumber != -1) {
-                            linkRandom = "https://pokeapi.co/api/v2/pokemon/" + randomNumber + "/"
+                            linkRandom = "https://pokeapi.co/api/v2/pokemon/$randomNumber/"
                             getPokemon(context, linkRandom, callactivity)
                         }
                     } catch (e: Exception) {
-                        Log.d("Exe", e.message)
+                        Log.d("Exe", e.message.toString())
                     }
                 }
             }

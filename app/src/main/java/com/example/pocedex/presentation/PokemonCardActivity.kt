@@ -55,7 +55,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
         setPokemon(pokemons[0])
     }
 
-    fun setPokemon(newPokemon: Pokemon) {
+    private fun setPokemon(newPokemon: Pokemon) {
         pokemon = newPokemon
 
         binding.pokemon = pokemon

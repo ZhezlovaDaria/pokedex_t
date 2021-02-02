@@ -6,7 +6,7 @@ import android.os.Parcelable
 data class CommentAndFavorite(var name: String? = "", var id: Int = 0, var url: String? = "", var is_favorite: Boolean = false, var comment: String? = "") : Parcelable {
 
 
-    fun equals(id: Int): Boolean {
+    fun alreadyExists(id: Int): Boolean {
         return this.id == id
     }
 
@@ -19,9 +19,9 @@ data class CommentAndFavorite(var name: String? = "", var id: Int = 0, var url: 
             val name = source.readString()
             val id = source.readInt()
             val url = source.readString()
-            val is_fav: Boolean=(source.readInt() == 1)
+            val isFav: Boolean=(source.readInt() == 1)
             val comment = source.readString()
-            return CommentAndFavorite(name, id, url, is_fav, comment)
+            return CommentAndFavorite(name, id, url, isFav, comment)
         }
 
         override fun newArray(size: Int): Array<CommentAndFavorite?> {

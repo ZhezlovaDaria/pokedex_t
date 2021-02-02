@@ -15,12 +15,9 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
             }
             return id
         }
-        set(value) {
-            field = value
-        }
 
     fun getAbilityString(): String {
-        if (abilities!!.size == 0)
+        if (abilities!!.isEmpty())
             return "None"
         var t = ""
         for (i in abilities!!.indices) {
@@ -32,7 +29,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getFormsString(): String {
-        if (forms!!.size == 0)
+        if (forms!!.isEmpty())
             return "None"
         var t = ""
         for (i in forms!!.indices) {
@@ -44,7 +41,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getgetGameIndiceString(): String {
-        if (game_indices!!.size == 0)
+        if (game_indices!!.isEmpty())
             return "None"
         var t = ""
         for (i in game_indices!!.indices) {
@@ -55,7 +52,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
         return t
     }
     fun getHeldItemsString(): String {
-        if (held_items!!.size == 0)
+        if (held_items!!.isEmpty())
             return "None"
         var t = ""
         for (i in held_items!!.indices) {
@@ -67,7 +64,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getMovesString(): String {
-        if (moves!!.size == 0)
+        if (moves!!.isEmpty())
             return "None"
         var t = ""
         for (i in moves!!.indices) {
@@ -83,7 +80,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getTypesString(): String {
-        if (types!!.size == 0)
+        if (types!!.isEmpty())
             return "None"
         var t = ""
         for (i in types!!.indices) {
