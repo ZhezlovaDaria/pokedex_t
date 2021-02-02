@@ -53,11 +53,17 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment, container, false)
+        val view = inflater.inflate(R.layout.pokemon_list, container, false)
 
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        val layoutManager = LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false)
+
+        val layoutManager: LinearLayoutManager = if (pageNumber == 0) {
+            LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false)
+        } else {
+            LinearLayoutManager(this.activity, LinearLayoutManager.HORIZONTAL, false)
+        }
+
         recyclerView.layoutManager = layoutManager
         adapter?.setClickListener(this)
         if (pageNumber == 0) {
@@ -111,10 +117,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
         val count = commentAndFavorite.size
         for (i in 0 until count) {
             if (commentAndFavorite[i].is_favorite) {
-                val p = Pokemon()
-                p.name = commentAndFavorite[i].name
-                p.url = commentAndFavorite[i].url
-                p.id = (commentAndFavorite[i].id - 1)
+                val p = commentAndFavorite[i].pokemon
                 pokemons.add(p)
             }
         }

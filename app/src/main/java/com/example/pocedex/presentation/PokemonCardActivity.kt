@@ -62,9 +62,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
         cardCommentAndFavorite = Utils.findOnId(pokemon.safeId, Utils.localSave!!.getCommentAndFavorites())
         if (cardCommentAndFavorite == null) {
             cardCommentAndFavorite = CommentAndFavorite()
-            cardCommentAndFavorite!!.id = pokemon.safeId
-            cardCommentAndFavorite!!.name = pokemon.name!!
-            cardCommentAndFavorite!!.url = pokemonlink
+            cardCommentAndFavorite!!.pokemon=pokemon
+            cardCommentAndFavorite!!.pokemon.url = pokemonlink
         }
         if (cardCommentAndFavorite!!.is_favorite) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on)

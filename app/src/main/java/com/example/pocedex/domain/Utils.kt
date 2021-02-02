@@ -23,7 +23,7 @@ internal open class Utils {
                 val notRandom: ArrayList<Int> = ArrayList()
                 for (i in commentAndFavorite.indices) {
                     if (commentAndFavorite[i].is_favorite)
-                        notRandom.add(commentAndFavorite[i].id)
+                        notRandom.add(commentAndFavorite[i].pokemon.id)
                 }
                 for (i in 1..count) {
                     if (!(notRandom.contains(i)))
