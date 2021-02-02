@@ -13,7 +13,7 @@ import com.example.pocedex.R
 import com.example.pocedex.data.Pokemon
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
-import java.util.ArrayList
+import java.util.*
 
 internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, IUpdatePokemon {
 
@@ -33,6 +33,18 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
         }
         adapter = PokemonListAdapter(this.pokemons)
 
+    }
+
+    companion object {
+        private val ARGUMENT_PAGE_NUMBER = "arg_page_number"
+
+        fun newInstance(page: Int): PageFragment {
+            val pageFragment = PageFragment()
+            val arguments = Bundle()
+            arguments.putInt(ARGUMENT_PAGE_NUMBER, page)
+            pageFragment.arguments = arguments
+            return pageFragment
+        }
     }
 
     override fun refresh(pokemons: List<Pokemon>) {
@@ -124,9 +136,4 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     }
 
     override fun repeat() {}
-
-    companion object {
-
-        private val ARGUMENT_PAGE_NUMBER = "arg_page_number"
-    }
 }

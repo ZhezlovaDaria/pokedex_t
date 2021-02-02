@@ -142,7 +142,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
             commentAndFavorite = CommentAndFavorite(pokemon!!.name, pokemon!!.id,
                     pokemon!!.url, true, null)
         }
-        commentAndFavorite!!.is_favorite=true
+        commentAndFavorite!!.is_favorite = true
         Utils.save(pokemon!!, commentAndFavorite!!)
         val toast = Toast.makeText(this, "Save in Fav", Toast.LENGTH_LONG)
         toast.show()
@@ -163,11 +163,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
         override fun createFragment(position: Int): Fragment {
-            val fragment = PageFragment()
-            val args = Bundle()
-            args.putInt("arg_page_number", position)
-            fragment.setArguments(args)
-            return fragment
+            return PageFragment.newInstance(position)
         }
 
         override fun getItemCount(): Int {
