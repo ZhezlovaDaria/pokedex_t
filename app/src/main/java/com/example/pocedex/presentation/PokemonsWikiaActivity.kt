@@ -28,7 +28,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
-    private var allFragments: List<Fragment>? = null
     private var listvisible = false
     private var viewPager: ViewPager2? = null
     private var pagerAdapter: FragmentStateAdapter? = null
@@ -79,8 +78,8 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
                 setOnline()
             else {
                 findViewById<View>(R.id.tryreconnect).setVisibility(View.INVISIBLE)
-                if (allFragments != null && allFragments!!.size > 0)
-                    (allFragments!!.get(0) as PageFragment).updateConnection()
+                if (supportFragmentManager.fragments.size > 0)
+                    (supportFragmentManager.fragments[0] as PageFragment).updateConnection()
             }
         }
     }
@@ -151,9 +150,8 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
 
     override fun onStart() {
         super.onStart()
-        allFragments = getSupportFragmentManager().getFragments()
-        if (allFragments!!.size > 1)
-            (allFragments!!.get(1) as PageFragment).updateFavList()
+        if (supportFragmentManager.fragments.size > 1)
+            (supportFragmentManager.fragments[1] as PageFragment).updateFavList()
     }
 
     private fun commAndFavList() {
