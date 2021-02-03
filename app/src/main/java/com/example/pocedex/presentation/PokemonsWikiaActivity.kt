@@ -115,7 +115,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
         binding.setPokemon(pokemon)
         pokemonOfDayDialog!!.setContentView(binding.getRoot())
         val back = ColorDrawable(Color.TRANSPARENT)
-        val inset = InsetDrawable(back, 40)
+        val inset = InsetDrawable(back, 0)
 
         val recyclerView: RecyclerView = binding.list
         val sprites: ArrayList<String> = ArrayList()

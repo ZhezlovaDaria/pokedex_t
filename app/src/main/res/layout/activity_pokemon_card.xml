@@ -78,23 +78,18 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/rounded"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="@dimen/rounder_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/pokeim"
             app:layout_constraintTop_toBottomOf="@+id/pokname">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/hp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='@{"HP: "+ pokemon.getStats(0)}'
+                    android:gravity="center"
+                    android:text='@{"HP "+ pokemon.getStats(0)+ " | Special-Attack "+pokemon.getStats(3)}'
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size" />
 
@@ -102,7 +97,8 @@
                     android:id="@+id/attack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='@{"Attack: "+ pokemon.getStats(1)}'
+                    android:gravity="center"
+                    android:text='@{"Attack "+ pokemon.getStats(1)+ " | Special-Defense "+pokemon.getStats(4)}'
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size" />
 
@@ -110,7 +106,8 @@
                     android:id="@+id/defense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='@{"Defense: "+ pokemon.getStats(2)}'
+                    android:gravity="center"
+                    android:text='@{"Defense "+ pokemon.getStats(2)+ " | Speed "+pokemon.getStats(5)}'
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size" />
 
@@ -118,17 +115,8 @@
                     android:id="@+id/order"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text='@{"order " +String.valueOf(pokemon.order)}'
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size" />
-
-                <TextView
-                    android:id="@+id/height"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text='@{"height " +String.valueOf(pokemon.height)}'
+                    android:gravity="center"
+                    android:text='@{"Order " +String.valueOf(pokemon.order)+" | Base exp " +String.valueOf(pokemon.base_experience)}'
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size" />
 
@@ -136,60 +124,10 @@
                     android:id="@+id/weight"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text='@{"weight " +String.valueOf(pokemon.weight)}'
+                    android:gravity="center"
+                    android:text='@{"Weight " +String.valueOf(pokemon.weight)+" | Height " +String.valueOf(pokemon.height)}'
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/sa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text='@{"Special-attack: "+ pokemon.getStats(3)}'
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size" />
-
-                <TextView
-                    android:id="@+id/sd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text='@{"Special-defense: "+ pokemon.getStats(4)}'
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size" />
-
-                <TextView
-                    android:id="@+id/speed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text='@{"Speed: "+ pokemon.getStats(5)}'
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size" />
-
-                <TextView
-                    android:id="@+id/typeslist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text='@{"Types: \n"+ pokemon.getTypesString()}'
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size" />
-
-                <TextView
-                    android:id="@+id/baex"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text='@{"base exp " +String.valueOf(pokemon.base_experience)}'
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size" />
-            </LinearLayout>
         </LinearLayout>
 
         <ScrollView
@@ -211,37 +149,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/linearLayout8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginTop="@dimen/margin"
-                    android:layout_marginRight="@dimen/big_margin"
-                    android:layout_marginBottom="@dimen/margin"
-                    android:background="@drawable/rounded"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/rounder_padding">
+
 
                     <TextView
-                        android:id="@+id/form"
+                        android:id="@+id/linearLayout8"
+                        android:background="@drawable/rounded"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right"
-                        android:text="Forms: "
+                        android:layout_marginLeft="@dimen/big_margin"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginRight="@dimen/big_margin"
+                        android:layout_marginBottom="@dimen/margin"
+                        android:padding="@dimen/rounder_padding"
+                        android:gravity="center"
+                        android:text='@{"Forms: "+ pokemon.getFormsString()}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_mid_size" />
-
-                    <TextView
-                        android:id="@+id/forms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text='@{pokemon.getFormsString()}'
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_mid_size" />
-                </LinearLayout>
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="match_parent"
