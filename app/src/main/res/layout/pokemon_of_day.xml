@@ -39,101 +39,23 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_big_size" />
 
-
-        <HorizontalScrollView
-            android:id="@+id/hscroll"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/height_width0dp"
-            android:layout_weight="1">
-
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/sp0"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(0)}"
-                    android:visibility="@{pokemon.getSprite(0)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
 
-                <ImageView
-                    android:id="@+id/sp1"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(1)}"
-                    android:visibility="@{pokemon.getSprite(1)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
 
-                <ImageView
-                    android:id="@+id/sp2"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(2)}"
-                    android:visibility="@{pokemon.getSprite(2)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <ImageView
-                    android:id="@+id/sp3"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(3)}"
-                    android:visibility="@{pokemon.getSprite(3)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <ImageView
-                    android:id="@+id/sp4"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(4)}"
-                    android:visibility="@{pokemon.getSprite(4)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <ImageView
-                    android:id="@+id/sp5"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(5)}"
-                    android:visibility="@{pokemon.getSprite(5)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <ImageView
-                    android:id="@+id/sp6"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(6)}"
-                    android:visibility="@{pokemon.getSprite(6)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <ImageView
-                    android:id="@+id/sp7"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(7)}"
-                    android:visibility="@{pokemon.getSprite(7)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <ImageView
-                    android:id="@+id/sp8"
-                    android:layout_width="@dimen/spritebig"
-                    android:layout_height="@dimen/spritebig"
-                    android:layout_weight="1"
-                    app:url="@{pokemon.getSprite(8)}"
-                    android:visibility="@{pokemon.getSprite(8)==null ? View.GONE : View.VISIBLE}"
-                    tools:srcCompat="@tools:sample/avatars" />
             </LinearLayout>
-        </HorizontalScrollView>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/bottomlayout"

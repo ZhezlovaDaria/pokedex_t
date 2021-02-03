@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pocedex.R
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
@@ -19,6 +21,7 @@ import com.example.pocedex.databinding.PokemonOfDayBinding
 import com.example.pocedex.domain.LocalSave
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
+import java.util.ArrayList
 
 
 internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
@@ -113,6 +116,18 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
         pokemonOfDayDialog!!.setContentView(binding.getRoot())
         val back = ColorDrawable(Color.TRANSPARENT)
         val inset = InsetDrawable(back, 40)
+
+        val recyclerView: RecyclerView = binding.list
+        val sprites: ArrayList<String> = ArrayList()
+        for (i in 0..8) {
+            if (pokemon!!.getSprite(i) != null)
+                sprites.add(pokemon!!.getSprite(i)!!)
+        }
+        val adapter = SpriteAdapter(sprites)
+        recyclerView.layoutManager = LinearLayoutManager(pokemonOfDayDialog!!.context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = adapter
+
+
         pokemonOfDayDialog!!.getWindow()!!.setBackgroundDrawable(inset)
         pokemonOfDayDialog!!.show()
     }
