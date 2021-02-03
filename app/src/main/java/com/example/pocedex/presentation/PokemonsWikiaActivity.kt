@@ -11,11 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.example.pocedex.R
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
@@ -23,21 +19,18 @@ import com.example.pocedex.databinding.PokemonOfDayBinding
 import com.example.pocedex.domain.LocalSave
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
-import java.util.*
 
 
 internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     private var listvisible = false
-    private var viewPager: ViewPager2? = null
-    private var pagerAdapter: FragmentStateAdapter? = null
     private var pokemon: Pokemon? = null
     private var pokemonOfDayDialog: Dialog? = null
     private var showPokemonOfDay = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_pokemons_wikia)
         if (!Utils.isOnline(this)) {
-            setContentView(R.layout.offline)
             return
         }
         Network().resetList()
@@ -69,7 +62,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun checkOnline(view: View) {
-       if (view.id != R.id.tryreconnect)
+        if (view.id != R.id.tryreconnect)
             return
 
         if (Utils.isOnline(this)) {
@@ -89,7 +82,6 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
 
     private fun setOnline() {
         listvisible = true
-        setContentView(R.layout.activity_pokemons_wikia)
 
         findViewById<View>(R.id.tryreconnect).setVisibility(View.INVISIBLE)
         Utils.localSave = LocalSave(this)
@@ -100,18 +92,6 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
         ft.add(R.id.favorite_list, PageFragment.newInstance(1))
         ft.commit()
 
-//        viewPager = findViewById(R.id.pager)
-//        pagerAdapter = ScreenSlidePagerAdapter(this)
-//        viewPager!!.setAdapter(pagerAdapter)
-//
-//        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
-//        TabLayoutMediator(tabLayout, viewPager!!
-//        ) { tab, position ->
-//            if (position == 0)
-//                tab.setText("All")
-//            else
-//                tab.setText("Favorite")
-//        }.attach()
         showPokemonOfDay = Utils.openShowDialog()
         if (showPokemonOfDay)
             repeat()
@@ -160,21 +140,5 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
 
     private fun commAndFavList() {
         Utils.localSave!!.open()
-    }
-
-    private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-
-        override fun createFragment(position: Int): Fragment {
-            return PageFragment.newInstance(position)
-        }
-
-        override fun getItemCount(): Int {
-            return PAGE_COUNT
-        }
-    }
-
-    companion object {
-
-        val PAGE_COUNT = 2
     }
 }

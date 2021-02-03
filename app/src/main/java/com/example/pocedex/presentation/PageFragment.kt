@@ -13,6 +13,7 @@ import com.example.pocedex.R
 import com.example.pocedex.data.Pokemon
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
+import com.google.gson.Gson
 import java.util.*
 
 internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, IUpdatePokemon {
@@ -98,9 +99,11 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
 
     override fun onItemClick(view: View, position: Int) {
         try {
-            val link: String? = adapter?.getPokemon(position)?.url
+            val pokemon: Pokemon = adapter?.getPokemon(position)!!
+            val gson = Gson()
+            val jsonString = gson.toJson(pokemon)
             val intent = Intent(this.activity, PokemonCardActivity::class.java)
-            intent.putExtra("link", link)
+            intent.putExtra("pokemon", jsonString)
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()
