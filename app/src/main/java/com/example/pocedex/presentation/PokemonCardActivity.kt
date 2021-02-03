@@ -1,32 +1,51 @@
 package com.example.pocedex.presentation
 
 import android.app.Activity
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pocedex.R
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
-import com.example.pocedex.databinding.ActivityPokeCardBinding
+import com.example.pocedex.databinding.ActivityPokemonCardBinding
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
+import com.google.gson.Gson
+import java.util.ArrayList
 
 internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
 
     private var pokemonlink = ""
     private var cardCommentAndFavorite: CommentAndFavorite? = null
     private var pokemon: Pokemon = Pokemon()
-    private lateinit var binding: ActivityPokeCardBinding
+    private lateinit var binding: ActivityPokemonCardBinding
+    private var edit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Utils.isOnline(this)) {
-            setOnline()
-        } else {
-            setOffline()
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_pokemon_card)
+        val arguments = intent.extras
+        val gson = Gson()
+        pokemon = gson.fromJson(arguments!!.get("pokemon")!!.toString(), Pokemon::class.java)
+        pokemonlink = pokemon.url.toString()
+        if (pokemon.getSprite(0) != null)
+            setPokemon(pokemon)
+        else {
+            if (Utils.isOnline(this)) {
+                setOnline()
+            } else {
+                setOffline()
+            }
         }
 
     }
@@ -44,9 +63,6 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     private fun setOnline() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_poke_card)
-        val arguments = intent.extras
-        pokemonlink = arguments!!.get("link")!!.toString()
         Network().getPokemon(this, pokemonlink, this)
     }
 
@@ -62,29 +78,56 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
         cardCommentAndFavorite = Utils.findOnId(pokemon.safeId, Utils.localSave!!.getCommentAndFavorites())
         if (cardCommentAndFavorite == null) {
             cardCommentAndFavorite = CommentAndFavorite()
-            cardCommentAndFavorite!!.id = pokemon.safeId
-            cardCommentAndFavorite!!.name = pokemon.name!!
-            cardCommentAndFavorite!!.url = pokemonlink
+            cardCommentAndFavorite!!.pokemon = pokemon
+            cardCommentAndFavorite!!.pokemon.url = pokemonlink
         }
         if (cardCommentAndFavorite!!.is_favorite) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on)
         }
-        if (cardCommentAndFavorite!!.comment != null) {
+        if (!cardCommentAndFavorite!!.comment?.isEmpty()!!) {
+            binding.UsCom.visibility = View.VISIBLE
             binding.UsCom.setText(cardCommentAndFavorite!!.comment)
         }
-        if (pokemon.getSprite(5) == null) {
-            binding.sp5.visibility = View.GONE
-            binding.sp6.visibility = View.GONE
-            binding.sp7.visibility = View.GONE
-            binding.sp8.visibility = View.GONE
+    }
+
+    fun showSprite(view: View) {
+        val spriteDialog = Dialog(this)
+        spriteDialog.setContentView(R.layout.sprite_list)
+        val back = ColorDrawable(Color.TRANSPARENT)
+        val inset = InsetDrawable(back, 40)
+        val recyclerView = spriteDialog.findViewById<RecyclerView>(R.id.list)
+        val sprites: ArrayList<String> = ArrayList()
+        for (i in 1..8) {
+            if (pokemon.getSprite(i) != null)
+                sprites.add(pokemon.getSprite(i)!!)
+        }
+        val adapter = SpriteAdapter(sprites)
+        recyclerView.layoutManager = LinearLayoutManager(spriteDialog.context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = adapter
+
+        spriteDialog.window!!.setBackgroundDrawable(inset)
+        spriteDialog.show()
+    }
+
+    fun editComment(view: View) {
+        edit = !edit
+        if (edit) {
+            binding.UsCom.visibility = View.VISIBLE
+            binding.UsCom.isEnabled = true
+            (view as ImageButton).setImageResource(android.R.drawable.ic_menu_save)
+        } else {
+            (view as ImageButton).setImageResource(android.R.drawable.ic_menu_edit)
+            binding.UsCom.isEnabled = false
+            if (binding.UsCom.text.isEmpty())
+                binding.UsCom.visibility = View.GONE
+            else
+                saveComm()
         }
     }
 
     override fun repeat() {}
 
-    fun saveComm(view: View) {
-        if (view.id != R.id.svbutton)
-            return
+    fun saveComm() {
         cardCommentAndFavorite!!.comment = binding.UsCom.text.toString()
         showToast("Your comment save")
         Utils.save(pokemon, cardCommentAndFavorite!!)

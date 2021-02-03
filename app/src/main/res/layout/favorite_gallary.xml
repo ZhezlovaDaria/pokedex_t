@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_margin="@dimen/margin_padding_circle_image"
+        android:padding="@dimen/margin_padding_circle_image"
+        android:layout_width="@dimen/sprite"
+        android:layout_height="@dimen/sprite"
+        android:scaleType="centerCrop"
+        android:background="@drawable/favorite_image"
+        app:url="@{pokemon.getSpriteForList()}"
+        tools:srcCompat="@tools:sample/avatars" />
+    <data>
+
+        <variable
+            name="pokemon"
+            type="com.example.pocedex.data.Pokemon" />
+
+    </data>
+</layout>

@@ -2,12 +2,14 @@ package com.example.pocedex.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.Gson
+import kotlinx.android.parcel.TypeParceler
 
-data class CommentAndFavorite(var name: String? = "", var id: Int = 0, var url: String? = "", var is_favorite: Boolean = false, var comment: String? = "") : Parcelable {
+data class CommentAndFavorite(var pokemon: Pokemon=Pokemon(), var is_favorite: Boolean = false, var comment: String? = "") : Parcelable {
 
 
     fun alreadyExists(id: Int): Boolean {
-        return this.id == id
+        return this.pokemon.id == id
     }
 
     override fun describeContents(): Int {
@@ -16,12 +18,11 @@ data class CommentAndFavorite(var name: String? = "", var id: Int = 0, var url: 
 
     companion object CREATOR : Parcelable.Creator<CommentAndFavorite> {
         override fun createFromParcel(source: Parcel): CommentAndFavorite {
-            val name = source.readString()
-            val id = source.readInt()
-            val url = source.readString()
+            val gson = Gson()
+            val pokemon: Pokemon = gson.fromJson(source.readString(), Pokemon::class.java)
             val isFav: Boolean=(source.readInt() == 1)
             val comment = source.readString()
-            return CommentAndFavorite(name, id, url, isFav, comment)
+            return CommentAndFavorite(pokemon, isFav, comment)
         }
 
         override fun newArray(size: Int): Array<CommentAndFavorite?> {
@@ -30,9 +31,9 @@ data class CommentAndFavorite(var name: String? = "", var id: Int = 0, var url: 
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
-        parcel.writeInt(id)
-        parcel.writeString(url)
+        val gson = Gson()
+        val jsonString = gson.toJson(pokemon)
+        parcel.writeString(jsonString)
         if (is_favorite) {
             parcel.writeInt(1)
         } else {

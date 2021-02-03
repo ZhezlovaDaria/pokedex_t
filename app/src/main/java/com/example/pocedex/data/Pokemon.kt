@@ -11,7 +11,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
         get () {
             if (id == 0) {
                 val stringId = url!!.substring(url!!.lastIndexOf("pokemon/") + 8, url!!.length - 1)
-                id = Integer.parseInt(stringId) - 1
+                id = Integer.parseInt(stringId)
             }
             return id
         }
@@ -127,7 +127,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
 
     fun getSprite(num: Int): String? {
         when (num) {
-            0 -> return sprites?.other!!.official_artwork!!.front_default
+            0 -> return sprites?.other?.official_artwork?.front_default
             1 -> return sprites?.back_default
             2 -> return sprites?.front_default
             3 -> return sprites?.back_shiny
@@ -141,7 +141,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getSpriteForList(): String {
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + (safeId + 1) + ".png"
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$safeId.png"
     }
 
 
