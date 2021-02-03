@@ -6,27 +6,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/favorite_list"
+        android:id="@+id/llay_favorite_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/all_list"
+        app:layout_constraintBottom_toTopOf="@+id/llay_all_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
     <LinearLayout
-        android:id="@+id/all_list"
+        android:id="@+id/llay_all_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favorite_list"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/llay_favorite_list"></LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tryreconnect"
+        android:id="@+id/llay_try_reconnect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/refreshimage"
+            android:id="@+id/imv_refresh_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -47,7 +47,7 @@
             app:srcCompat="@android:drawable/ic_menu_rotate" />
 
         <Button
-            android:id="@+id/reconnectbutton"
+            android:id="@+id/btn_reconnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

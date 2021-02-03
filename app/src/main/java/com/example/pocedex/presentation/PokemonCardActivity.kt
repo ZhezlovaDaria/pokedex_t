@@ -51,7 +51,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun checkOnline(view: View) {
-        if (view.id != R.id.tryreconnect)
+        if (view.id != R.id.llay_try_reconnect)
             return
         if (Utils.isOnline(this))
             setOnline()
@@ -82,11 +82,11 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
             cardCommentAndFavorite!!.pokemon.url = pokemonlink
         }
         if (cardCommentAndFavorite!!.is_favorite) {
-            binding.favBtn.setImageResource(android.R.drawable.star_big_on)
+            binding.btnFavorite.setImageResource(android.R.drawable.star_big_on)
         }
         if (!cardCommentAndFavorite!!.comment?.isEmpty()!!) {
-            binding.UsCom.visibility = View.VISIBLE
-            binding.UsCom.setText(cardCommentAndFavorite!!.comment)
+            binding.etxtComment.visibility = View.VISIBLE
+            binding.etxtComment.setText(cardCommentAndFavorite!!.comment)
         }
     }
 
@@ -95,7 +95,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
         spriteDialog.setContentView(R.layout.sprite_list)
         val back = ColorDrawable(Color.TRANSPARENT)
         val inset = InsetDrawable(back, 40)
-        val recyclerView = spriteDialog.findViewById<RecyclerView>(R.id.list)
+        val recyclerView = spriteDialog.findViewById<RecyclerView>(R.id.rv_pokemons_list)
         val sprites: ArrayList<String> = ArrayList()
         for (i in 1..8) {
             if (pokemon.getSprite(i) != null)
@@ -112,14 +112,14 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     fun editComment(view: View) {
         edit = !edit
         if (edit) {
-            binding.UsCom.visibility = View.VISIBLE
-            binding.UsCom.isEnabled = true
+            binding.etxtComment.visibility = View.VISIBLE
+            binding.etxtComment.isEnabled = true
             (view as ImageButton).setImageResource(android.R.drawable.ic_menu_save)
         } else {
             (view as ImageButton).setImageResource(android.R.drawable.ic_menu_edit)
-            binding.UsCom.isEnabled = false
-            if (binding.UsCom.text.isEmpty())
-                binding.UsCom.visibility = View.GONE
+            binding.etxtComment.isEnabled = false
+            if (binding.etxtComment.text.isEmpty())
+                binding.etxtComment.visibility = View.GONE
             else
                 saveComm()
         }
@@ -128,7 +128,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     override fun repeat() {}
 
     fun saveComm() {
-        cardCommentAndFavorite!!.comment = binding.UsCom.text.toString()
+        cardCommentAndFavorite!!.comment = binding.etxtComment.text.toString()
         showToast(R.string.save_comment)
         Utils.save(pokemon, cardCommentAndFavorite!!)
         hideKeyboard(this)
@@ -144,14 +144,14 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun saveFav(view: View) {
-        if (view.id != R.id.favBtn)
+        if (view.id != R.id.btn_favorite)
             return
         cardCommentAndFavorite!!.is_favorite = (!cardCommentAndFavorite!!.is_favorite)
         if (cardCommentAndFavorite!!.is_favorite) {
-            binding.favBtn.setImageResource(android.R.drawable.star_big_on)
+            binding.btnFavorite.setImageResource(android.R.drawable.star_big_on)
             showToast(R.string.save_to_fav)
         } else {
-            binding.favBtn.setImageResource(android.R.drawable.star_big_off)
+            binding.btnFavorite.setImageResource(android.R.drawable.star_big_off)
             showToast(R.string.delete_from_fav)
         }
         Utils.save(pokemon, cardCommentAndFavorite!!)

@@ -65,14 +65,14 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun checkOnline(view: View) {
-        if (view.id != R.id.tryreconnect)
+        if (view.id != R.id.llay_try_reconnect)
             return
 
         if (Utils.isOnline(this)) {
             if (!listvisible)
                 setOnline()
             else {
-                findViewById<View>(R.id.tryreconnect).setVisibility(View.INVISIBLE)
+                findViewById<View>(R.id.llay_try_reconnect).setVisibility(View.INVISIBLE)
                 if (supportFragmentManager.fragments.size > 0)
                     (supportFragmentManager.fragments[0] as PageFragment).updateConnection()
             }
@@ -80,19 +80,19 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun setOffline() {
-        findViewById<View>(R.id.tryreconnect).setVisibility(View.VISIBLE)
+        findViewById<View>(R.id.llay_try_reconnect).setVisibility(View.VISIBLE)
     }
 
     private fun setOnline() {
         listvisible = true
 
-        findViewById<View>(R.id.tryreconnect).setVisibility(View.INVISIBLE)
+        findViewById<View>(R.id.llay_try_reconnect).setVisibility(View.INVISIBLE)
         Utils.localSave = LocalSave(this)
         commAndFavList()
 
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.add(R.id.all_list, PageFragment.newInstance(0))
-        ft.add(R.id.favorite_list, PageFragment.newInstance(1))
+        ft.add(R.id.llay_all_list, PageFragment.newInstance(0))
+        ft.add(R.id.llay_favorite_list, PageFragment.newInstance(1))
         ft.commit()
 
         showPokemonOfDay = Utils.openShowDialog()
@@ -117,7 +117,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
         val back = ColorDrawable(Color.TRANSPARENT)
         val inset = InsetDrawable(back, 0)
 
-        val recyclerView: RecyclerView = binding.list
+        val recyclerView: RecyclerView = binding.rvPokemonsList
         val sprites: ArrayList<String> = ArrayList()
         for (i in 0..8) {
             if (pokemon!!.getSprite(i) != null)
@@ -133,7 +133,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     }
 
     fun saveToFavorite(view: View) {
-        if (view.id != R.id.savetofav)
+        if (view.id != R.id.btn_save_favotire)
             return
         var commentAndFavorite = Utils.findOnId(pokemon!!.id, Utils.localSave!!.getCommentAndFavorites())
         if (commentAndFavorite == null) {

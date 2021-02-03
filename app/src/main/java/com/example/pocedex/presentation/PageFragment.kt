@@ -57,7 +57,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
         val view = inflater.inflate(R.layout.pokemon_list, container, false)
 
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_pokemons_list)
 
         val layoutManager: LinearLayoutManager = if (pageNumber == 0) {
             LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false)

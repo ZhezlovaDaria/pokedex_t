@@ -13,7 +13,7 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/dialoglayout"
+        android:id="@+id/llay_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
@@ -21,12 +21,12 @@
         android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/headlayout"
+        android:id="@+id/llay_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/pokname"
+            android:id="@+id/txt_pokemon_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/big_margin"
@@ -44,7 +44,7 @@
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list"
+                    android:id="@+id/rv_pokemons_list"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -57,7 +57,7 @@
             </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/bottomlayout"
+        android:id="@+id/llay_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/ab"
+                    android:id="@+id/txt_stats_title"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
                 <LinearLayout
-                    android:id="@+id/linearLayout7"
+                    android:id="@+id/llay_base_stats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin"
@@ -96,11 +96,11 @@
                     android:padding="@dimen/rounder_padding"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ab">
+                    app:layout_constraintTop_toBottomOf="@+id/txt_stats_title">
 
 
                     <TextView
-                        android:id="@+id/hp"
+                        android:id="@+id/txt_hp_sattack_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -110,7 +110,7 @@
                         android:textSize="@dimen/text_size" />
 
                     <TextView
-                        android:id="@+id/attack"
+                        android:id="@+id/txt_attack_sdefense_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -120,7 +120,7 @@
                         android:textSize="@dimen/text_size" />
 
                     <TextView
-                        android:id="@+id/defense"
+                        android:id="@+id/txt_defense_speed_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -130,7 +130,7 @@
                         android:textSize="@dimen/text_size" />
 
                     <TextView
-                        android:id="@+id/order"
+                        android:id="@+id/txt_order_baseexp_value"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -140,7 +140,7 @@
                         android:textSize="@dimen/text_size" />
 
                     <TextView
-                        android:id="@+id/weight"
+                        android:id="@+id/txt_weight_height_value"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -151,7 +151,7 @@
                 </LinearLayout>
 
                     <TextView
-                        android:id="@+id/forms"
+                        android:id="@+id/txt_forms"
                         android:background="@drawable/rounded"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                         android:textSize="@dimen/text_mid_size" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/txt_species_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin"
@@ -178,7 +178,7 @@
                     android:textSize="@dimen/text_mid_size" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout9"
+                    android:id="@+id/llay_other_stats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin"
@@ -190,7 +190,7 @@
                     android:padding="@dimen/rounder_padding" >
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/txt_moves_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -199,13 +199,13 @@
                         android:textSize="@dimen/text_mid_size" />
 
                     <TextView
-                        android:id="@+id/mvs"
+                        android:id="@+id/txt_moves_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{pokemon.getMovesString()}' />
 
                     <TextView
-                        android:id="@+id/textView10"
+                        android:id="@+id/txt_abilities_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -214,13 +214,13 @@
                         android:textSize="@dimen/text_mid_size" />
 
                     <TextView
-                        android:id="@+id/abs"
+                        android:id="@+id/txt_abilities_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{pokemon.getAbilityString()}' />
 
                     <TextView
-                        android:id="@+id/textView11"
+                        android:id="@+id/txt_helditem_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -229,13 +229,13 @@
                         android:textSize="@dimen/text_mid_size" />
 
                     <TextView
-                        android:id="@+id/his"
+                        android:id="@+id/txt_helditem_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{pokemon.getHeldItemsString()}' />
 
                     <TextView
-                        android:id="@+id/textView12"
+                        android:id="@+id/txt_gameindice_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -244,7 +244,7 @@
                         android:textSize="@dimen/text_mid_size" />
 
                     <TextView
-                        android:id="@+id/gis"
+                        android:id="@+id/txt_gameindice_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='@{pokemon.getgetGameIndiceString()}' />
@@ -254,14 +254,14 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/savetofav"
+            android:id="@+id/btn_save_favotire"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:onClick="saveToFavorite"
             android:text="@string/save_to_fav"
-            app:layout_constraintEnd_toEndOf="@id/bottomlayout" />
+            app:layout_constraintEnd_toEndOf="@id/llay_bottom" />
     </LinearLayout>
     </LinearLayout>
 

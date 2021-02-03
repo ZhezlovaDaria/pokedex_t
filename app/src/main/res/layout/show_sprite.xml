@@ -8,7 +8,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imv_fav_pokemon_image"
             android:layout_width="@dimen/spritebig"
             android:layout_height="@dimen/spritebig"
             android:layout_weight="1"
