@@ -137,11 +137,11 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
             return
         var commentAndFavorite = Utils.findOnId(pokemon!!.id, Utils.localSave!!.getCommentAndFavorites())
         if (commentAndFavorite == null) {
-            commentAndFavorite = CommentAndFavorite(pokemon!!, true, null)
+            commentAndFavorite = CommentAndFavorite(pokemon!!, true, "")
         }
         commentAndFavorite.is_favorite = true
         Utils.save(pokemon!!, commentAndFavorite)
-        val toast = Toast.makeText(this, "Save in Fav", Toast.LENGTH_LONG)
+        val toast = Toast.makeText(this, R.string.save_to_fav, Toast.LENGTH_LONG)
         toast.show()
         (supportFragmentManager.fragments[1] as PageFragment).updateFavList()
         pokemonOfDayDialog!!.dismiss()

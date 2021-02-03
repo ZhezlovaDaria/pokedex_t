@@ -129,7 +129,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
 
     fun saveComm() {
         cardCommentAndFavorite!!.comment = binding.UsCom.text.toString()
-        showToast("Your comment save")
+        showToast(R.string.save_comment)
         Utils.save(pokemon, cardCommentAndFavorite!!)
         hideKeyboard(this)
     }
@@ -149,15 +149,15 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
         cardCommentAndFavorite!!.is_favorite = (!cardCommentAndFavorite!!.is_favorite)
         if (cardCommentAndFavorite!!.is_favorite) {
             binding.favBtn.setImageResource(android.R.drawable.star_big_on)
-            showToast("Save in Fav")
+            showToast(R.string.save_to_fav)
         } else {
             binding.favBtn.setImageResource(android.R.drawable.star_big_off)
-            showToast("Delete from Fav")
+            showToast(R.string.delete_from_fav)
         }
         Utils.save(pokemon, cardCommentAndFavorite!!)
     }
 
-    private fun showToast(mes: String) {
+    private fun showToast(mes: Int) {
         val toast = Toast.makeText(this, mes, Toast.LENGTH_LONG)
         toast.show()
     }

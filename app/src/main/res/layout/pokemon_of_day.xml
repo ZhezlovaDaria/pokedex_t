@@ -46,7 +46,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +81,7 @@
                     android:layout_marginBottom="@dimen/margin"
                     android:background="@drawable/rounded"
                     android:padding="@dimen/rounder_padding"
-                    android:text="Stats"
+                    android:text="@string/stats"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_mid_size"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text='@{"HP "+ pokemon.getStats(0)+ " | Special-Attack "+pokemon.getStats(3)}'
+                        android:text='@{@string/hp+ pokemon.getStats(0)+ " | "+@string/s_attack +pokemon.getStats(3)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
 
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text='@{"Attack "+ pokemon.getStats(1)+ " | Special-Defense "+pokemon.getStats(4)}'
+                        android:text='@{@string/attack+ pokemon.getStats(1)+ " | "+@string/s_defense+pokemon.getStats(4)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
 
@@ -125,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text='@{"Defense "+ pokemon.getStats(2)+ " | Speed "+pokemon.getStats(5)}'
+                        android:text='@{@string/defense+ pokemon.getStats(2)+ " | "+@string/speed+pokemon.getStats(5)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
 
@@ -135,7 +135,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text='@{"Order " +String.valueOf(pokemon.order)+" | Base exp " +String.valueOf(pokemon.base_experience)}'
+                        android:text='@{@string/order +String.valueOf(pokemon.order)+" | "+ @string/base_exp +String.valueOf(pokemon.base_experience)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
 
@@ -145,7 +145,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text='@{"Weight " +String.valueOf(pokemon.weight)+" | Height " +String.valueOf(pokemon.height)}'
+                        android:text='@{@string/weight +String.valueOf(pokemon.weight)+" | "+@string/height +String.valueOf(pokemon.height)}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>
@@ -160,7 +160,7 @@
                         android:padding="@dimen/rounder_padding"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text='@{"Forms: "+ pokemon.getFormsString()}'
+                        android:text='@{@string/forms+ pokemon.getFormsString()}'
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_mid_size" />
 
@@ -173,7 +173,7 @@
                     android:gravity="center"
                     android:padding="@dimen/rounder_padding"
                     android:singleLine="true"
-                    android:text='@{"Species:"+ pokemon.getSpecies()}'
+                    android:text='@{@string/species+ pokemon.getSpecies()}'
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_mid_size" />
 
@@ -194,7 +194,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Moves"
+                        android:text="@string/moves"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_mid_size" />
 
@@ -209,7 +209,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Abilities"
+                        android:text="@string/abilities"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_mid_size" />
 
@@ -224,7 +224,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Held items"
+                        android:text="@string/held_items"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_mid_size" />
 
@@ -239,7 +239,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Game indices"
+                        android:text="@string/game_indices"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_mid_size" />
 
@@ -260,7 +260,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:onClick="saveToFavorite"
-            android:text="Save to Favorite"
+            android:text="@string/save_to_fav"
             app:layout_constraintEnd_toEndOf="@id/bottomlayout" />
     </LinearLayout>
     </LinearLayout>

@@ -3,4 +3,25 @@
     <string name="noincon">No internet connection</string>
     <string name="reconnect">Try again</string>
     <string name="action_pokemonofday">Show Pokemon of day</string>
+    <string name="comment_hint">Leave your comment</string>
+    <string name="hp">HP&#160;</string>
+    <string name="attack">Attack&#160;</string>
+    <string name="defense">Defense&#160;</string>
+    <string name="s_attack">Special-Attack&#160;</string>
+    <string name="s_defense">Special-Defense&#160;</string>
+    <string name="speed">Speed&#160;</string>
+    <string name="order">Order&#160;</string>
+    <string name="base_exp">Base exp&#160;</string>
+    <string name="weight">Weight&#160;</string>
+    <string name="height">Height&#160;</string>
+    <string name="forms">Forms&#160;</string>
+    <string name="species">Species&#160;</string>
+    <string name="moves">Moves</string>
+    <string name="abilities">Abilities</string>
+    <string name="held_items">Held items</string>
+    <string name="game_indices">Game indices</string>
+    <string name="stats">Stats</string>
+    <string name="save_to_fav">Save to Favorite</string>
+    <string name="delete_from_fav">Delete from Favorite</string>
+    <string name="save_comment">Your comment save</string>
 </resources>

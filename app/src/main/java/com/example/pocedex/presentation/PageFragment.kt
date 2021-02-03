@@ -136,7 +136,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     }
 
     private fun showToast() {
-        val toast = Toast.makeText(this.activity, "No internet connection", Toast.LENGTH_LONG)
+        val toast = Toast.makeText(this.activity, R.string.noincon, Toast.LENGTH_LONG)
         toast.show()
     }
 
