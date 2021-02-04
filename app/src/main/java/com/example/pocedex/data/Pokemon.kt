@@ -91,8 +91,8 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
         return t
     }
 
-    fun getSpecies(): String? {
-        return species!!.name
+    fun getSpecies(): String {
+        return species!!.name!!
     }
 
     fun setSprite(sp: String, num: Int) {

@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -19,7 +18,6 @@ import com.example.pocedex.R
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
 import com.example.pocedex.databinding.ActivityCardOriginBinding
-import com.example.pocedex.databinding.ActivityPokemonCardBinding
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
 import com.google.gson.Gson
@@ -99,6 +97,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetwo
     }
 
     fun showSprite(view: View) {
+        if (view.id != R.id.imv_pokemon_image)
+            return
         val spriteDialog = Dialog(this)
         spriteDialog.setContentView(R.layout.sprite_list)
         val back = ColorDrawable(Color.TRANSPARENT)
@@ -135,7 +135,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetwo
 
     override fun repeat() {}
 
-    fun saveComm() {
+    private fun saveComm() {
         cardCommentAndFavorite!!.comment = bindingOrig.incCard.etxtComment.text.toString()
         showToast(R.string.save_comment)
         Utils.save(pokemon, cardCommentAndFavorite!!)

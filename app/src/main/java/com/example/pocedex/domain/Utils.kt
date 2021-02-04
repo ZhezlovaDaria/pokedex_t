@@ -51,7 +51,7 @@ internal open class Utils {
                         override fun onAvailable(network: android.net.Network) {
                             super.onAvailable(network)
                             isConnected = true
-                            var handler: Handler = Handler(context.mainLooper)
+                            val handler = Handler(context.mainLooper)
                             handler.post { (context as INetworkChange).setOnline() }
 
                         }

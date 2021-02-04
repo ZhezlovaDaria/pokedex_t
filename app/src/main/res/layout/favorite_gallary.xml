@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <ImageView
         android:id="@+id/imv_fav_pokemon_image"
-        android:layout_margin="@dimen/margin_padding_circle_image"
-        android:padding="@dimen/margin_padding_circle_image"
         android:layout_width="@dimen/sprite"
         android:layout_height="@dimen/sprite"
-        android:scaleType="centerCrop"
+        android:layout_margin="@dimen/margin_padding_circle_image"
         android:background="@drawable/favorite_image"
+        android:padding="@dimen/margin_padding_circle_image"
+        android:scaleType="centerCrop"
         app:url="@{pokemon.getSpriteForList()}"
         tools:srcCompat="@tools:sample/avatars" />
+
     <data>
 
         <variable

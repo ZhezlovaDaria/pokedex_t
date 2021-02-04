@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,20 +57,20 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon, INet
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = getMenuInflater()
+        val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
-        menu.getItem(0).setChecked(showPokemonOfDay)
+        menu.getItem(0).isChecked = showPokemonOfDay
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.getItemId() == R.id.pokemonofdaycheck) {
-            if (item.isChecked()) {
-                item.setChecked(false)
-                showPokemonOfDay = false
+        if (item.itemId == R.id.pokemonofdaycheck) {
+            showPokemonOfDay = if (item.isChecked) {
+                item.isChecked = false
+                false
             } else {
-                item.setChecked(true)
-                showPokemonOfDay = true
+                item.isChecked = true
+                true
             }
             Utils.saveShowDialog(showPokemonOfDay)
             return true
@@ -95,19 +93,19 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon, INet
     }
 
     override fun refresh(pokemons: List<Pokemon>) {
-        setPokemonOfDay(pokemons.get(0))
+        setPokemonOfDay(pokemons[0])
     }
 
     override fun repeat() {
         Network().getPokemonOfDay(this, this)
     }
 
-    fun setPokemonOfDay(newpokemon: Pokemon) {
-        pokemon = newpokemon
+    private fun setPokemonOfDay(newPokemon: Pokemon) {
+        pokemon = newPokemon
         pokemonOfDayDialog = Dialog(this)
         val binding = PokemonOfDayBinding.inflate(LayoutInflater.from(this))
-        binding.setPokemon(pokemon)
-        pokemonOfDayDialog!!.setContentView(binding.getRoot())
+        binding.pokemon = pokemon
+        pokemonOfDayDialog!!.setContentView(binding.root)
         val back = ColorDrawable(Color.TRANSPARENT)
         val inset = InsetDrawable(back, 0)
 
@@ -122,7 +120,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon, INet
         recyclerView.adapter = adapter
 
 
-        pokemonOfDayDialog!!.getWindow()!!.setBackgroundDrawable(inset)
+        pokemonOfDayDialog!!.window!!.setBackgroundDrawable(inset)
         pokemonOfDayDialog!!.show()
     }
 

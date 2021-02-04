@@ -3,7 +3,6 @@ package com.example.pocedex.data
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.Gson
-import kotlinx.android.parcel.TypeParceler
 
 data class CommentAndFavorite(var pokemon: Pokemon=Pokemon(), var is_favorite: Boolean = false, var comment: String? = "") : Parcelable {
 
