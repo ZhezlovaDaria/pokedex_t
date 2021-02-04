@@ -13,7 +13,8 @@ import com.example.pocedex.R
 import com.example.pocedex.data.Pokemon
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
-import java.util.ArrayList
+import com.google.gson.Gson
+import java.util.*
 
 internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, IUpdatePokemon {
 
@@ -21,7 +22,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     private var connetion = true
     private var isLoading = false
     private val pokemons = ArrayList<Pokemon>()
-    var adapter: PokemonListAdapter? = null
+    private var adapter: PokemonListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +32,20 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
         } else {
             updateFavList()
         }
-        adapter = PokemonListAdapter(this.requireContext(), this.pokemons)
+        adapter = PokemonListAdapter(this.pokemons)
 
+    }
+
+    companion object {
+        private const val ARGUMENT_PAGE_NUMBER = "arg_page_number"
+
+        fun newInstance(page: Int): PageFragment {
+            val pageFragment = PageFragment()
+            val arguments = Bundle()
+            arguments.putInt(ARGUMENT_PAGE_NUMBER, page)
+            pageFragment.arguments = arguments
+            return pageFragment
+        }
     }
 
     override fun refresh(pokemons: List<Pokemon>) {
@@ -41,11 +54,17 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment, container, false)
+        val view = inflater.inflate(R.layout.pokemon_list, container, false)
 
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
-        val layoutManager = LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_pokemons_list)
+
+        val layoutManager: LinearLayoutManager = if (pageNumber == 0) {
+            LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false)
+        } else {
+            LinearLayoutManager(this.activity, LinearLayoutManager.HORIZONTAL, false)
+        }
+
         recyclerView.layoutManager = layoutManager
         adapter?.setClickListener(this)
         if (pageNumber == 0) {
@@ -54,13 +73,13 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
                     super.onScrolled(recyclerView, dx, dy)
                     if (!isLoading) {
                         isLoading = true
-                        if (Utils.isOnline(activity!!)) {
+                        if (Utils.isConnected) {
                             Network().getPokemonsForList(activity!!, this@PageFragment)
                         } else {
                             if (connetion) {
-                                showToast("No internet connection")
+                                showToast()
                                 connetion = false
-                                (activity as PokemonsWikiaActivity).setOffline()
+                                isLoading = false
                             }
                         }
                     }
@@ -74,16 +93,18 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     }
 
     fun updateConnection() {
+        Network().getPokemonsForList(this.activity!!, this)
         isLoading = false
         connetion = true
     }
 
     override fun onItemClick(view: View, position: Int) {
         try {
-            val link: String?
-            link = adapter?.getPokemon(position)?.getUrl()
+            val pokemon: Pokemon = adapter?.getPokemon(position)!!
+            val gson = Gson()
+            val jsonString = gson.toJson(pokemon)
             val intent = Intent(this.activity, PokemonCardActivity::class.java)
-            intent.putExtra("link", link)
+            intent.putExtra("pokemon", jsonString)
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -94,37 +115,31 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
 
     fun updateFavList() {
         pokemons.clear()
-        val commentAndFavorite = Utils.localSave!!.getCommentAndFavorites() ?: return
+        val commentAndFavorite = Utils.localSave!!.getCommentAndFavorites()
+        if (commentAndFavorite.isEmpty())
+            return
         val count = commentAndFavorite.size
         for (i in 0 until count) {
-            if (commentAndFavorite[i].getIsFav()) {
-                val p = Pokemon()
-                p.setName(commentAndFavorite[i].getName()!!)
-                p.setUrl(commentAndFavorite[i].getUrl()!!)
-                p.setId(commentAndFavorite[i].getId() - 1)
+            if (commentAndFavorite[i].is_favorite) {
+                val p = commentAndFavorite[i].pokemon
                 pokemons.add(p)
             }
         }
         adapter?.notifyDataSetChanged()
     }
 
-    fun updatePokemonList(p: List<Pokemon>) {
-        if (!p.isEmpty()) {
+    private fun updatePokemonList(p: List<Pokemon>) {
+        if (p.isNotEmpty()) {
             pokemons.addAll(p)
             adapter?.notifyDataSetChanged()
             isLoading = false
         }
     }
 
-    private fun showToast(mes: String) {
-        val toast = Toast.makeText(this.activity, mes, Toast.LENGTH_LONG)
+    private fun showToast() {
+        val toast = Toast.makeText(this.activity, R.string.noincon, Toast.LENGTH_LONG)
         toast.show()
     }
 
     override fun repeat() {}
-
-    companion object {
-
-        private val ARGUMENT_PAGE_NUMBER = "arg_page_number"
-    }
 }

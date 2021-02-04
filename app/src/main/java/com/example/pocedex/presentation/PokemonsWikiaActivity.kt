@@ -5,17 +5,16 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pocedex.R
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
@@ -23,26 +22,27 @@ import com.example.pocedex.databinding.PokemonOfDayBinding
 import com.example.pocedex.domain.LocalSave
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
-internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
-    var allFragments: List<Fragment>? = null
-    var listvisible = false
-    private var viewPager: ViewPager2? = null
-    private var pagerAdapter: FragmentStateAdapter? = null
-    val random = Random()
+
+internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon, INetworkChange {
+    private var listvisible = false
     private var pokemon: Pokemon? = null
-    private var linkRandom: String? = null
     private var pokemonOfDayDialog: Dialog? = null
-    private val fullCount = 1118 //это число есть в списке покемонов, но оно не успевает подгрузиться перед вызовом рандомайзера...
     private var showPokemonOfDay = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!Utils.isOnline(this)) {
-            setContentView(R.layout.offline)
+        setContentView(R.layout.activity_pokemons_wikia)
+        Utils.localSave = LocalSave(this)
+        commAndFavList()
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        ft.add(R.id.llay_all_list, PageFragment.newInstance(0))
+        ft.add(R.id.llay_favorite_list, PageFragment.newInstance(1))
+        ft.commit()
+        Utils.startNetworkCallback(this)
+        if (!Utils.isConnected) {
+            findViewById<LinearLayout>(R.id.inc_offline).visibility = View.VISIBLE
             return
         }
         Network().resetList()
@@ -51,21 +51,26 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        Utils.stopNetworkCallback(this)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = getMenuInflater()
+        val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
-        menu.getItem(0).setChecked(showPokemonOfDay)
+        menu.getItem(0).isChecked = showPokemonOfDay
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.getItemId() == R.id.pokemonofdaycheck) {
-            if (item.isChecked()) {
-                item.setChecked(false)
-                showPokemonOfDay = false
+        if (item.itemId == R.id.pokemonofdaycheck) {
+            showPokemonOfDay = if (item.isChecked) {
+                item.isChecked = false
+                false
             } else {
-                item.setChecked(true)
-                showPokemonOfDay = true
+                item.isChecked = true
+                true
             }
             Utils.saveShowDialog(showPokemonOfDay)
             return true
@@ -73,114 +78,75 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
         return super.onOptionsItemSelected(item)
     }
 
-    fun checkOnline(view: View) {
-        if (Utils.isOnline(this)) {
-            if (!listvisible)
-                setOnline()
-            else {
-                findViewById<View>(R.id.tryreconnect).setVisibility(View.INVISIBLE)
-                if (allFragments != null && allFragments!!.size > 0)
-                    (allFragments!!.get(0) as PageFragment).updateConnection()
-            }
+    override fun setOnline() {
+        if (!listvisible) {
+            listvisible = true
+            findViewById<LinearLayout>(R.id.inc_offline).visibility = View.GONE
+
+            showPokemonOfDay = Utils.openShowDialog()
+            if (showPokemonOfDay)
+                repeat()
+        } else {
+            if (supportFragmentManager.fragments.size > 0)
+                (supportFragmentManager.fragments[0] as PageFragment).updateConnection()
         }
     }
 
-    fun setOffline() {
-        findViewById<View>(R.id.tryreconnect).setVisibility(View.VISIBLE)
-    }
-
-    private fun setOnline() {
-        listvisible = true
-        setContentView(R.layout.activity_poce_wikia)
-
-        findViewById<View>(R.id.tryreconnect).setVisibility(View.INVISIBLE)
-        Utils.localSave = LocalSave(this)
-        commAndFavList()
-
-        viewPager = findViewById(R.id.pager)
-        pagerAdapter = ScreenSlidePagerAdapter(this)
-        viewPager!!.setAdapter(pagerAdapter)
-
-        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
-        TabLayoutMediator(tabLayout, viewPager!!
-        ) { tab, position ->
-            if (position == 0)
-                tab.setText("All")
-            else
-                tab.setText("Favorite")
-        }.attach()
-        showPokemonOfDay = Utils.openShowDialog()
-        if (showPokemonOfDay)
-            repeat()
-    }
-
     override fun refresh(pokemons: List<Pokemon>) {
-        setPokemonOfDay(pokemons.get(0))
+        setPokemonOfDay(pokemons[0])
     }
 
     override fun repeat() {
-        val notRandom = Utils.notRandomNumbers
-        var randomNumber = random.nextInt(fullCount) + 1
-        while (notRandom.contains(randomNumber))
-            randomNumber = random.nextInt(fullCount) + 1
-        linkRandom = "https://pokeapi.co/api/v2/pokemon/" + randomNumber + "/"
-        Log.d("link", linkRandom!!)
-        Network().getPokemon(this, linkRandom!!, this)
+        Network().getPokemonOfDay(this, this)
     }
 
-    fun setPokemonOfDay(newpokemon: Pokemon) {
-        pokemon = newpokemon
+    private fun setPokemonOfDay(newPokemon: Pokemon) {
+        pokemon = newPokemon
         pokemonOfDayDialog = Dialog(this)
         val binding = PokemonOfDayBinding.inflate(LayoutInflater.from(this))
-        binding.setPokemon(pokemon)
-        pokemonOfDayDialog!!.setContentView(binding.getRoot())
+        binding.pokemon = pokemon
+        pokemonOfDayDialog!!.setContentView(binding.root)
         val back = ColorDrawable(Color.TRANSPARENT)
-        val inset = InsetDrawable(back, 40)
-        pokemonOfDayDialog!!.getWindow()!!.setBackgroundDrawable(inset)
+        val inset = InsetDrawable(back, 0)
+
+        val recyclerView: RecyclerView = binding.rvPokemonsList
+        val sprites: ArrayList<String> = ArrayList()
+        for (i in 0..8) {
+            if (pokemon!!.getSprite(i) != null)
+                sprites.add(pokemon!!.getSprite(i)!!)
+        }
+        val adapter = SpriteAdapter(sprites)
+        recyclerView.layoutManager = LinearLayoutManager(pokemonOfDayDialog!!.context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = adapter
+
+
+        pokemonOfDayDialog!!.window!!.setBackgroundDrawable(inset)
         pokemonOfDayDialog!!.show()
     }
 
     fun saveToFavorite(view: View) {
-        var commentAndFavorite = Utils.findOnId(pokemon!!.getId(), Utils.localSave!!.getCommentAndFavorites())
+        if (view.id != R.id.btn_save_favotire)
+            return
+        var commentAndFavorite = Utils.findOnId(pokemon!!.id, Utils.localSave!!.getCommentAndFavorites())
         if (commentAndFavorite == null) {
-            commentAndFavorite = CommentAndFavorite(pokemon!!.getName(), pokemon!!.getId(),
-                    linkRandom, true, null)
+            commentAndFavorite = CommentAndFavorite(pokemon!!, true, "")
         }
-        commentAndFavorite!!.setIsFav(true)
-        Utils.save(pokemon!!, commentAndFavorite!!)
-        val toast = Toast.makeText(this, "Save in Fav", Toast.LENGTH_LONG)
+        commentAndFavorite.is_favorite = true
+        Utils.save(pokemon!!, commentAndFavorite)
+        val toast = Toast.makeText(this, R.string.save_to_fav, Toast.LENGTH_LONG)
         toast.show()
+        (supportFragmentManager.fragments[1] as PageFragment).updateFavList()
         pokemonOfDayDialog!!.dismiss()
     }
 
     override fun onStart() {
         super.onStart()
-        allFragments = getSupportFragmentManager().getFragments()
-        if (allFragments!!.size > 1)
-            (allFragments!!.get(1) as PageFragment).updateFavList()
+        Utils.startNetworkCallback(this)
+        if (supportFragmentManager.fragments.size > 1)
+            (supportFragmentManager.fragments[1] as PageFragment).updateFavList()
     }
 
     private fun commAndFavList() {
         Utils.localSave!!.open()
-    }
-
-    private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-
-        override fun createFragment(position: Int): Fragment {
-            val fragment = PageFragment()
-            val args = Bundle()
-            args.putInt("arg_page_number", position)
-            fragment.setArguments(args)
-            return fragment
-        }
-
-        override fun getItemCount(): Int {
-            return PAGE_COUNT
-        }
-    }
-
-    companion object {
-
-        val PAGE_COUNT = 2
     }
 }

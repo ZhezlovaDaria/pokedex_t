@@ -11,7 +11,7 @@ object BindingAdapters {
         try {
             Picasso.get().load(url).into(view)
         } catch (e: Exception) {
-            Log.d("Image", e.message)
+            Log.d("Image", e.message.toString())
         }
     }
 }
