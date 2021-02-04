@@ -16,7 +16,7 @@ internal class PokemonListAdapter(private val pokemons: List<Pokemon>) : Recycle
     private val favorite = 1
 
     override fun getItemViewType(position: Int): Int {
-        return if (getPokemon(position).getSprite(0)==null) all else favorite
+        return if (getPokemon(position).forms == null) all else favorite
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, ViewType: Int): RecyclerView.ViewHolder {

@@ -8,7 +8,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
                    var types: List<Type>? = null, var weight: String? = null, var order: String? = null) {
 
     var safeId: Int = id
-        get () {
+        get() {
             if (id == 0) {
                 val stringId = url!!.substring(url!!.lastIndexOf("pokemon/") + 8, url!!.length - 1)
                 id = Integer.parseInt(stringId)
@@ -29,7 +29,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getFormsString(): String {
-        if (forms!!.isEmpty())
+        if (forms==null||forms!!.isEmpty())
             return "None"
         var t = ""
         for (i in forms!!.indices) {
@@ -41,7 +41,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getgetGameIndiceString(): String {
-        if (game_indices!!.isEmpty())
+        if (game_indices==null||game_indices!!.isEmpty())
             return "None"
         var t = ""
         for (i in game_indices!!.indices) {
@@ -51,8 +51,9 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
         }
         return t
     }
+
     fun getHeldItemsString(): String {
-        if (held_items!!.isEmpty())
+        if (held_items==null||held_items!!.isEmpty())
             return "None"
         var t = ""
         for (i in held_items!!.indices) {
@@ -64,7 +65,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getMovesString(): String {
-        if (moves!!.isEmpty())
+        if (moves==null||moves!!.isEmpty())
             return "None"
         var t = ""
         for (i in moves!!.indices) {
@@ -80,7 +81,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getTypesString(): String {
-        if (types!!.isEmpty())
+        if (types==null||types!!.isEmpty())
             return "None"
         var t = ""
         for (i in types!!.indices) {
@@ -91,8 +92,8 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
         return t
     }
 
-    fun getSpecies(): String {
-        return species!!.name!!
+    fun getSpecies(): String? {
+        return species!!.name
     }
 
     fun setSprite(sp: String, num: Int) {
@@ -127,7 +128,11 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
 
     fun getSprite(num: Int): String? {
         when (num) {
-            0 -> return sprites?.other?.official_artwork?.front_default
+            0 -> {
+                return if (sprites?.other?.official_artwork?.front_default != null)
+                    sprites?.other?.official_artwork?.front_default
+                else sprites?.front_default
+            }
             1 -> return sprites?.back_default
             2 -> return sprites?.front_default
             3 -> return sprites?.back_shiny
@@ -141,7 +146,9 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
     }
 
     fun getSpriteForList(): String {
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$safeId.png"
+        return if (safeId < 10091)
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$safeId.png"
+        else "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$safeId.png"
     }
 
 
@@ -202,6 +209,7 @@ data class Pokemon(var id: Int = 0, var name: String? = null, var url: String? =
 
         inner class Other {
             var dream_world: dw? = null
+
             @SerializedName("official-artwork")
             var official_artwork: ow? = null
 

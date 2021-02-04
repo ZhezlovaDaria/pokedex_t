@@ -21,7 +21,8 @@ import com.example.pocedex.databinding.ActivityCardOriginBinding
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
 import com.google.gson.Gson
-import java.util.ArrayList
+import java.util.*
+
 
 internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetworkChange {
 
@@ -38,7 +39,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetwo
         val gson = Gson()
         pokemon = gson.fromJson(arguments!!.get("pokemon")!!.toString(), Pokemon::class.java)
         pokemonlink = pokemon.url.toString()
-        if (pokemon.getSprite(0) != null)
+        if (pokemon.forms!=null)
             setPokemon(pokemon)
         else {
             if (Utils.isConnected) {
@@ -66,8 +67,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetwo
 
     override fun setOnline() {
         if (Utils.isConnected) {
-            bindingOrig.llayCard.visibility = View.VISIBLE
             bindingOrig.llayOffline.visibility = View.GONE
+            bindingOrig.pbarCardLoad.visibility= View.VISIBLE
             Network().getPokemon(this, pokemonlink, this)
         }
     }
@@ -78,6 +79,8 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetwo
     }
 
     private fun setPokemon(newPokemon: Pokemon) {
+        bindingOrig.pbarCardLoad.visibility= View.GONE
+        bindingOrig.llayCard.visibility = View.VISIBLE
         pokemon = newPokemon
 
         bindingOrig.pokemon = pokemon
@@ -100,15 +103,18 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetwo
         if (view.id != R.id.imv_pokemon_image)
             return
         val spriteDialog = Dialog(this)
-        spriteDialog.setContentView(R.layout.sprite_list)
-        val back = ColorDrawable(Color.TRANSPARENT)
-        val inset = InsetDrawable(back, 40)
-        val recyclerView = spriteDialog.findViewById<RecyclerView>(R.id.rv_pokemons_list)
         val sprites: ArrayList<String> = ArrayList()
         for (i in 1..8) {
             if (pokemon.getSprite(i) != null)
                 sprites.add(pokemon.getSprite(i)!!)
         }
+        if (sprites.isEmpty())
+            return
+        spriteDialog.setContentView(R.layout.sprite_list)
+        val back = ColorDrawable(Color.TRANSPARENT)
+        val inset = InsetDrawable(back, 40)
+        val recyclerView = spriteDialog.findViewById<RecyclerView>(R.id.rv_pokemons_list)
+
         val adapter = SpriteAdapter(sprites)
         recyclerView.layoutManager = LinearLayoutManager(spriteDialog.context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter

@@ -9,12 +9,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pocedex.R
 import com.example.pocedex.data.Pokemon
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
 import com.google.gson.Gson
 import java.util.*
+
 
 internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, IUpdatePokemon {
 
@@ -27,9 +29,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageNumber = arguments!!.getInt(ARGUMENT_PAGE_NUMBER)
-        if (pageNumber == 0) {
-            Network().getPokemonsForList(this.activity!!, this)
-        } else {
+        if (pageNumber == 1) {
             updateFavList()
         }
         adapter = PokemonListAdapter(this.pokemons)
@@ -86,7 +86,6 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
                 }
             })
         }
-
         recyclerView.adapter = adapter
 
         return view
