@@ -4,12 +4,26 @@
     android:background="@drawable/roundeddialoge"
     android:padding="30dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_pokemons_list"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:gravity="center"
+            android:text="@string/sprites"
+            android:textSize="@dimen/text_mid_size" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pokemons_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+    </LinearLayout>
 </layout>

@@ -54,7 +54,7 @@
 
         <ImageView
             android:id="@+id/imv_pokemon_image"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/spritebig"
             android:layout_height="@dimen/card"
             android:layout_marginStart="@dimen/min_margin"
             android:layout_marginTop="@dimen/min_margin"

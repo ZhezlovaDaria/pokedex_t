@@ -16,6 +16,7 @@ import com.example.pocedex.domain.Utils
 import com.google.gson.Gson
 import java.util.*
 
+
 internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, IUpdatePokemon {
 
     private var pageNumber: Int = 0
@@ -27,9 +28,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageNumber = arguments!!.getInt(ARGUMENT_PAGE_NUMBER)
-        if (pageNumber == 0) {
-            Network().getPokemonsForList(this.activity!!, this)
-        } else {
+        if (pageNumber == 1) {
             updateFavList()
         }
         adapter = PokemonListAdapter(this.pokemons)
@@ -86,7 +85,6 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
                 }
             })
         }
-
         recyclerView.adapter = adapter
 
         return view
