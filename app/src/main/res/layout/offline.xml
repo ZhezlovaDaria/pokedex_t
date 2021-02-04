@@ -14,32 +14,6 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_big_size" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="checkOnline"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imv_refresh_image"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_rotate" />
-
-        <Button
-            android:id="@+id/llay_try_reconnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="checkOnline"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/reconnect" />
-
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/imv_no_connect_image"
         android:layout_width="match_parent"

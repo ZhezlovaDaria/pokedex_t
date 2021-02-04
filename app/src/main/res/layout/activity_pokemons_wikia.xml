@@ -23,39 +23,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llay_favorite_list"></LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llay_try_reconnect"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@android:color/background_light"
-        android:onClick="checkOnline"
-        android:orientation="horizontal"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/imv_refresh_image"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_menu_rotate" />
-
-        <Button
-            android:id="@+id/btn_reconnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:onClick="checkOnline"
-            android:text="@string/reconnect" />
-
+        app:layout_constraintTop_toBottomOf="@+id/llay_favorite_list">
+        <include
+            android:id="@+id/inc_offline"
+            layout="@layout/offline" />
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

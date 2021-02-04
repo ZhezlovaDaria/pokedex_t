@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -17,23 +18,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pocedex.R
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
+import com.example.pocedex.databinding.ActivityCardOriginBinding
 import com.example.pocedex.databinding.ActivityPokemonCardBinding
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
 import com.google.gson.Gson
 import java.util.ArrayList
 
-internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
+internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon, INetworkChange {
 
     private var pokemonlink = ""
     private var cardCommentAndFavorite: CommentAndFavorite? = null
     private var pokemon: Pokemon = Pokemon()
-    private lateinit var binding: ActivityPokemonCardBinding
+    private lateinit var bindingOrig: ActivityCardOriginBinding
     private var edit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_pokemon_card)
+        bindingOrig = DataBindingUtil.setContentView(this, R.layout.activity_card_origin)
         val arguments = intent.extras
         val gson = Gson()
         pokemon = gson.fromJson(arguments!!.get("pokemon")!!.toString(), Pokemon::class.java)
@@ -41,29 +43,35 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
         if (pokemon.getSprite(0) != null)
             setPokemon(pokemon)
         else {
-            if (Utils.isOnline(this)) {
+            if (Utils.isConnected) {
                 setOnline()
             } else {
                 setOffline()
             }
         }
-
     }
 
-    fun checkOnline(view: View) {
-        if (view.id != R.id.llay_try_reconnect)
-            return
-        if (Utils.isOnline(this))
-            setOnline()
+    override fun onStop() {
+        super.onStop()
+        Utils.stopNetworkCallback(this)
+    }
 
+    override fun onStart() {
+        super.onStart()
+        Utils.startNetworkCallback(this)
     }
 
     private fun setOffline() {
-        setContentView(R.layout.offline)
+        bindingOrig.llayOffline.visibility = View.VISIBLE
+        bindingOrig.llayCard.visibility = View.GONE
     }
 
-    private fun setOnline() {
-        Network().getPokemon(this, pokemonlink, this)
+    override fun setOnline() {
+        if (Utils.isConnected) {
+            bindingOrig.llayCard.visibility = View.VISIBLE
+            bindingOrig.llayOffline.visibility = View.GONE
+            Network().getPokemon(this, pokemonlink, this)
+        }
     }
 
 
@@ -74,7 +82,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     private fun setPokemon(newPokemon: Pokemon) {
         pokemon = newPokemon
 
-        binding.pokemon = pokemon
+        bindingOrig.pokemon = pokemon
         cardCommentAndFavorite = Utils.findOnId(pokemon.safeId, Utils.localSave!!.getCommentAndFavorites())
         if (cardCommentAndFavorite == null) {
             cardCommentAndFavorite = CommentAndFavorite()
@@ -82,11 +90,11 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
             cardCommentAndFavorite!!.pokemon.url = pokemonlink
         }
         if (cardCommentAndFavorite!!.is_favorite) {
-            binding.btnFavorite.setImageResource(android.R.drawable.star_big_on)
+            bindingOrig.incCard.btnFavorite.setImageResource(android.R.drawable.star_big_on)
         }
         if (!cardCommentAndFavorite!!.comment?.isEmpty()!!) {
-            binding.etxtComment.visibility = View.VISIBLE
-            binding.etxtComment.setText(cardCommentAndFavorite!!.comment)
+            bindingOrig.incCard.etxtComment.visibility = View.VISIBLE
+            bindingOrig.incCard.etxtComment.setText(cardCommentAndFavorite!!.comment)
         }
     }
 
@@ -112,14 +120,14 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     fun editComment(view: View) {
         edit = !edit
         if (edit) {
-            binding.etxtComment.visibility = View.VISIBLE
-            binding.etxtComment.isEnabled = true
+            bindingOrig.incCard.etxtComment.visibility = View.VISIBLE
+            bindingOrig.incCard.etxtComment.isEnabled = true
             (view as ImageButton).setImageResource(android.R.drawable.ic_menu_save)
         } else {
             (view as ImageButton).setImageResource(android.R.drawable.ic_menu_edit)
-            binding.etxtComment.isEnabled = false
-            if (binding.etxtComment.text.isEmpty())
-                binding.etxtComment.visibility = View.GONE
+            bindingOrig.incCard.etxtComment.isEnabled = false
+            if (bindingOrig.incCard.etxtComment.text.isEmpty())
+                bindingOrig.incCard.etxtComment.visibility = View.GONE
             else
                 saveComm()
         }
@@ -128,7 +136,7 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
     override fun repeat() {}
 
     fun saveComm() {
-        cardCommentAndFavorite!!.comment = binding.etxtComment.text.toString()
+        cardCommentAndFavorite!!.comment = bindingOrig.incCard.etxtComment.text.toString()
         showToast(R.string.save_comment)
         Utils.save(pokemon, cardCommentAndFavorite!!)
         hideKeyboard(this)
@@ -148,10 +156,10 @@ internal class PokemonCardActivity : AppCompatActivity(), IUpdatePokemon {
             return
         cardCommentAndFavorite!!.is_favorite = (!cardCommentAndFavorite!!.is_favorite)
         if (cardCommentAndFavorite!!.is_favorite) {
-            binding.btnFavorite.setImageResource(android.R.drawable.star_big_on)
+            bindingOrig.incCard.btnFavorite.setImageResource(android.R.drawable.star_big_on)
             showToast(R.string.save_to_fav)
         } else {
-            binding.btnFavorite.setImageResource(android.R.drawable.star_big_off)
+            bindingOrig.incCard.btnFavorite.setImageResource(android.R.drawable.star_big_off)
             showToast(R.string.delete_from_fav)
         }
         Utils.save(pokemon, cardCommentAndFavorite!!)

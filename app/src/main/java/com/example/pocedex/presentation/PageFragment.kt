@@ -73,13 +73,13 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
                     super.onScrolled(recyclerView, dx, dy)
                     if (!isLoading) {
                         isLoading = true
-                        if (Utils.isOnline(activity!!)) {
+                        if (Utils.isConnected) {
                             Network().getPokemonsForList(activity!!, this@PageFragment)
                         } else {
                             if (connetion) {
                                 showToast()
                                 connetion = false
-                                (activity as PokemonsWikiaActivity).setOffline()
+                                isLoading = false
                             }
                         }
                     }
@@ -93,6 +93,7 @@ internal class PageFragment : Fragment(), PokemonListAdapter.ItemClickListener, 
     }
 
     fun updateConnection() {
+        Network().getPokemonsForList(this.activity!!, this)
         isLoading = false
         connetion = true
     }

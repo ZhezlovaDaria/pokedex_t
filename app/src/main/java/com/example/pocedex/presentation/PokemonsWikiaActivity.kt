@@ -4,12 +4,15 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +24,10 @@ import com.example.pocedex.databinding.PokemonOfDayBinding
 import com.example.pocedex.domain.LocalSave
 import com.example.pocedex.domain.Network
 import com.example.pocedex.domain.Utils
-import java.util.ArrayList
+import java.util.*
 
 
-internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
+internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon, INetworkChange {
     private var listvisible = false
     private var pokemon: Pokemon? = null
     private var pokemonOfDayDialog: Dialog? = null
@@ -33,13 +36,26 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pokemons_wikia)
-        if (!Utils.isOnline(this)) {
+        Utils.localSave = LocalSave(this)
+        commAndFavList()
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        ft.add(R.id.llay_all_list, PageFragment.newInstance(0))
+        ft.add(R.id.llay_favorite_list, PageFragment.newInstance(1))
+        ft.commit()
+        Utils.startNetworkCallback(this)
+        if (!Utils.isConnected) {
+            findViewById<LinearLayout>(R.id.inc_offline).visibility = View.VISIBLE
             return
         }
         Network().resetList()
         setOnline()
         listvisible = true
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Utils.stopNetworkCallback(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -64,40 +80,18 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
         return super.onOptionsItemSelected(item)
     }
 
-    fun checkOnline(view: View) {
-        if (view.id != R.id.llay_try_reconnect)
-            return
+    override fun setOnline() {
+        if (!listvisible) {
+            listvisible = true
+            findViewById<LinearLayout>(R.id.inc_offline).visibility = View.GONE
 
-        if (Utils.isOnline(this)) {
-            if (!listvisible)
-                setOnline()
-            else {
-                findViewById<View>(R.id.llay_try_reconnect).setVisibility(View.INVISIBLE)
-                if (supportFragmentManager.fragments.size > 0)
-                    (supportFragmentManager.fragments[0] as PageFragment).updateConnection()
-            }
+            showPokemonOfDay = Utils.openShowDialog()
+            if (showPokemonOfDay)
+                repeat()
+        } else {
+            if (supportFragmentManager.fragments.size > 0)
+                (supportFragmentManager.fragments[0] as PageFragment).updateConnection()
         }
-    }
-
-    fun setOffline() {
-        findViewById<View>(R.id.llay_try_reconnect).setVisibility(View.VISIBLE)
-    }
-
-    private fun setOnline() {
-        listvisible = true
-
-        findViewById<View>(R.id.llay_try_reconnect).setVisibility(View.INVISIBLE)
-        Utils.localSave = LocalSave(this)
-        commAndFavList()
-
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.add(R.id.llay_all_list, PageFragment.newInstance(0))
-        ft.add(R.id.llay_favorite_list, PageFragment.newInstance(1))
-        ft.commit()
-
-        showPokemonOfDay = Utils.openShowDialog()
-        if (showPokemonOfDay)
-            repeat()
     }
 
     override fun refresh(pokemons: List<Pokemon>) {
@@ -149,6 +143,7 @@ internal class PokemonsWikiaActivity : AppCompatActivity(), IUpdatePokemon {
 
     override fun onStart() {
         super.onStart()
+        Utils.startNetworkCallback(this)
         if (supportFragmentManager.fragments.size > 1)
             (supportFragmentManager.fragments[1] as PageFragment).updateFavList()
     }

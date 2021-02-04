@@ -2,10 +2,14 @@ package com.example.pocedex.domain
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkRequest
+import android.os.Handler
 import android.util.Log
 import com.example.pocedex.data.CommentAndFavorite
 import com.example.pocedex.data.Pokemon
+import com.example.pocedex.presentation.INetworkChange
 import java.util.*
+
 
 internal open class Utils {
 
@@ -13,6 +17,7 @@ internal open class Utils {
         const val preferenses = "commandfav"
         var localSave: LocalSave? = null
         private var randomNumbers: ArrayList<Int> = ArrayList()
+        var isConnected: Boolean = false
 
         fun randomNumbers(count: Int): Int {
             val random = Random()
@@ -34,12 +39,38 @@ internal open class Utils {
             return randomNumbers[random.nextInt(randomNumbers.size) - 1]
         }
 
-        fun isOnline(context: Context): Boolean {
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        fun startNetworkCallback(context: Context) {
+            val cm: ConnectivityManager =
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val builder: NetworkRequest.Builder = NetworkRequest.Builder()
 
-            val activeNetwork = cm.activeNetworkInfo
+            cm.registerNetworkCallback(
+                    builder.build(),
+                    object : ConnectivityManager.NetworkCallback() {
 
-            return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+                        override fun onAvailable(network: android.net.Network) {
+                            super.onAvailable(network)
+                            isConnected = true
+                            var handler: Handler = Handler(context.mainLooper)
+                            handler.post { (context as INetworkChange).setOnline() }
+
+                        }
+
+                        override fun onLost(network: android.net.Network) {
+                            super.onLost(network)
+                            isConnected = false
+                        }
+                    })
+        }
+
+        fun stopNetworkCallback(context: Context) {
+            val cm: ConnectivityManager =
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            try {
+                cm.unregisterNetworkCallback(ConnectivityManager.NetworkCallback())
+            } catch (e: IllegalArgumentException) {
+                Log.d("NetworkCallback", e.message.toString())
+            }
         }
 
         fun findOnId(
