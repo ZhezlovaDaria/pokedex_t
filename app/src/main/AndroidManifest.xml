@@ -8,19 +8,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="com.example.pocedex.application.AppNotificationControl">
-        <activity android:name=".presentation.MainActivity">
+        android:theme="@style/AppTheme">
+        <activity android:name=".presentation.PokemonsWikiaActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.UnreadNewsActivity"/>
-        <activity android:name=".presentation.PokemonCardActivity" />
-        <activity android:name=".presentation.PokemonsWikiaActivity" />
+        <activity
+            android:name=".presentation.PokemonCardActivity"
+            android:windowSoftInputMode="adjustPan"  />
     </application>
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

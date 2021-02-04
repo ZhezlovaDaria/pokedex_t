@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/llay_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:background="@drawable/roundeddialoge"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llay_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_pokemon_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/big_margin"
+                android:layout_marginTop="@dimen/margin"
+                android:layout_marginRight="@dimen/big_margin"
+                android:layout_marginBottom="@dimen/margin"
+                android:gravity="center"
+                android:text="@{pokemon.getName()}"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_big_size" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_pokemons_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent" />
+
+
+                </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llay_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txt_stats_title"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/big_margin"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginRight="@dimen/big_margin"
+                        android:layout_marginBottom="@dimen/margin"
+                        android:background="@drawable/rounded"
+                        android:padding="@dimen/rounder_padding"
+                        android:text="@string/stats"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_mid_size"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                    <LinearLayout
+                        android:id="@+id/llay_base_stats"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:background="@drawable/rounded"
+                        android:orientation="vertical"
+                        android:padding="@dimen/rounder_padding"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_stats_title">
+
+
+                        <TextView
+                            android:id="@+id/txt_hp_sattack_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text='@{@string/hp+ pokemon.getStats(0)+ " | "+@string/s_attack +pokemon.getStats(3)}'
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/txt_attack_sdefense_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text='@{@string/attack+ pokemon.getStats(1)+ " | "+@string/s_defense+pokemon.getStats(4)}'
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/txt_defense_speed_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text='@{@string/defense+ pokemon.getStats(2)+ " | "+@string/speed+pokemon.getStats(5)}'
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/txt_order_baseexp_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text='@{@string/order +String.valueOf(pokemon.order)+" | "+ @string/base_exp +String.valueOf(pokemon.base_experience)}'
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/txt_weight_height_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text='@{@string/weight +String.valueOf(pokemon.weight)+" | "+@string/height +String.valueOf(pokemon.height)}'
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txt_forms"
+                            android:background="@drawable/rounded"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:layout_margin="@dimen/margin"
+                            android:padding="@dimen/rounder_padding"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text='@{@string/forms+ pokemon.getFormsString()}'
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_mid_size" />
+
+                    <TextView
+                        android:id="@+id/txt_species_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:background="@drawable/rounded"
+                        android:gravity="center"
+                        android:padding="@dimen/rounder_padding"
+                        android:singleLine="true"
+                        android:text='@{@string/species+ pokemon.getSpecies()}'
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_mid_size" />
+
+                    <LinearLayout
+                        android:id="@+id/llay_other_stats"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginRight="@dimen/margin"
+                        android:layout_marginBottom="@dimen/margin"
+                        android:background="@drawable/rounded"
+                        android:orientation="vertical"
+                        android:padding="@dimen/rounder_padding" >
+
+                        <TextView
+                            android:id="@+id/txt_moves_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/moves"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_mid_size" />
+
+                        <TextView
+                            android:id="@+id/txt_moves_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{pokemon.getMovesString()}' />
+
+                        <TextView
+                            android:id="@+id/txt_abilities_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/abilities"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_mid_size" />
+
+                        <TextView
+                            android:id="@+id/txt_abilities_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{pokemon.getAbilityString()}' />
+
+                        <TextView
+                            android:id="@+id/txt_helditem_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/held_items"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_mid_size" />
+
+                        <TextView
+                            android:id="@+id/txt_helditem_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{pokemon.getHeldItemsString()}' />
+
+                        <TextView
+                            android:id="@+id/txt_gameindice_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/game_indices"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_mid_size" />
+
+                        <TextView
+                            android:id="@+id/txt_gameindice_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{pokemon.getgetGameIndiceString()}' />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                android:id="@+id/btn_save_favotire"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="saveToFavorite"
+                android:text="@string/save_to_fav"
+                app:layout_constraintEnd_toEndOf="@id/llay_bottom" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <data>
+
+        <variable
+            name="pokemon"
+            type="com.example.pocedex.data.Pokemon" />
+        <import type="android.view.View"/>
+
+    </data>
+
+</layout>
